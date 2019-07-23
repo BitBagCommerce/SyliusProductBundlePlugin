@@ -1,0 +1,3 @@
+imports:
+    - { resource: resources/product_bundle.yml }
+    - { resource: resources/product_bundle_item.yml }

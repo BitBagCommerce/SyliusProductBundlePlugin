@@ -1,0 +1,6 @@
+bitbag_sylius_product_bundle:
+    ui:
+        bundle: Bundle
+        product_variant: Product variant
+        quantity: Quantity
+        delete: Delete

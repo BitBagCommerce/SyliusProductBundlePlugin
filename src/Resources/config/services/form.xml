@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="bitbag_sylius_product_bundle.form.type.product_bundle.validation_groups" type="collection">
+            <parameter>bitbag_sylius_product_bundle</parameter>
+        </parameter>
+
+        <parameter key="bitbag_sylius_product_bundle.form.type.product_bundle_item.validation_groups" type="collection">
+            <parameter>bitbag_sylius_product_bundle</parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="bitbag_sylius_product_bundle.form.type.product_bundle" class="BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleType">
+            <argument>%bitbag_sylius_product_bundle.model.product_bundle.class%</argument>
+            <argument>%bitbag_sylius_product_bundle.form.type.product_bundle.validation_groups%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="bitbag_sylius_product_bundle.form.type.product_bundle_item" class="BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleItemType">
+            <argument>%bitbag_sylius_product_bundle.model.product_bundle_item.class%</argument>
+            <argument>%bitbag_sylius_product_bundle.form.type.product_bundle_item.validation_groups%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="bitbag_sylius_product_bundle.form.extension.type.product" class="BitBag\SyliusProductBundlePlugin\Form\Extension\ProductTypeExtension">
+            <tag name="form.type_extension" extended-type="Sylius\Bundle\ProductBundle\Form\Type\ProductType" />
+        </service>
+    </services>
+</container>
