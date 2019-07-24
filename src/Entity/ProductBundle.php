@@ -51,6 +51,8 @@ class ProductBundle implements ProductBundleInterface
     public function addProductBundleItem(ProductBundleItemInterface $productBundleItem): void
     {
         if (!$this->hasProductBundleItem($productBundleItem)) {
+            $productBundleItem->setProductBundle($this);
+
             $this->productBundleItems->add($productBundleItem);
         }
     }
@@ -58,6 +60,8 @@ class ProductBundle implements ProductBundleInterface
     public function removeProductBundleItem(ProductBundleItemInterface $productBundleItem): void
     {
         if ($this->hasProductBundleItem($productBundleItem)) {
+            $productBundleItem->setProductBundle(null);
+
             $this->productBundleItems->removeElement($productBundleItem);
         }
     }

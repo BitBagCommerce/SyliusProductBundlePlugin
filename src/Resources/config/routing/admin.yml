@@ -1,0 +1,18 @@
+bitbag_product_bundle_admin_product_create_bundle:
+    path: /products/new/bundle
+    methods: [GET, POST]
+    defaults:
+        _controller: sylius.controller.product:createAction
+        _sylius:
+            section: admin
+            permission: true
+            factory:
+                method: createWithVariantAndBundle
+            template: "@SyliusAdmin/Crud/create.html.twig"
+            redirect: sylius_admin_product_update
+            vars:
+                subheader: sylius.ui.manage_your_product_catalog
+                templates:
+                    form: "@SyliusAdmin/Product/_form.html.twig"
+                route:
+                    name: bitbag_product_bundle_admin_product_create_bundle

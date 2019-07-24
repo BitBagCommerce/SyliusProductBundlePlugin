@@ -16,7 +16,7 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <one-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface">
+        <one-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface" inversed-by="productBundle">
             <cascade>
                 <cascade-persist/>
             </cascade>

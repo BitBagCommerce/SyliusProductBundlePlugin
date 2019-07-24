@@ -20,7 +20,7 @@ class ProductBundleItem implements ProductBundleItemInterface
     /** @var int */
     private $quantity;
 
-    /** @var ProductBundleItemInterface|null */
+    /** @var ProductBundleInterface|null */
     private $productBundle;
 
     public function __construct()
@@ -53,12 +53,12 @@ class ProductBundleItem implements ProductBundleItemInterface
         $this->quantity = $quantity;
     }
 
-    public function getProductBundle(): ?ProductBundleItemInterface
+    public function getProductBundle(): ?ProductBundleInterface
     {
         return $this->productBundle;
     }
 
-    public function setProductBundle(?ProductBundleItemInterface $productBundle): void
+    public function setProductBundle(?ProductBundleInterface $productBundle): void
     {
         $this->productBundle = $productBundle;
     }

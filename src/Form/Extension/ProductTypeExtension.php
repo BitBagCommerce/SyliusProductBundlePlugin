@@ -15,9 +15,7 @@ final class ProductTypeExtension extends AbstractTypeExtension
     {
         $builder
             ->add('productBundle', ProductBundleType::class, [
-                'mapped' => false,
                 'label' => false,
-                'product' => $builder->getData(),
             ])
         ;
     }

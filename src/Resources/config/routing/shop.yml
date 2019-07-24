@@ -1,0 +1,36 @@
+bitbag_sulius_product_bundle_shop_ajax_cart_add_product_bundle:
+    path: /ajax/cart/product-bundle/add
+    methods: [POST]
+    defaults:
+        _controller: bitbag_sylius_product_bundle.controller.order_item:addProductBundleAction
+        _format: json
+        _sylius:
+            factory:
+                method: createForProduct
+                arguments: [expr:notFoundOnNull(service('sylius.repository.product').find($productId))]
+            form:
+                type: BitBag\SyliusProductBundlePlugin\Form\Type\AddProductBundleToCartType
+                options:
+                    product: expr:notFoundOnNull(service('sylius.repository.product').find($productId))
+            redirect:
+                route: sylius_shop_cart_summary
+                parameters: {}
+            flash: sylius.cart.add_item
+
+bitbag_sulius_product_bundle_shop_partial_cart_add_product_bundle:
+    path: /_partial/cart/product-bundle/add
+    methods: [GET]
+    defaults:
+        _controller: bitbag_sylius_product_bundle.controller.order_item:addProductBundleAction
+        _sylius:
+            template: $template
+            factory:
+                method: createForProduct
+                arguments: [expr:notFoundOnNull(service('sylius.repository.product').find($productId))]
+            form:
+                type: BitBag\SyliusProductBundlePlugin\Form\Type\AddProductBundleToCartType
+                options:
+                  product: expr:notFoundOnNull(service('sylius.repository.product').find($productId))
+            redirect:
+                route: sylius_shop_cart_summary
+                parameters: {}

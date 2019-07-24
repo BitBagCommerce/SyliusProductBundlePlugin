@@ -18,7 +18,7 @@ interface ProductBundleItemInterface extends ResourceInterface, TimestampableInt
 
     public function setQuantity(?int $quantity): void;
 
-    public function getProductBundle(): ?ProductBundleItemInterface;
+    public function getProductBundle(): ?ProductBundleInterface;
 
-    public function setProductBundle(?ProductBundleItemInterface $productBundle): void;
+    public function setProductBundle(?ProductBundleInterface $productBundle): void;
 }
