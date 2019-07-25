@@ -4,3 +4,4 @@ bitbag_sylius_product_bundle:
         product_variant: Product variant
         quantity: Quantity
         delete: Delete
+        products_in_bundle: Products in bundle

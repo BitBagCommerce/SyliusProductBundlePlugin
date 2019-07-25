@@ -9,7 +9,6 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantChoiceType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantMatchType;
 use Sylius\Component\Core\Model\Product;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -20,12 +19,6 @@ final class AddProductBundleItemToCartType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('quantity', IntegerType::class, [
-                'label' => 'sylius.ui.quantity',
-            ])
-        ;
-
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             /** @var AddProductBundleItemToCartCommand $data */
             $data = $event->getData();
@@ -44,21 +37,10 @@ final class AddProductBundleItemToCartType extends AbstractType
 
                 $form->add('productVariant', $type, [
                     'product' => $product,
+                    'label' => false,
                 ]);
             }
         });
-
-        if (isset($options['product']) && $options['product']->hasVariants() && !$options['product']->isSimple()) {
-            $type =
-                Product::VARIANT_SELECTION_CHOICE === $options['product']->getVariantSelectionMethod()
-                    ? ProductVariantChoiceType::class
-                    : ProductVariantMatchType::class
-            ;
-
-            $builder->add('productVariant', $type, [
-                'product' => $options['product'],
-            ]);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

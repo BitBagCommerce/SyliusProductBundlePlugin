@@ -29,10 +29,7 @@ final class AddProductBundleToCartCommand
 
         /** @var ProductBundleItemInterface $productBundleItem */
         foreach ($product->getProductBundle()->getProductBundleItems() as $productBundleItem) {
-            $this->productBundleItems[] = new AddProductBundleItemToCartCommand(
-                $productBundleItem->getProductVariant(),
-                $productBundleItem->getQuantity()
-            );
+            $this->productBundleItems[] = new AddProductBundleItemToCartCommand($productBundleItem);
         }
     }
 

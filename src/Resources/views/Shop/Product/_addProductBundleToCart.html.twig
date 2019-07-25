@@ -5,7 +5,7 @@
 <div class="ui segment" id="sylius-product-selecting-variant">
     {{ sonata_block_render_event('sylius.shop.product.show.before_add_to_cart', {'product': product, 'order_item': order_item}) }}
 
-    {{ form_start(form, {'action': path('sylius_shop_ajax_cart_add_item', {'productId': product.id}), 'attr': {'id': 'sylius-product-adding-to-cart', 'class': 'ui loadable form', 'novalidate': 'novalidate', 'data-redirect': path(configuration.getRedirectRoute('summary'))}}) }}
+    {{ form_start(form, {'action': path('bitbag_sulius_product_bundle_shop_ajax_cart_add_product_bundle', {'productId': product.id}), 'attr': {'id': 'sylius-product-adding-to-cart', 'class': 'ui loadable form', 'novalidate': 'novalidate', 'data-redirect': path(configuration.getRedirectRoute('summary'))}}) }}
     {{ form_errors(form) }}
     <div class="ui red label bottom pointing hidden sylius-validation-error" id="sylius-cart-validation-error"></div>
     {% if not product.simple %}
@@ -17,10 +17,19 @@
     {% endif %}
     {{ form_row(form.cartItem.quantity) }}
 
-    {{ dump() }}
+    <h2>{{ 'bitbag_sylius_product_bundle.ui.products_in_bundle'|trans }}</h2>
 
     {% for item in form.productBundleItems %}
-        {{ form_row(item.productVariant) }}
+        <div class="ui segment">
+            {% set data = item.vars.data %}
+
+            <h3>{{ data.quantity }} x {{ data.productVariant.product.name }}</h3>
+
+            {% if item.productVariant is defined %}
+                {{ form_row(item.productVariant) }}
+            {% endif %}
+        </div>
+
     {% endfor %}
 
     {{ sonata_block_render_event('sylius.shop.product.show.add_to_cart_form', {'product': product, 'order_item': order_item}) }}

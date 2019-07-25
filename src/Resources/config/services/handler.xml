@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="bitbag_sylius_product_bundle.handler.add_product_bundle_to_cart" class="BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler">
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.product_bundle_order_item" />
+            <argument type="service" id="bitbag_sylius_product_bundle.manager.product_bundle_order_item" />
+            <argument type="service" id="sylius.order_modifier" />
+            <argument type="service" id="sylius.manager.order" />
+            <tag name="messenger.message_handler"/>
+        </service>
+    </services>
+</container>

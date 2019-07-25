@@ -9,24 +9,68 @@ use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemCon
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Component\Order\CartActions;
-use Sylius\Component\Order\Context\CartContextInterface;
-use Sylius\Component\Order\Model\OrderInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Sylius\Component\Order\Repository\OrderRepositoryInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Component\Resource\Metadata\MetadataInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Bundle\ResourceBundle\Controller as Controller;
 
 class OrderItemController extends BaseOrderItemController
 {
+    /** @var MessageBusInterface */
+    protected $messageBus;
+
+    public function __construct(
+        MetadataInterface $metadata,
+        Controller\RequestConfigurationFactoryInterface $requestConfigurationFactory,
+        Controller\ViewHandlerInterface $viewHandler,
+        RepositoryInterface $repository,
+        FactoryInterface $factory,
+        Controller\NewResourceFactoryInterface $newResourceFactory,
+        ObjectManager $manager,
+        Controller\SingleResourceProviderInterface $singleResourceProvider,
+        Controller\ResourcesCollectionProviderInterface $resourcesFinder,
+        Controller\ResourceFormFactoryInterface $resourceFormFactory,
+        Controller\RedirectHandlerInterface $redirectHandler,
+        Controller\FlashHelperInterface $flashHelper,
+        Controller\AuthorizationCheckerInterface $authorizationChecker,
+        Controller\EventDispatcherInterface $eventDispatcher,
+        Controller\StateMachineInterface $stateMachine,
+        Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
+        Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
+        MessageBusInterface $messageBus
+    ) {
+        parent::__construct(
+            $metadata,
+            $requestConfigurationFactory,
+            $viewHandler,
+            $repository,
+            $factory,
+            $newResourceFactory,
+            $manager,
+            $singleResourceProvider,
+            $resourcesFinder,
+            $resourceFormFactory,
+            $redirectHandler,
+            $flashHelper,
+            $authorizationChecker,
+            $eventDispatcher,
+            $stateMachine,
+            $resourceUpdateHandler,
+            $resourceDeleteHandler
+        );
+
+        $this->messageBus = $messageBus;
+    }
+
     public function addProductBundleAction(Request $request): Response
     {
         $cart = $this->getCurrentCart();
@@ -46,10 +90,11 @@ class OrderItemController extends BaseOrderItemController
         );
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-//            /** @var AddToCartCommandInterface $addToCartCommand */
-            $addToCartCommand = $form->getData();
+            /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
+            $addProductBundleToCartCommand = $form->getData();
 
-            $errors = $this->getCartItemErrors($addToCartCommand->getCartItem());
+            $errors = $this->getCartItemErrors($addProductBundleToCartCommand->getCartItem());
+
             if (0 < count($errors)) {
                 $form = $this->getAddToCartFormWithErrors($errors, $form);
 
@@ -68,11 +113,7 @@ class OrderItemController extends BaseOrderItemController
                 return $this->redirectHandler->redirectToIndex($configuration, $orderItem);
             }
 
-            $this->getOrderModifier()->addToOrder($addToCartCommand->getCart(), $addToCartCommand->getCartItem());
-
-            $cartManager = $this->getCartManager();
-            $cartManager->persist($cart);
-            $cartManager->flush();
+            $this->messageBus->dispatch($addProductBundleToCartCommand);
 
             $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
 
