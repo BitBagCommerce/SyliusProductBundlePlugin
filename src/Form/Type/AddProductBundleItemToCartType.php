@@ -19,6 +19,13 @@ final class AddProductBundleItemToCartType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var ProductInterface $product */
+        $product = $options['product'];
+
+        if ($product->getProductBundle()->isPackedProduct()) {
+            return;
+        }
+
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             /** @var AddProductBundleItemToCartCommand $data */
             $data = $event->getData();

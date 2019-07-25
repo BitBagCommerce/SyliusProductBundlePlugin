@@ -9,6 +9,7 @@ use BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class ProductTypeExtension extends AbstractTypeExtension
 {
@@ -24,6 +25,7 @@ final class ProductTypeExtension extends AbstractTypeExtension
         $builder
             ->add('productBundle', ProductBundleType::class, [
                 'label' => false,
+                'constraints' => [new Valid()],
             ])
         ;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Form\Type;
 
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -13,6 +14,9 @@ final class ProductBundleType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('isPackedProduct', CheckboxType::class, [
+                'label' => 'bitbag_sylius_product_bundle.ui.is_packed_product'
+            ])
             ->add('productBundleItems', CollectionType::class, [
                 'entry_type' => ProductBundleItemType::class,
                 'entry_options' => ['label' => false],

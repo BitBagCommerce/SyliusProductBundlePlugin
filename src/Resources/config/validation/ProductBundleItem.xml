@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem">
+        <property name="productVariant">
+            <constraint name="NotBlank">
+                <option name="message">bitbag_sylius_product_bundle.product_bundle_item.product_variant.not_blank</option>
+                <option name="groups">
+                    <value>bitbag_sylius_product_bundle</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="quantity">
+            <constraint name="NotBlank">
+                <option name="message">bitbag_sylius_product_bundle.product_bundle_item.quantity.not_blank</option>
+                <option name="groups">
+                    <value>bitbag_sylius_product_bundle</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

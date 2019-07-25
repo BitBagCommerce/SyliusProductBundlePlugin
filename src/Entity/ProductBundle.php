@@ -22,6 +22,9 @@ class ProductBundle implements ProductBundleInterface
     /** @var ProductBundleItemInterface[]|Collection */
     protected $productBundleItems;
 
+    /** @var bool */
+    protected $isPackedProduct = false;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -69,5 +72,15 @@ class ProductBundle implements ProductBundleInterface
     public function hasProductBundleItem(ProductBundleItemInterface $productBundleItem): bool
     {
         return $this->productBundleItems->contains($productBundleItem);
+    }
+
+    public function isPackedProduct(): bool
+    {
+        return $this->isPackedProduct;
+    }
+
+    public function setIsPackedProduct(bool $isPackedProduct): void
+    {
+        $this->isPackedProduct = $isPackedProduct;
     }
 }

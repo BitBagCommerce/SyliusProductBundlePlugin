@@ -8,6 +8,8 @@
             <generator strategy="AUTO"/>
         </id>
 
+        <field name="isPackedProduct" column="is_packed_product" type="boolean"/>
+
         <field name="createdAt" column="created_at" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>

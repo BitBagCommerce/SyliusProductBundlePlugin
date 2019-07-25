@@ -22,4 +22,8 @@ interface ProductBundleInterface extends ResourceInterface, TimestampableInterfa
     public function removeProductBundleItem(ProductBundleItemInterface $productBundleItem): void;
 
     public function hasProductBundleItem(ProductBundleItemInterface $productBundleItem): bool;
+
+    public function isPackedProduct(): bool;
+
+    public function setIsPackedProduct(bool $isPackedProduct): void;
 }

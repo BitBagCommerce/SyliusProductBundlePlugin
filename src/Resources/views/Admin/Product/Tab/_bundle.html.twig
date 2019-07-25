@@ -2,6 +2,7 @@
 
 <div class="ui tab" data-tab="bundle">
 
+    {{ form_row(form.productBundle.isPackedProduct) }}
     {{ form_row(form.productBundle.productBundleItems) }}
 
     {{ sonata_block_render_event('sylius.admin.product.' ~ action ~ '.tab_bundle', {'form': form }) }}

@@ -10,6 +10,11 @@ bitbag_product_bundle_admin_product_create_bundle:
                 method: createWithVariantAndBundle
             template: "@SyliusAdmin/Crud/create.html.twig"
             redirect: sylius_admin_product_update
+            form:
+                options:
+                    validation_groups:
+                        - sylius
+                        - bitbag_sylius_product_bundle
             vars:
                 subheader: sylius.ui.manage_your_product_catalog
                 templates:
