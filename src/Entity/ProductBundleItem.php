@@ -12,16 +12,16 @@ class ProductBundleItem implements ProductBundleItemInterface
     use TimestampableTrait;
 
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var ProductVariantInterface */
-    private $productVariant;
+    protected $productVariant;
 
     /** @var int */
-    private $quantity;
+    protected $quantity;
 
     /** @var ProductBundleInterface|null */
-    private $productBundle;
+    protected $productBundle;
 
     public function __construct()
     {

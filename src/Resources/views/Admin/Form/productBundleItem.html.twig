@@ -48,7 +48,7 @@
     {% spaceless %}
         <tr data-form-collection="item" data-form-collection-index="{{ index }}">
             <td>
-                {{ form_row(form.productVariant, {'remote_url': path('sylius_admin_ajax_product_variants_by_phrase', {'productCode': '050ff029-ecd2-3930-b415-418838a67ba0'}), 'remote_criteria_type': 'contains', 'remote_criteria_name': 'phrase', 'load_edit_url': path('sylius_admin_ajax_product_variants_by_codes', {'productCode': '050ff029-ecd2-3930-b415-418838a67ba0'})}) }}
+                {{ form_row(form.productVariant, {'remote_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_phrase'), 'remote_criteria_type': 'contains', 'remote_criteria_name': 'phrase', 'load_edit_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_codes')}) }}
             </td>
             <td>
                 {{ form_widget(form.quantity) }}

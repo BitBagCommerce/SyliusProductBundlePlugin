@@ -16,3 +16,31 @@ bitbag_product_bundle_admin_product_create_bundle:
                     form: "@SyliusAdmin/Product/_form.html.twig"
                 route:
                     name: bitbag_product_bundle_admin_product_create_bundle
+
+bitbag_product_bundle_admin_ajax_product_variants_by_phrase:
+    path: /ajax/product-variants/search-by-pharse
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product_variant:indexAction
+        _format: json
+        _sylius:
+            serialization_groups: [Autocomplete]
+            permission: true
+            repository:
+                method: findByPhrase
+                arguments:
+                    phrase: $phrase
+                    locale: expr:service('sylius.context.locale').getLocaleCode()
+
+bitbag_product_bundle_admin_ajax_product_variants_by_codes:
+    path: /ajax/product-variants/by-codes
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product_variant:indexAction
+        _format: json
+        _sylius:
+            serialization_groups: [Autocomplete]
+            permission: true
+            repository:
+                method: findByCodes
+                arguments: [$code]

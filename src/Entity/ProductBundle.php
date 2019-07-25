@@ -14,13 +14,13 @@ class ProductBundle implements ProductBundleInterface
     use TimestampableTrait;
 
     /** @var int */
-    private $id;
+    protected $id;
 
     /** @var ProductInterface */
-    private $product;
+    protected $product;
 
     /** @var ProductBundleItemInterface[]|Collection */
-    private $productBundleItems;
+    protected $productBundleItems;
 
     public function __construct()
     {
