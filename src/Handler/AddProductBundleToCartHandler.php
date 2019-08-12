@@ -43,24 +43,21 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $cart = $addProductBundleToCartCommand->getCart();
         $cartItem = $addProductBundleToCartCommand->getCartItem();
 
-        $this->orderModifier->addToOrder($cart, $cartItem);
-
-        $this->orderEntityManager->persist($cart);
-        $this->orderEntityManager->flush();
-
         /** @var AddProductBundleItemToCartCommand $productBundleItem */
         foreach ($addProductBundleToCartCommand->getProductBundleItems() as $productBundleItem) {
             /** @var ProductBundleOrderItemInterface $productBundleOrderItem */
             $productBundleOrderItem = $this->productBundleOrderItemFactory->createNew();
 
-            $productBundleOrderItem->setOrderItem($cartItem);
             $productBundleOrderItem->setProductVariant($productBundleItem->getProductVariant());
             $productBundleOrderItem->setQuantity($productBundleItem->getQuantity());
             $productBundleOrderItem->setProductBundleItem($productBundleItem->getProductBundleItem());
 
-            $this->productBundleOrderItemEntityManager->persist($productBundleOrderItem);
+            $cartItem->addProductBundleItem($productBundleOrderItem);
         }
 
-        $this->productBundleOrderItemEntityManager->flush();
+        $this->orderModifier->addToOrder($cart, $cartItem);
+
+        $this->orderEntityManager->persist($cart);
+        $this->orderEntityManager->flush();
     }
 }
