@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Controller;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
-use Sylius\Component\Core\Model\OrderItemInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
+use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
+use Sylius\Bundle\ResourceBundle\Controller as Controller;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
 use Sylius\Component\Order\CartActions;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\Bundle\ResourceBundle\Controller as Controller;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class OrderItemController extends BaseOrderItemController
 {
@@ -146,7 +146,7 @@ class OrderItemController extends BaseOrderItemController
         return $this->viewHandler->handle($configuration, $view);
     }
 
-    private function getCartItemErrors(OrderItemInterface $orderItem): ConstraintViolationListInterface
+    protected function getCartItemErrors(OrderItemInterface $orderItem): ConstraintViolationListInterface
     {
         return $this
             ->get('validator')
@@ -154,7 +154,7 @@ class OrderItemController extends BaseOrderItemController
         ;
     }
 
-    private function getAddToCartFormWithErrors(ConstraintViolationListInterface $errors, FormInterface $form): FormInterface
+    protected function getAddToCartFormWithErrors(ConstraintViolationListInterface $errors, FormInterface $form): FormInterface
     {
         foreach ($errors as $error) {
             $form->get('cartItem')->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
@@ -163,7 +163,7 @@ class OrderItemController extends BaseOrderItemController
         return $form;
     }
 
-    private function handleBadAjaxRequestView(RequestConfiguration $configuration, FormInterface $form): Response
+    protected function handleBadAjaxRequestView(RequestConfiguration $configuration, FormInterface $form): Response
     {
         return $this->viewHandler->handle(
             $configuration,
