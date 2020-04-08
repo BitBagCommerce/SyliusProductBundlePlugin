@@ -145,29 +145,4 @@ class OrderItemController extends BaseOrderItemController
 
         return $this->viewHandler->handle($configuration, $view);
     }
-
-    private function getCartItemErrors(OrderItemInterface $orderItem): ConstraintViolationListInterface
-    {
-        return $this
-            ->get('validator')
-            ->validate($orderItem, null, $this->getParameter('sylius.form.type.order_item.validation_groups'))
-        ;
-    }
-
-    private function getAddToCartFormWithErrors(ConstraintViolationListInterface $errors, FormInterface $form): FormInterface
-    {
-        foreach ($errors as $error) {
-            $form->get('cartItem')->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
-        }
-
-        return $form;
-    }
-
-    private function handleBadAjaxRequestView(RequestConfiguration $configuration, FormInterface $form): Response
-    {
-        return $this->viewHandler->handle(
-            $configuration,
-            View::create($form, Response::HTTP_BAD_REQUEST)->setData(['errors' => $form->getErrors(true, true)])
-        );
-    }
 }
