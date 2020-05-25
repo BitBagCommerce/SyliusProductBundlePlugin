@@ -1,20 +1,24 @@
 <h1 align="center">
     <a href="http://bitbag.shop" target="_blank">
-        <img src="doc/logo.jpeg" width="55%" />
+        <img src="doc/logo.png" width="55%" alt="BitBag" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/product-bundle-plugin" title="License" target="_blank">
-        <img src="https://img.shields.io/packagist/l/bitbag/product-bundle-plugin.svg" />
+        <img src="https://img.shields.io/packagist/l/bitbag/product-bundle-plugin.svg" alt="License" />
     </a>
     <a href="https://packagist.org/packages/bitbag/product-bundle-plugin" title="Total Downloads" target="_blank">
-        <img src="https://poser.pugx.org/bitbag/product-bundle-plugin/downloads" />
+        <img src="https://poser.pugx.org/bitbag/product-bundle-plugin/downloads" alt="Total downloads"/>
     </a>
-
+    <p>
+        <a href="https://sylius.com/plugins/" target="_blank">
+            <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85" alt="Approved by Sylius">
+        </a>
+    </p>
 </h1>
 
 ## About us
 
-At BitBag we do believe in open source. However, we are able to do it just beacuse of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us working together, feel free to reach us out. You will find out more about our professional services, technologies and contact details at https://bitbag.io/.
+At BitBag we do believe in open source. However, we are able to do it just because of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us working together, feel free to reach us out. You will find out more about our professional services, technologies and contact details at https://bitbag.io/.
 
 ## Overview
 
@@ -28,7 +32,7 @@ This plugin allows you to create new products by bundling existing products toge
     composer require bitbag/product-bundle-plugin
     ```
  
-1. Add plugin dependencies to your `config/bundles.php` file:
+2. Add plugin dependencies to your `config/bundles.php` file:
     
     ```php
         return [
@@ -38,7 +42,7 @@ This plugin allows you to create new products by bundling existing products toge
         ];
     ```
 
-1. Import required config in your `config/packages/_sylius.yaml` file:
+3. Import required config in your `config/packages/_sylius.yaml` file:
     
     ```yaml
     # config/packages/_sylius.yaml
@@ -49,7 +53,7 @@ This plugin allows you to create new products by bundling existing products toge
         - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
     ```    
 
-1. Import routing in your `config/routes.yaml` file:
+4. Import routing in your `config/routes.yaml` file:
     
     ```yaml
     
@@ -60,38 +64,91 @@ This plugin allows you to create new products by bundling existing products toge
         resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
     ```
 
-1. Extend `Product`(including Doctrine mapping)
+5. Extend `Product`(including Doctrine mapping):
 
     ```php
-    <?php
+    <?php 
+   
+   declare(strict_types=1);
     
-    declare(strict_types=1);
-    
-    namespace App\Entity;
+    namespace App\Entity\Product;
     
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareInterface;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
-    use Doctrine\ORM\Mapping as ORM;
     use Sylius\Component\Core\Model\Product as BaseProduct;
-    
-    /**
-     * @ORM\Entity
-     * @ORM\Table(name="sylius_product")
-     */
+
     class Product extends BaseProduct implements ProductBundlesAwareInterface
     {
-        use ProductBundlesAwareTrait;
-    
-        /**
-         * @OneToOne(targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle", mappedBy="product", cascade={"persist", "remove"})
-         * @var ProductBundleInterface 
-         **/
-        protected $productBundle;
-    
-    
+        use ProductBundlesAwareTrait;  
+    }
     ```
+   
+   Mapping (XML):
+   
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+   >
+       <entity name="App\Entity\Product\Product" table="sylius_product">
+           <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" mapped-by="product">
+               <cascade>
+                   <cascade-all/>
+               </cascade>
+           </one-to-one>
+       </entity>
+   </doctrine-mapping>
+   ```
+   
+6. Extend `OrderItem` (including Doctrine mapping):
 
-1. Add configuration for extended product and product variant repository:
+    ```php
+   <?php
+   
+   declare(strict_types=1);
+   
+   namespace App\Entity\Order;
+   
+   use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
+   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
+   use Sylius\Component\Core\Model\OrderItem as BaseOrderItem;
+   
+   class OrderItem extends BaseOrderItem implements OrderItemInterface
+   {
+   
+       use ProductBundleOrderItemsAwareTrait;
+   
+       public function __construct()
+       {
+           parent::__construct();
+           $this->init();
+       }
+   
+   }
+    ```
+   
+   Mapping (XML):
+   
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+   >
+       <entity name="App\Entity\Order\OrderItem" table="sylius_order_item">
+           <one-to-many field="productBundleOrderItems" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem" mapped-by="orderItem" >
+               <cascade>
+                   <cascade-all/>
+               </cascade>
+           </one-to-many>
+       </entity>
+   </doctrine-mapping>
+   ```
+
+7. Add configuration for extended product, order item and product variant repository:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -103,10 +160,15 @@ This plugin allows you to create new products by bundling existing products toge
             product_variant:
                 classes:
                     repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
+   sylius_order:
+       resources:
+           order_item:
+               classes:
+                   model: App\Entity\Order\OrderItem
     
     ```
 
-1. Add 'Create/Bundle' to product grid configuration:
+8. Add 'Create/Bundle' to product grid configuration:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -125,7 +187,7 @@ This plugin allows you to create new products by bundling existing products toge
     
     ```
     
-1. Finish the installation by updating the database schema and installing assets:
+9. Finish the installation by updating the database schema and installing assets:
 
     ```
     $ bin/console doctrine:migrations:diff
@@ -137,7 +199,7 @@ This plugin allows you to create new products by bundling existing products toge
 $ composer install
 $ cd tests/Application
 $ yarn install
-$ yarn run gulp
+$ yarn build
 $ bin/console assets:install public -e test
 $ bin/console doctrine:schema:create -e test
 $ bin/console server:run 127.0.0.1:8080 -d public -e test

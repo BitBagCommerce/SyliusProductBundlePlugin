@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Entity;
 
-use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Resource\Model\TimestampableInterface;

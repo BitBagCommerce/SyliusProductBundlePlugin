@@ -18,7 +18,7 @@ final class AddProductBundleToCartType extends AbstractType
     {
         $builder
             ->add('cartItem', CartItemType::class, [
-                'product' => $options['product']
+                'product' => $options['product'],
             ])
             ->add('productBundleItems', CollectionType::class, [
                 'entry_type' => AddProductBundleItemToCartType::class,
