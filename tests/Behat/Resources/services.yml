@@ -13,8 +13,3 @@ services:
       - '@sylius.factory.channel_pricing'
       - '@sylius.product_variant_resolver.default'
       - '@sylius.generator.slug'
-      - '@sylius.factory.order'
-      - '@sylius.factory.order_item'
-      - '@sylius.order_item_quantity_modifier'
-      - '@sylius.order_processing.order_processor'
-      - '@sylius.repository.order'

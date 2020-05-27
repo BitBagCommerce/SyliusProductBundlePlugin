@@ -1,95 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Faker\Factory;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Locale\Model\LocaleInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
-use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Product\Generator\SlugGeneratorInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\Component\User\Model\UserInterface;
 
 final class ProductBundleContext implements Context
 {
-
-
-    /**
-     * @var SharedStorageInterface
-     */
+    /** @var SharedStorageInterface */
     private $sharedStorage;
-    /**
-     * @var FactoryInterface
-     */
+
+    /** @var FactoryInterface */
     private $taxonFactory;
-    /**
-     * @var ProductRepositoryInterface
-     */
+
+    /** @var ProductRepositoryInterface */
     private $productRepository;
-    /**
-     * @var FactoryInterface
-     */
+
+    /** @var FactoryInterface */
     private $productTaxonFactory;
-    /**
-     * @var EntityManagerInterface
-     */
+
+    /** @var EntityManagerInterface */
     private $productTaxonManager;
-    /**
-     * @var ProductFactory
-     */
+
+    /** @var ProductFactory */
     private $productFactory;
-    /**
-     * @var FactoryInterface
-     */
+
+    /** @var FactoryInterface */
     private $productBundleItemFactory;
-    /**
-     * @var FactoryInterface
-     */
+
+    /** @var FactoryInterface */
     private $channelPricingFactory;
-    /**
-     * @var ProductVariantResolverInterface
-     */
+
+    /** @var ProductVariantResolverInterface */
     private $productVariantResolver;
-    /**
-     * @var SlugGeneratorInterface
-     */
+
+    /** @var SlugGeneratorInterface */
     private $slugGenerator;
-    /**
-     * @var FactoryInterface
-     */
-    private $orderFactory;
-    /**
-     * @var FactoryInterface
-     */
-    private $orderItemFactory;
-    /**
-     * @var OrderItemQuantityModifierInterface
-     */
-    private $orderItemQuantityModifier;
-    /**
-     * @var OrderProcessorInterface
-     */
-    private $orderProcessor;
-    /**
-     * @var RepositoryInterface
-     */
-    private $orderRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -101,12 +62,7 @@ final class ProductBundleContext implements Context
         FactoryInterface $productBundleItemFactory,
         FactoryInterface $channelPricingFactory,
         ProductVariantResolverInterface $productVariantResolver,
-        SlugGeneratorInterface $slugGenerator,
-        FactoryInterface $orderFactory,
-        FactoryInterface $orderItemFactory,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        OrderProcessorInterface $orderProcessor,
-        RepositoryInterface $orderRepository
+        SlugGeneratorInterface $slugGenerator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->taxonFactory = $taxonFactory;
@@ -118,11 +74,6 @@ final class ProductBundleContext implements Context
         $this->channelPricingFactory = $channelPricingFactory;
         $this->productVariantResolver = $productVariantResolver;
         $this->slugGenerator = $slugGenerator;
-        $this->orderFactory = $orderFactory;
-        $this->orderItemFactory = $orderItemFactory;
-        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
-        $this->orderProcessor = $orderProcessor;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -180,48 +131,12 @@ final class ProductBundleContext implements Context
     }
 
     /**
-     * @When /^I add bundled product to the cart$/
-     */
-    public function iAddBundledProductToTheCart()
-    {
-        /** @var OrderInterface $order */
-        $order = $this->orderFactory->createNew();
-        /** @var ChannelInterface $channel */
-        $channel = $this->sharedStorage->get('channel');
-        /** @var LocaleInterface $locale */
-        $locale = $this->sharedStorage->get('locale');
-
-        /** @var ShopUserInterface $user */
-        $user = $this->sharedStorage->get('user');
-
-        $order->setChannel($channel);
-        $order->setLocaleCode($locale->getCode());
-        $order->setCurrencyCode($channel->getBaseCurrency()->getCode());
-        $order->setCustomer($user->getCustomer());
-
-        $product = $this->sharedStorage->get('product_with_bundle_item');
-
-
-
-    }
-
-
-    /**
-     * @Given /^I should have one item in cart$/
-     */
-    public function iShouldHaveOneItemInCart()
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @param $productBundleName
      * @param $firstProductName
      * @param $secondProductName
      * @param $productBundlePrice
-     * @return \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface
      */
-    private function createProduct(string $productBundleName,  string $firstProductName,  string $secondProductName,  int $productBundlePrice): \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface
+    private function createProduct(string $productBundleName, string $firstProductName, string $secondProductName, int $productBundlePrice): \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface
     {
         /** @var \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface $product */
         $product = $this->productFactory->createWithVariantAndBundle();
