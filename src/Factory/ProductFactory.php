@@ -10,7 +10,7 @@ use Sylius\Component\Product\Factory\ProductFactoryInterface as DecoratedProduct
 use Sylius\Component\Product\Model\ProductInterface as BaseProductInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-class ProductFactory implements ProductFactoryInterface
+final class ProductFactory implements ProductFactoryInterface
 {
     /** @var DecoratedProductFactoryInterface */
     private $decoratedFactory;

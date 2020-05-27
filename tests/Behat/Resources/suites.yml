@@ -1,1 +1,18 @@
 # Put your Behat suites definitions here
+default:
+  suites:
+    bundled_product:
+      contexts:
+        - sylius.behat.context.hook.doctrine_orm
+        - sylius.behat.context.transform.lexical
+        - sylius.behat.context.setup.currency
+        - sylius.behat.context.setup.locale
+        - sylius.behat.context.setup.channel
+        - sylius.behat.context.setup.customer
+        - sylius.behat.context.setup.shop_security
+        - sylius.behat.context.setup.product
+        - sylius.behat.context.transform.product
+        - sylius.behat.context.ui.shop.cart
+        - bitbag_sylius_product_bundle_plugin.behat.context.setup.product_bundle
+      filters:
+        tags: "@bundled_product"

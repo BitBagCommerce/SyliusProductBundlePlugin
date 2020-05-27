@@ -1,0 +1,20 @@
+services:
+  _defaults: { public: true }
+  bitbag_sylius_product_bundle_plugin.behat.context.setup.product_bundle:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup\ProductBundleContext
+    arguments:
+      - '@sylius.behat.shared_storage'
+      - '@sylius.factory.taxon'
+      - '@sylius.repository.product'
+      - '@sylius.factory.product_taxon'
+      - '@sylius.manager.product_taxon'
+      - '@bitbag_sylius_product_bundle.custom_factory.product'
+      - '@bitbag_sylius_product_bundle.factory.product_bundle_item'
+      - '@sylius.factory.channel_pricing'
+      - '@sylius.product_variant_resolver.default'
+      - '@sylius.generator.slug'
+      - '@sylius.factory.order'
+      - '@sylius.factory.order_item'
+      - '@sylius.order_item_quantity_modifier'
+      - '@sylius.order_processing.order_processor'
+      - '@sylius.repository.order'
