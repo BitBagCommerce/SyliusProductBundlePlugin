@@ -4,7 +4,7 @@ Feature: Having a product in store which is a bundle of other products
 
     Background:
       Given the store operates on a single channel in "United States"
-      Given the store has locale en_US
+      And the store has locale en_US
 
     @ui
     Scenario: Adding a product to cart

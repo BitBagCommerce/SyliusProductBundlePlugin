@@ -10,7 +10,6 @@ use Sylius\Component\Core\Model\OrderItem as BaseOrderItem;
 
 class OrderItem extends BaseOrderItem implements OrderItemInterface
 {
-
     use ProductBundleOrderItemsAwareTrait;
 
     public function __construct()

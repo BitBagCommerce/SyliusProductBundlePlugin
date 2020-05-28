@@ -22,7 +22,7 @@ final class AddProductBundleItemToCartType extends AbstractType
         /** @var ProductInterface $product */
         $product = $options['product'];
 
-        if ($product->getProductBundle()->isPackedProduct()) {
+        if (null !== $product->getProductBundle() && $product->getProductBundle()->isPackedProduct()) {
             return;
         }
 

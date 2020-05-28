@@ -6,13 +6,13 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -79,36 +79,20 @@ final class ProductBundleContext implements Context
     /**
      * @Given /^the store has bundled product "([^"]*)" priced at ("[^"]+") which contains "([^"]*)" and "([^"]*)"$/
      */
-    public function theStoreHasBundledProductPricedAtWhichContainsAnd(string $productBundleName, int $productBundlePrice, string $firstProductName, string $secondProductName)
-    {
+    public function theStoreHasBundledProductPricedAtWhichContainsAnd(
+        string $productBundleName,
+        int $productBundlePrice,
+        string $firstProductName,
+        string $secondProductName
+    ): void {
         $product = $this->createProduct($productBundleName, $firstProductName, $secondProductName, $productBundlePrice);
-
         $this->saveProduct($product);
-    }
-
-    /**
-     * @return ChannelPricingInterface
-     */
-    private function createChannelPricingForChannel(int $price, ChannelInterface $channel = null)
-    {
-        /** @var ChannelPricingInterface $channelPricing */
-        $channelPricing = $this->channelPricingFactory->createNew();
-        $channelPricing->setPrice($price);
-        $channelPricing->setChannelCode($channel->getCode());
-
-        return $channelPricing;
-    }
-
-    private function saveProduct(ProductInterface $product)
-    {
-        $this->productRepository->add($product);
-        $this->sharedStorage->set('product_with_bundle_item', $product);
     }
 
     /**
      * @Given /^all store products appear under a main taxonomy$/
      */
-    public function allStoreProductsAppearUnderAMainTaxonomy()
+    public function allStoreProductsAppearUnderAMainTaxonomy(): void
     {
         /** @var TaxonInterface $taxon */
         $taxon = $this->taxonFactory->createNew();
@@ -130,15 +114,29 @@ final class ProductBundleContext implements Context
         $this->productTaxonManager->flush();
     }
 
-    /**
-     * @param $productBundleName
-     * @param $firstProductName
-     * @param $secondProductName
-     * @param $productBundlePrice
-     */
-    private function createProduct(string $productBundleName, string $firstProductName, string $secondProductName, int $productBundlePrice): \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface
+    private function createChannelPricingForChannel(int $price, ChannelInterface $channel = null): ChannelPricingInterface
     {
-        /** @var \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface $product */
+        /** @var ChannelPricingInterface $channelPricing */
+        $channelPricing = $this->channelPricingFactory->createNew();
+        $channelPricing->setPrice($price);
+        $channelPricing->setChannelCode($channel->getCode());
+
+        return $channelPricing;
+    }
+
+    private function saveProduct(ProductInterface $product): void
+    {
+        $this->productRepository->add($product);
+        $this->sharedStorage->set('product_with_bundle_item', $product);
+    }
+
+    private function createProduct(
+        string $productBundleName,
+        string $firstProductName,
+        string $secondProductName,
+        int $productBundlePrice
+    ): ProductInterface {
+        /** @var ProductInterface $product */
         $product = $this->productFactory->createWithVariantAndBundle();
         $channel = $this->sharedStorage->get('channel');
         $product->setCode(StringInflector::nameToUppercaseCode($productBundleName));
@@ -154,9 +152,9 @@ final class ProductBundleContext implements Context
             }
         }
         $productBundle = $product->getProductBundle();
-        /** @var \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface $firstProduct */
+        /** @var ProductInterface $firstProduct */
         $firstProduct = $this->productRepository->findByName($firstProductName, 'en_US');
-        /** @var \BitBag\SyliusProductBundlePlugin\Entity\ProductInterface $secondProduct */
+        /** @var ProductInterface $secondProduct */
         $secondProduct = $this->productRepository->findByName($secondProductName, 'en_US');
         /** @var ProductBundleItemInterface $firstProductBundleItem */
         $firstProductBundleItem = $this->productBundleItemFactory->createNew();
