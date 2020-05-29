@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
+use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Order\Model\OrderInterface;
 
 final class AddProductBundleToCartCommand
 {

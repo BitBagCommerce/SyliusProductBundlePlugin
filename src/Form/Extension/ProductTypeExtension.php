@@ -30,8 +30,8 @@ final class ProductTypeExtension extends AbstractTypeExtension
         ;
     }
 
-    public function getExtendedType(): string
+    public function getExtendedTypes(): array
     {
-        return ProductType::class;
+        return [ProductType::class];
     }
 }

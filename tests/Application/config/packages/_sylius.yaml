@@ -18,6 +18,12 @@ sylius_product:
             classes:
                 repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
 
+sylius_order:
+    resources:
+        order_item:
+            classes:
+                model: Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem
+
 sylius_shop:
     product_grid:
         include_all_descendants: true

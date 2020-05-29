@@ -9,11 +9,11 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantChoiceType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantMatchType;
 use Sylius\Component\Core\Model\Product;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\AbstractType;
 
 final class AddProductBundleItemToCartType extends AbstractType
 {
@@ -22,7 +22,7 @@ final class AddProductBundleItemToCartType extends AbstractType
         /** @var ProductInterface $product */
         $product = $options['product'];
 
-        if ($product->getProductBundle()->isPackedProduct()) {
+        if (null !== $product->getProductBundle() && $product->getProductBundle()->isPackedProduct()) {
             return;
         }
 

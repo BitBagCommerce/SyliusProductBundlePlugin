@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Controller;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
-use Sylius\Component\Core\Model\OrderItemInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\View\View;
-use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
-use Sylius\Component\Order\CartActions;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\RestBundle\View\View;
+use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
+use Sylius\Bundle\ResourceBundle\Controller;
+use Sylius\Component\Order\CartActions;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Sylius\Bundle\ResourceBundle\Controller as Controller;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class OrderItemController extends BaseOrderItemController
 {
@@ -83,51 +81,17 @@ class OrderItemController extends BaseOrderItemController
 
         $this->getQuantityModifier()->modify($orderItem, 1);
 
+        /** @var ProductInterface $product */
+        $product = $orderItem->getProduct();
+
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
-            new AddProductBundleToCartCommand($cart, $orderItem, $orderItem->getProduct()),
+            new AddProductBundleToCartCommand($cart, $orderItem, $product),
             $configuration->getFormOptions()
         );
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
-            $addProductBundleToCartCommand = $form->getData();
-
-            $errors = $this->getCartItemErrors($addProductBundleToCartCommand->getCartItem());
-
-            if (0 < count($errors)) {
-                $form = $this->getAddToCartFormWithErrors($errors, $form);
-
-                return $this->handleBadAjaxRequestView($configuration, $form);
-            }
-
-            $event = $this->eventDispatcher->dispatchPreEvent(CartActions::ADD, $configuration, $orderItem);
-
-            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
-                throw new HttpException($event->getErrorCode(), $event->getMessage());
-            }
-
-            if ($event->isStopped()) {
-                $this->flashHelper->addFlashFromEvent($configuration, $event);
-
-                return $this->redirectHandler->redirectToIndex($configuration, $orderItem);
-            }
-
-            $this->messageBus->dispatch($addProductBundleToCartCommand);
-
-            $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
-
-            if ($resourceControllerEvent->hasResponse()) {
-                return $resourceControllerEvent->getResponse();
-            }
-
-            $this->flashHelper->addSuccessFlash($configuration, CartActions::ADD, $orderItem);
-
-            if ($request->isXmlHttpRequest()) {
-                return $this->viewHandler->handle($configuration, View::create([], Response::HTTP_CREATED));
-            }
-
-            return $this->redirectHandler->redirectToResource($configuration, $orderItem);
+        if ($request->isMethod(Request::METHOD_POST) && $form->handleRequest($request)->isValid()) {
+            return $this->handleForm($form, $configuration, $orderItem, $request);
         }
 
         if (!$configuration->isHtmlRequest()) {
@@ -144,5 +108,44 @@ class OrderItemController extends BaseOrderItemController
         ;
 
         return $this->viewHandler->handle($configuration, $view);
+    }
+
+    private function handleForm(
+        FormInterface $form,
+        Controller\RequestConfiguration $configuration,
+        OrderItemInterface $orderItem,
+        Request $request): ?Response
+    {
+        /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
+        $addProductBundleToCartCommand = $form->getData();
+        $errors = $this->getCartItemErrors($addProductBundleToCartCommand->getCartItem());
+        if (0 < count($errors)) {
+            $form = $this->getAddToCartFormWithErrors($errors, $form);
+
+            return $this->handleBadAjaxRequestView($configuration, $form);
+        }
+        $event = $this->eventDispatcher->dispatchPreEvent(CartActions::ADD, $configuration, $orderItem);
+        if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+            throw new HttpException($event->getErrorCode(), $event->getMessage());
+        }
+        if ($event->isStopped()) {
+            $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+            return $this->redirectHandler->redirectToIndex($configuration, $orderItem);
+        }
+        $this->messageBus->dispatch($addProductBundleToCartCommand);
+        $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
+        if ($resourceControllerEvent->hasResponse()) {
+            return $resourceControllerEvent->getResponse();
+        }
+        $this->flashHelper->addSuccessFlash($configuration, CartActions::ADD, $orderItem);
+
+        if ($request->isXmlHttpRequest()) {
+            $response = $this->viewHandler->handle($configuration, View::create([], Response::HTTP_CREATED));
+        } else {
+            $response = $this->redirectHandler->redirectToResource($configuration, $orderItem);
+        }
+
+        return $response;
     }
 }

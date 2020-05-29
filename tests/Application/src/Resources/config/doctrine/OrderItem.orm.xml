@@ -4,11 +4,11 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
-    <entity name="Tests\BitBag\SyliusProductBundlePlugin\Entity\Product" table="sylius_product">
-        <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" mapped-by="product">
+    <entity name="Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem" table="sylius_order_item">
+        <one-to-many field="productBundleOrderItems" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem" mapped-by="orderItem" >
             <cascade>
                 <cascade-all/>
             </cascade>
-        </one-to-one>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

@@ -7,17 +7,16 @@ namespace BitBag\SyliusProductBundlePlugin\Twig\Extension;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\Templating\EngineInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class ProductBundleOrderItemExtension extends AbstractExtension
+final class ProductBundleOrderItemExtension extends AbstractExtension
 {
     /** @var RepositoryInterface */
     private $productBundleOrderItemRepository;
 
-    /** @var EngineInterface */
+    /** @var Environment */
     private $twig;
 
     public function __construct(RepositoryInterface $productBundleOrderItemRepository, Environment $twig)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
