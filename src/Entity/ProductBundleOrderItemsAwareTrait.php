@@ -8,7 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 trait ProductBundleOrderItemsAwareTrait
 {
-    /** @var ArrayCollection|ProductBundleOrderItemInterface[] */
+    /**
+     * @var ArrayCollection|ProductBundleOrderItemInterface[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem",
+     *     mappedBy="orderItem",
+     *     cascade={"all"}
+     * )
+     */
     protected $productBundleOrderItems;
 
     protected function init(): void
