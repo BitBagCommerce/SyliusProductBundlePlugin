@@ -1,0 +1,8 @@
+bitbag_sylius_product_bundle:
+    ui:
+        bundle: Bundel
+        product_variant: Productvariant
+        quantity: Hoeveelheid
+        delete: Verwijderen
+        products_in_bundle: Producten in bundel
+        is_packed_product: Is gebundeld product
