@@ -30,7 +30,7 @@ final class ProductTypeExtension extends AbstractTypeExtension
         ;
     }
 
-    public function getExtendedTypes(): array
+    public static function getExtendedTypes(): iterable
     {
         return [ProductType::class];
     }
