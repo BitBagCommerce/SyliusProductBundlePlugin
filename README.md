@@ -86,6 +86,8 @@ This plugin allows you to create new products by bundling existing products toge
    Mapping (XML):
    
    ```xml
+   # Resources/config/doctrine/Product.Product.orm.xml
+   
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -132,6 +134,8 @@ This plugin allows you to create new products by bundling existing products toge
    Mapping (XML):
    
    ```xml
+   # Resources/config/doctrine/Order.OrderItem.orm.xml
+
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -152,6 +156,7 @@ This plugin allows you to create new products by bundling existing products toge
 
     ```yaml
     # config/packages/_sylius.yaml
+   
     sylius_product:
         resources:
             product:
@@ -174,19 +179,50 @@ This plugin allows you to create new products by bundling existing products toge
     # config/packages/_sylius.yaml
     
     sylius_grid:
-        grids:
-            sylius_admin_product:
-                actions:
-                    main:
-                        create:
+    grids:
+        sylius_admin_product:
+            actions:
+                main:
+                    create:
+                        type: links
+                        label: sylius.ui.create
+                        options:
+                            class: primary
+                            icon: plus
+                            header:
+                                icon: cube
+                                label: sylius.ui.type
                             links:
+                                simple:
+                                    label: sylius.ui.simple_product
+                                    icon: plus
+                                    route: sylius_admin_product_create_simple
+                                configurable:
+                                    label: sylius.ui.configurable_product
+                                    icon: plus
+                                    route: sylius_admin_product_create
                                 bundle:
                                     label: bitbag_sylius_product_bundle.ui.bundle
                                     icon: plus
                                     route: bitbag_product_bundle_admin_product_create_bundle
     
     ```
+8. If you have full configuration in xml override doctrine config : 
+
+    ```yaml
+    # config/packages/doctrine.yaml   
     
+    mappings:
+            App:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+                prefix: 'App\Entity'
+                alias: App
+   
+    
+    ``` 
+   
 9. Finish the installation by updating the database schema and installing assets:
 
     ```
