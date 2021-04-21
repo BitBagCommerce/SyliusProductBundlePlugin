@@ -70,7 +70,7 @@ class OrderItemController extends BaseOrderItemController
         $this->messageBus = $messageBus;
     }
 
-    public function addProductBundleAction(Request $request): Response
+    public function addProductBundleAction(Request $request): ?Response
     {
         $cart = $this->getCurrentCart();
         $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);

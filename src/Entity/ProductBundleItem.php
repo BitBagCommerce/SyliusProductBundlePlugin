@@ -14,10 +14,10 @@ class ProductBundleItem implements ProductBundleItemInterface
     /** @var int */
     protected $id;
 
-    /** @var ProductVariantInterface */
+    /** @var ProductVariantInterface|null */
     protected $productVariant;
 
-    /** @var int */
+    /** @var int|null */
     protected $quantity;
 
     /** @var ProductBundleInterface|null */

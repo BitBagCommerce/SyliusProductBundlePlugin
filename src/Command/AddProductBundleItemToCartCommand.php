@@ -12,10 +12,10 @@ final class AddProductBundleItemToCartCommand
     /** @var ProductBundleItemInterface */
     private $productBundleItem;
 
-    /** @var ProductVariantInterface */
+    /** @var ProductVariantInterface|null */
     private $productVariant;
 
-    /** @var int */
+    /** @var int|null */
     private $quantity;
 
     public function __construct(ProductBundleItemInterface $productBundleItem)
@@ -30,7 +30,7 @@ final class AddProductBundleItemToCartCommand
         return $this->productBundleItem;
     }
 
-    public function getProductVariant(): ProductVariantInterface
+    public function getProductVariant(): ?ProductVariantInterface
     {
         return $this->productVariant;
     }
@@ -40,7 +40,7 @@ final class AddProductBundleItemToCartCommand
         $this->productVariant = $productVariant;
     }
 
-    public function getQuantity(): int
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }

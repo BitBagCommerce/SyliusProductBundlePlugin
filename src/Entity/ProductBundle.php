@@ -16,7 +16,7 @@ class ProductBundle implements ProductBundleInterface
     /** @var int */
     protected $id;
 
-    /** @var ProductInterface */
+    /** @var ProductInterface|null */
     protected $product;
 
     /** @var ProductBundleItemInterface[]|Collection */
