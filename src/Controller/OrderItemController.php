@@ -7,6 +7,7 @@ namespace BitBag\SyliusProductBundlePlugin\Controller;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
@@ -33,7 +34,7 @@ class OrderItemController extends BaseOrderItemController
         RepositoryInterface $repository,
         FactoryInterface $factory,
         Controller\NewResourceFactoryInterface $newResourceFactory,
-        ObjectManager $manager,
+        EntityManagerInterface $manager,
         Controller\SingleResourceProviderInterface $singleResourceProvider,
         Controller\ResourcesCollectionProviderInterface $resourcesFinder,
         Controller\ResourceFormFactoryInterface $resourceFormFactory,
@@ -98,16 +99,12 @@ class OrderItemController extends BaseOrderItemController
             return $this->handleBadAjaxRequestView($configuration, $form);
         }
 
-        $view = View::create()
-            ->setData([
-                'configuration' => $configuration,
-                $this->metadata->getName() => $orderItem,
-                'form' => $form->createView(),
-            ])
-            ->setTemplate($configuration->getTemplate(CartActions::ADD . '.html'))
-        ;
-
-        return $this->viewHandler->handle($configuration, $view);
+        return $this->render(
+            $configuration->getTemplate(CartActions::ADD . '.html'),
+            ['configuration' => $configuration,
+            $this->metadata->getName() => $orderItem,
+            'form' => $form->createView(),]
+        );
     }
 
     private function handleForm(
