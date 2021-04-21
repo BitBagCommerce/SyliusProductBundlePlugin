@@ -82,7 +82,28 @@ This plugin allows you to create new products by bundling existing products toge
         use ProductBundlesAwareTrait;  
     }
     ```
+
+   Mapping (Annotations) - Override bundle trait, by create new one and use it in Entity/Product/Product . 
+
+   ```php
+   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
+   trait ProductTrait
+   {
+       use ProductBundlesAwareTrait;
    
+       /**
+        * @var ProductBundleInterface
+        * @ORM\OneToOne(
+        *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
+        *     mappedBy="product",
+        *     cascade={"all"},)
+        */
+       protected $productBundle;
+   
+   }
+   ```
+
    Mapping (XML):
    
    ```xml
@@ -130,7 +151,27 @@ This plugin allows you to create new products by bundling existing products toge
    
    }
     ```
+   Mapping (Annotations) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
+
+   ```php
+   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
+   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
    
+   trait OrderItemTrait
+   {
+       use ProductBundlesAwareTrait;
+   
+        /**
+        * @var ProductBundleInterface
+        * @ORM\OneToMany(
+        *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
+        *     mappedBy="orderItem",
+        *     cascade={"all"},)
+        */
+       protected $productBundleOrderItems;
+   
+   }
+   ```
    Mapping (XML):
    
    ```xml
@@ -179,33 +220,33 @@ This plugin allows you to create new products by bundling existing products toge
     # config/packages/_sylius.yaml
     
     sylius_grid:
-    grids:
-        sylius_admin_product:
-            actions:
-                main:
-                    create:
-                        type: links
-                        label: sylius.ui.create
-                        options:
-                            class: primary
-                            icon: plus
-                            header:
-                                icon: cube
-                                label: sylius.ui.type
-                            links:
-                                simple:
-                                    label: sylius.ui.simple_product
-                                    icon: plus
-                                    route: sylius_admin_product_create_simple
-                                configurable:
-                                    label: sylius.ui.configurable_product
-                                    icon: plus
-                                    route: sylius_admin_product_create
-                                bundle:
-                                    label: bitbag_sylius_product_bundle.ui.bundle
-                                    icon: plus
-                                    route: bitbag_product_bundle_admin_product_create_bundle
-    
+       grids:
+           sylius_admin_product:
+               actions:
+                   main:
+                       create:
+                           type: links
+                           label: sylius.ui.create
+                           options:
+                               class: primary
+                               icon: plus
+                               header:
+                                   icon: cube
+                                   label: sylius.ui.type
+                               links:
+                                   simple:
+                                       label: sylius.ui.simple_product
+                                       icon: plus
+                                       route: sylius_admin_product_create_simple
+                                   configurable:
+                                       label: sylius.ui.configurable_product
+                                       icon: plus
+                                       route: sylius_admin_product_create
+                                   bundle:
+                                       label: bitbag_sylius_product_bundle.ui.bundle
+                                       icon: plus
+                                       route: bitbag_product_bundle_admin_product_create_bundle
+       
     ```
 8. If you have full configuration in xml override doctrine config : 
 
