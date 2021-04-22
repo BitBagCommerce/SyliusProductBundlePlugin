@@ -8,7 +8,6 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
 use Sylius\Bundle\ResourceBundle\Controller;
