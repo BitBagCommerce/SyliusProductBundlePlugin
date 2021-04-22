@@ -88,9 +88,11 @@ This plugin allows you to create new products by bundling existing products toge
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
+   use Doctrine\ORM\Mapping as ORM;
+   
    trait ProductTrait
    {
-       use ProductBundlesAwareTrait;
+   use ProductBundlesAwareTrait;
    
        /**
         * @var ProductBundleInterface
@@ -156,13 +158,15 @@ This plugin allows you to create new products by bundling existing products toge
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
+   use Doctrine\Common\Collections\ArrayCollection;
+   use Doctrine\ORM\Mapping as ORM;
    
    trait OrderItemTrait
    {
-       use ProductBundlesAwareTrait;
+   use ProductBundleOrderItemsAwareTrait;
    
-        /**
-        * @var ProductBundleInterface
+       /**
+        * @var ArrayCollection|ProductBundleOrderItemInterface[]
         * @ORM\OneToMany(
         *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
         *     mappedBy="orderItem",
