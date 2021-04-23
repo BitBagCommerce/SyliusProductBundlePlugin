@@ -45,7 +45,8 @@ class OrderItemController extends BaseOrderItemController
         Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
         Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
         MessageBusInterface $messageBus
-    ) {
+    )
+    {
         parent::__construct(
             $metadata,
             $requestConfigurationFactory,
@@ -99,10 +100,11 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $this->render(
-            $configuration->getTemplate(CartActions::ADD . '.html'),
-            ['configuration' => $configuration,
-            $this->metadata->getName() => $orderItem,
-            'form' => $form->createView(),]
+            $configuration->getTemplate(CartActions::ADD . '.html'), [
+                'configuration' => $configuration,
+                $this->metadata->getName() => $orderItem,
+                'form' => $form->createView(),
+            ]
         );
     }
 
