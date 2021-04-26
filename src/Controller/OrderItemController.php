@@ -45,8 +45,7 @@ class OrderItemController extends BaseOrderItemController
         Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
         Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
         MessageBusInterface $messageBus
-    )
-    {
+    ) {
         parent::__construct(
             $metadata,
             $requestConfigurationFactory,
