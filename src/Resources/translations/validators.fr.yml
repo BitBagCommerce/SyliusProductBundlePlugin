@@ -1,0 +1,6 @@
+bitbag_sylius_product_bundle:
+  product_bundle_item:
+    product_variant:
+      not_blank: La variante produit ne peut pas être vide.
+    quantity:
+      not_blank: La quantité ne peut pas être vide.
