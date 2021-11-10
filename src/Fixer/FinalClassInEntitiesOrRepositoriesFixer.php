@@ -10,7 +10,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
-use const T_FINAL;
 
 final class FinalClassInEntitiesOrRepositoriesFixer implements FixerInterface
 {
@@ -27,7 +26,7 @@ final class FinalClassInEntitiesOrRepositoriesFixer implements FixerInterface
     public function fix(SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FINAL)) {
+            if (!$tokens[$index]->isGivenKind(\T_FINAL)) {
                 continue;
             }
             $tokens->clearAt($index);
