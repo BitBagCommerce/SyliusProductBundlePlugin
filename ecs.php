@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Fixer\FinalClassInEntitiesOrRepositoriesFixer;
+use BitBag\SyliusProductBundlePlugin\Fixer\FinalClassInEntitiesOrRepositoriesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
