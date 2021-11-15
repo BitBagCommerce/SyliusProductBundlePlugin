@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Fixer;
+namespace BitBag\SyliusProductBundlePlugin\Fixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -69,10 +69,6 @@ final class FinalClassInEntitiesOrRepositoriesFixer implements FixerInterface
 
     public function supports(SplFileInfo $file): bool
     {
-        if (str_contains($file->getPath(), 'src/Entity') || str_contains($file->getPath(), 'src/Repository')) {
-            return true;
-        }
-
-        return false;
+        return str_contains($file->getPath(), 'src/Entity') || str_contains($file->getPath(), 'src/Repository');
     }
 }
