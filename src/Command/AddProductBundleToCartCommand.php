@@ -29,7 +29,11 @@ final class AddProductBundleToCartCommand
     /** @var AddProductBundleItemToCartCommand[] */
     private $productBundleItems = [];
 
-    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem, ProductInterface $product)
+    public function __construct(
+        OrderInterface $cart,
+        OrderItemInterface $cartItem,
+        ProductInterface $product
+    )
     {
         $this->cart = $cart;
         $this->cartItem = $cartItem;

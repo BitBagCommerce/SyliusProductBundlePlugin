@@ -105,7 +105,8 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $this->render(
-            $configuration->getTemplate(CartActions::ADD . '.html'), [
+            $configuration->getTemplate(CartActions::ADD . '.html'),
+            [
                 'configuration' => $configuration,
                 $this->metadata->getName() => $orderItem,
                 'form' => $form->createView(),
@@ -117,7 +118,8 @@ class OrderItemController extends BaseOrderItemController
         FormInterface $form,
         Controller\RequestConfiguration $configuration,
         OrderItemInterface $orderItem,
-        Request $request): ?Response
+        Request $request
+    ): ?Response
     {
         /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
         $addProductBundleToCartCommand = $form->getData();
