@@ -33,12 +33,11 @@ final class AddProductBundleToCartCommand
         OrderInterface $cart,
         OrderItemInterface $cartItem,
         ProductInterface $product
-    )
-    {
+    ) {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
         $this->product = $product;
-
+        assert(!is_null($product->getProductBundle()));
         /** @var ProductBundleItemInterface $productBundleItem */
         foreach ($product->getProductBundle()->getProductBundleItems() as $productBundleItem) {
             $this->productBundleItems[] = new AddProductBundleItemToCartCommand($productBundleItem);
