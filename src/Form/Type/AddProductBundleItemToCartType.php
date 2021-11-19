@@ -41,11 +41,11 @@ final class AddProductBundleItemToCartType extends AbstractType
 
             /** @var ProductVariantInterface|null $productVariant */
             $productVariant = $data->getProductVariant();
-            assert($productVariant !== null);
+            assert(null !== $productVariant);
 
             /** @var ProductInterface|null $product */
             $product = $productVariant->getProduct();
-            assert($product !== null);
+            assert(null !== $product);
 
             if ($product->hasVariants() && !$product->isSimple()) {
                 $type =
