@@ -166,18 +166,18 @@ final class ProductBundleContext implements Context
         /** @var ProductBundleItemInterface $firstProductBundleItem */
         $firstProductBundleItem = $this->productBundleItemFactory->createNew();
         $firstProductBundleItem->setQuantity(1);
-        /** @var ProductVariantInterface $firstProductVariant */
+        /** @var ProductVariantInterface|null $firstProductVariant */
         $firstProductVariant = $this->productVariantResolver->getVariant($firstProduct[0]);
         $firstProductBundleItem->setProductVariant($firstProductVariant);
         $productBundle->addProductBundleItem($firstProductBundleItem);
         /** @var ProductBundleItemInterface $secondProductBundleItem */
         $secondProductBundleItem = $this->productBundleItemFactory->createNew();
         $secondProductBundleItem->setQuantity(1);
-        /** @var ProductVariantInterface $secondProductVariant */
+        /** @var ProductVariantInterface|null $secondProductVariant */
         $secondProductVariant = $this->productVariantResolver->getVariant($secondProduct[0]);
         $secondProductBundleItem->setProductVariant($secondProductVariant);
         $productBundle->addProductBundleItem($secondProductBundleItem);
-        /** @var ProductVariantInterface $productVariant */
+        /** @var ProductVariantInterface|null $productVariant */
         $productVariant = $this->productVariantResolver->getVariant($product);
         if (null !== $channel) {
             $productVariant->addChannelPricing($this->createChannelPricingForChannel($productBundlePrice, $channel));
