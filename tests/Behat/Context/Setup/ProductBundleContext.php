@@ -177,7 +177,7 @@ final class ProductBundleContext implements Context
         $secondProductVariant = $this->productVariantResolver->getVariant($secondProduct[0]);
         $secondProductBundleItem->setProductVariant($secondProductVariant);
         $productBundle->addProductBundleItem($secondProductBundleItem);
-        /** @var ProductVariantInterface  $productVariant */
+        /** @var ProductVariantInterface $productVariant */
         $productVariant = $this->productVariantResolver->getVariant($product);
         if (null !== $channel) {
             $productVariant->addChannelPricing($this->createChannelPricingForChannel($productBundlePrice, $channel));
