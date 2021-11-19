@@ -83,11 +83,12 @@ jobs:
                 if: matrix.sylius != ''
                 run: composer require "sylius/sylius:${{ matrix.sylius }}" --no-update --no-scripts --no-interaction
                 
-            -   name: Run ECS
-                run: vendor/bin/ecs
             -
                 name: Install PHP dependencies
                 run: composer install --no-interaction
+                
+            -   name: Run ECS
+                run: vendor/bin/ecs
 
             -
                 name: Run PHPStan in /src directory
