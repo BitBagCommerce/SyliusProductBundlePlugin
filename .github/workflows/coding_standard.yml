@@ -82,10 +82,13 @@ jobs:
                 name: Restrict Sylius version
                 if: matrix.sylius != ''
                 run: composer require "sylius/sylius:${{ matrix.sylius }}" --no-update --no-scripts --no-interaction
-
+                
             -
                 name: Install PHP dependencies
                 run: composer install --no-interaction
+                
+            -   name: Run ECS
+                run: vendor/bin/ecs
 
             -
                 name: Run PHPStan in /src directory
@@ -95,5 +98,4 @@ jobs:
                 name: Run PHPStan in /test directory
                 run: ./vendor/bin/phpstan analyze --configuration=vendor/bitbag/coding-standard/phpstan.neon tests --level=5
 
-            -   name: Run ECS
-                run: vendor/bin/ecs
+           

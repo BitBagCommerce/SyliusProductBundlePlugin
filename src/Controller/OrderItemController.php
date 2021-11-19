@@ -89,7 +89,7 @@ class OrderItemController extends BaseOrderItemController
 
         /** @var ProductInterface $product */
         $product = $orderItem->getProduct();
-        assert(!is_null($configuration->getFormType()));
+        assert(null !== $configuration->getFormType());
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
             new AddProductBundleToCartCommand($cart, $orderItem, $product),
@@ -145,7 +145,7 @@ class OrderItemController extends BaseOrderItemController
         $this->flashHelper->addSuccessFlash($configuration, CartActions::ADD, $orderItem);
 
         if ($request->isXmlHttpRequest()) {
-            assert(!is_null($this->viewHandler));
+            assert(null !== $this->viewHandler);
             $response = $this->viewHandler->handle($configuration, View::create([], Response::HTTP_CREATED));
         } else {
             $response = $this->redirectHandler->redirectToResource($configuration, $orderItem);
