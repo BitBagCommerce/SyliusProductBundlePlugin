@@ -89,7 +89,7 @@ class OrderItemController extends BaseOrderItemController
 
         /** @var ProductInterface $product */
         $product = $orderItem->getProduct();
-
+        assert(null !== $configuration->getFormType());
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
             new AddProductBundleToCartCommand($cart, $orderItem, $product),
@@ -105,7 +105,8 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $this->render(
-            $configuration->getTemplate(CartActions::ADD . '.html'), [
+            $configuration->getTemplate(CartActions::ADD . '.html'),
+            [
                 'configuration' => $configuration,
                 $this->metadata->getName() => $orderItem,
                 'form' => $form->createView(),
@@ -117,8 +118,8 @@ class OrderItemController extends BaseOrderItemController
         FormInterface $form,
         Controller\RequestConfiguration $configuration,
         OrderItemInterface $orderItem,
-        Request $request): ?Response
-    {
+        Request $request
+    ): ?Response {
         /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
         $addProductBundleToCartCommand = $form->getData();
         $errors = $this->getCartItemErrors($addProductBundleToCartCommand->getCartItem());
@@ -144,6 +145,7 @@ class OrderItemController extends BaseOrderItemController
         $this->flashHelper->addSuccessFlash($configuration, CartActions::ADD, $orderItem);
 
         if ($request->isXmlHttpRequest()) {
+            assert(null !== $this->viewHandler);
             $response = $this->viewHandler->handle($configuration, View::create([], Response::HTTP_CREATED));
         } else {
             $response = $this->redirectHandler->redirectToResource($configuration, $orderItem);

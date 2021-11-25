@@ -20,6 +20,7 @@ use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Generator\SlugGeneratorInterface;
@@ -165,15 +166,18 @@ final class ProductBundleContext implements Context
         /** @var ProductBundleItemInterface $firstProductBundleItem */
         $firstProductBundleItem = $this->productBundleItemFactory->createNew();
         $firstProductBundleItem->setQuantity(1);
+        /** @var ProductVariantInterface|null $firstProductVariant */
         $firstProductVariant = $this->productVariantResolver->getVariant($firstProduct[0]);
         $firstProductBundleItem->setProductVariant($firstProductVariant);
         $productBundle->addProductBundleItem($firstProductBundleItem);
         /** @var ProductBundleItemInterface $secondProductBundleItem */
         $secondProductBundleItem = $this->productBundleItemFactory->createNew();
         $secondProductBundleItem->setQuantity(1);
+        /** @var ProductVariantInterface|null $secondProductVariant */
         $secondProductVariant = $this->productVariantResolver->getVariant($secondProduct[0]);
         $secondProductBundleItem->setProductVariant($secondProductVariant);
         $productBundle->addProductBundleItem($secondProductBundleItem);
+        /** @var ProductVariantInterface|null $productVariant */
         $productVariant = $this->productVariantResolver->getVariant($product);
         if (null !== $channel) {
             $productVariant->addChannelPricing($this->createChannelPricingForChannel($productBundlePrice, $channel));

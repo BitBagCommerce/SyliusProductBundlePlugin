@@ -15,6 +15,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantChoiceType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantMatchType;
 use Sylius\Component\Core\Model\Product;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -38,8 +39,13 @@ final class AddProductBundleItemToCartType extends AbstractType
 
             $form = $event->getForm();
 
-            /** @var ProductInterface $product */
-            $product = $data->getProductVariant()->getProduct();
+            /** @var ProductVariantInterface|null $productVariant */
+            $productVariant = $data->getProductVariant();
+            assert(null !== $productVariant);
+
+            /** @var ProductInterface|null $product */
+            $product = $productVariant->getProduct();
+            assert(null !== $product);
 
             if ($product->hasVariants() && !$product->isSimple()) {
                 $type =
