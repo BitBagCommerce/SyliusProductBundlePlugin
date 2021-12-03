@@ -9,3 +9,5 @@
 
 /behat.yml
 /phpspec.yml
+/phpunit.xml.dist
+/.phpunit.result.cache
