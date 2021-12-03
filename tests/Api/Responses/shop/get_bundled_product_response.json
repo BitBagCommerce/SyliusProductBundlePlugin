@@ -1,0 +1,64 @@
+{
+  "@context": "\/api\/v2\/contexts\/Product",
+  "@id": "@string@",
+  "@type": "Product",
+  "productTaxons": "@*@",
+  "mainTaxon": "@string@||@null@",
+  "reviews": "@*@",
+  "averageRating": "@integer@",
+  "images": "@*@",
+  "id": "@integer@",
+  "code": "@string@",
+  "variants": "@*@",
+  "options": "@*@",
+  "createdAt": "@string@",
+  "updatedAt": "@string@",
+  "translations": "@json@",
+  "productBundle": {
+    "@id": "@string@",
+    "@type": "ProductBundle",
+    "productBundleItems": [
+      {
+        "@type": "ProductBundleItem",
+        "@id": "@string@",
+        "productVariant": {
+          "@id": "/api/v2/shop/product-variants/JOHNNY_WALKER_BLACK",
+          "@type": "ProductVariant",
+          "code": "JOHNNY_WALKER_BLACK",
+          "optionValues": "@*@",
+          "translations": {
+            "en_US": {
+              "@id": "/api/v2/shop/product-variant-translation/@integer@",
+              "@type": "ProductVariantTranslation",
+              "name": "Johnny Walker Black"
+            }
+          },
+          "price": "@integer@",
+          "inStock": "@boolean@"
+        }
+      },
+      {
+        "@type": "ProductBundleItem",
+        "@id": "@string@",
+        "productVariant": {
+          "@id": "/api/v2/shop/product-variants/JACK_DANIELS_GENTLEMAN",
+          "@type": "ProductVariant",
+          "code": "JACK_DANIELS_GENTLEMAN",
+          "optionValues": "@*@",
+          "translations": {
+            "en_US": {
+              "@id": "/api/v2/shop/product-variant-translation/@integer@",
+              "@type": "ProductVariantTranslation",
+              "name": "Jack Daniel's Gentleman Jack"
+            }
+          },
+          "price": "@integer@",
+          "inStock": "@boolean@"
+        }
+      }
+    ]
+  },
+  "isBundle": true,
+  "description": "@string@",
+  "defaultVariant": "@string@"
+}

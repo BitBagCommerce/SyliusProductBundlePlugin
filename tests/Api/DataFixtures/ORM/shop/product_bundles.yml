@@ -1,0 +1,124 @@
+Sylius\Component\Core\Model\ProductTranslation:
+    productTranslation1:
+        locale: "en_US"
+        name: "Johnny Walker Black"
+        slug: "johnny-walker-black"
+        description: <paragraph(2)>
+        translatable: "@product1"
+    productTranslation2:
+        locale: "en_US"
+        name: "Jack Daniel's Gentleman Jack"
+        slug: "jack-daniels-gentleman-jack"
+        description: <paragraph(2)>
+        translatable: "@product2"
+    productTranslation3:
+        locale: "en_US"
+        name: "Whiskey Double Pack"
+        slug: "whiskey-double-pack"
+        description: <paragraph(2)>
+        translatable: "@product3"
+
+Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
+    product1:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "JOHNNY_WALKER_BLACK"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation1"
+    product2:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "JACK_DANIELS_GENTLEMAN"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation2"
+    product3:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "WHISKEY_DOUBLE_PACK"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation3"
+
+Sylius\Component\Product\Model\ProductVariantTranslation:
+    productVariantTranslation1:
+        name: "Johnny Walker Black"
+        locale: en_US
+        translatable: "@productVariant1"
+    productVariantTranslation2:
+        name: "Jack Daniel's Gentleman Jack"
+        locale: en_US
+        translatable: "@productVariant2"
+    productVariantTranslation3:
+        name: "Whiskey Double Pack"
+        locale: en_US
+        translatable: "@productVariant3"
+
+Sylius\Component\Core\Model\ChannelPricing:
+    channelPricing1:
+        productVariant: "@productVariant1"
+        price: 1000
+        originalPrice: 1000
+        channelCode: "WEB"
+    channelPricing2:
+        productVariant: "@productVariant2"
+        price: 1000
+        originalPrice: 1000
+        channelCode: "WEB"
+    channelPricing3:
+        productVariant: "@productVariant3"
+        price: 1800
+        originalPrice: 1800
+        channelCode: "WEB"
+
+Sylius\Component\Core\Model\ProductVariant:
+    productVariant1:
+        code: "JOHNNY_WALKER_BLACK"
+        version: 1
+        product: "@product1"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 1
+        translations:
+            - "@productVariantTranslation1"
+    productVariant2:
+        code: "JACK_DANIELS_GENTLEMAN"
+        version: 1
+        product: "@product2"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 2
+        translations:
+            - "@productVariantTranslation2"
+    productVariant3:
+        code: "WHISKEY_DOUBLE_PACK"
+        version: 1
+        product: "@product3"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 3
+        translations:
+            - "@productVariantTranslation3"
+
+
+BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:
+    productBundleItem1:
+        productVariant: "@productVariant1"
+        quantity: 1
+        productBundle: "@productBundle1"
+    productBundleItem2:
+        productVariant: "@productVariant2"
+        quantity: 1
+        productBundle: "@productBundle1"
+
+BitBag\SyliusProductBundlePlugin\Entity\ProductBundle:
+    productBundle1:
+        product: "@product3"
+        productBundleItems:
+            - "@productBundleItem1"
+            - "@productBundleItem2"
+        isPackedProduct: true
