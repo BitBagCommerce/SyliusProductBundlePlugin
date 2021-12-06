@@ -11,7 +11,7 @@
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
         </attribute>
-        <attribute name="packedProduct" serialized-name="isPackedProduct">
+        <attribute name="packedProduct" serialized-name="isPacked">
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
         </attribute>
