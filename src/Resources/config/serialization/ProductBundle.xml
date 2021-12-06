@@ -4,16 +4,28 @@
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
     <class name="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle">
+        <attribute name="id">
+            <group>admin:product_bundle:read</group>
+        </attribute>
         <attribute name="product">
             <group>shop:product_bundle:read</group>
+            <group>admin:product_bundle:read</group>
         </attribute>
         <attribute name="productBundleItems" serialized-name="items">
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
+            <group>admin:product_bundle:read</group>
         </attribute>
         <attribute name="packedProduct" serialized-name="isPacked">
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
+            <group>admin:product_bundle:read</group>
+        </attribute>
+        <attribute name="createdAt">
+            <group>admin:product_bundle:read</group>
+        </attribute>
+        <attribute name="updatedAt">
+            <group>admin:product_bundle:read</group>
         </attribute>
     </class>
 </serializer>

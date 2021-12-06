@@ -5,9 +5,14 @@
 >
     <resource class="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle" shortName="ProductBundle">
         <collectionOperations>
-            <collectionOperation name="shop_get_product-bundles">
+            <collectionOperation name="admin_get_product-bundles">
                 <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/product-bundles</attribute>
+                <attribute name="path">/admin/product-bundles</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>admin:product_bundle:read</attribute>
+                    </attribute>
+                </attribute>
             </collectionOperation>
         </collectionOperations>
         <itemOperations>

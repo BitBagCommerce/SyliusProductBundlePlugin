@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem" shortName="ProductBundleItem">
+        <collectionOperations>
+        </collectionOperations>
+        <itemOperations>
+            <itemOperation name="shop_get_product_bundle_item">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/product-bundle-items/{id}</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:product_bundle_items:read</attribute>
+                    </attribute>
+                </attribute>
+            </itemOperation>
+        </itemOperations>
+    </resource>
+</resources>
