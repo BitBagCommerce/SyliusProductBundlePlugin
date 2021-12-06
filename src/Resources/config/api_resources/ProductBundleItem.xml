@@ -3,7 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem" shortName="ProductBundleItem">
+    <resource class="%bitbag_sylius_product_bundle.model.product_bundle_item.class%" shortName="ProductBundleItem">
         <collectionOperations>
         </collectionOperations>
         <itemOperations>
