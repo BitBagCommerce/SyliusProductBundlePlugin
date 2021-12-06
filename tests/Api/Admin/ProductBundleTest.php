@@ -10,17 +10,19 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Admin;
 
-use ApiTestCase\JsonApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusProductBundlePlugin\Api\AdminJsonApiTestCase;
 
-final class ProductBundleTest extends JsonApiTestCase
+final class ProductBundleTest extends AdminJsonApiTestCase
 {
-    public const CONTENT_TYPE_HEADER = ['CONTENT_TYPE' => 'application/ld+json', 'HTTP_ACCEPT' => 'application/ld+json'];
     private $fixtures = [];
+    private $headers = [];
 
     protected function setUp(): void
     {
-        $this->fixtures = $this->loadFixturesFromFiles(['general/channels.yml', 'shop/product_bundles.yml']);
+        $this->fixtures = $this->loadFixturesFromFiles(['general/channels.yml', 'general/authentication.yml', 'shop/product_bundles.yml']);
+        $authToken = $this->getAuthToken('api@example.com', 'sylius');
+        $this->headers = $this->getHeaders($authToken);
     }
 
     /** @test */
@@ -31,7 +33,7 @@ final class ProductBundleTest extends JsonApiTestCase
             '/api/v2/admin/product-bundles',
             [],
             [],
-            self::CONTENT_TYPE_HEADER
+            $this->headers
         );
         $response = $this->client->getResponse();
 
@@ -48,7 +50,7 @@ final class ProductBundleTest extends JsonApiTestCase
             '/api/v2/admin/product-bundles/' . $productBundleId,
             [],
             [],
-            self::CONTENT_TYPE_HEADER
+            $this->headers
         );
         $response = $this->client->getResponse();
 

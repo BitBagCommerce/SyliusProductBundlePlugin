@@ -4,10 +4,10 @@
   "@type": "hydra:Collection",
   "hydra:member": [
     {
-      "@id": "\/api\/v2\/shop\/product-bundles\/@integer@",
+      "@id": "\/api\/v2\/admin\/product-bundles\/@integer@",
       "@type": "ProductBundle",
       "id": "@integer@",
-      "product": "\/api\/v2\/shop\/products\/WHISKEY_DOUBLE_PACK",
+      "product": "\/api\/v2\/admin\/products\/WHISKEY_DOUBLE_PACK",
       "items": [
         "\/api\/v2\/shop\/product-bundle-items\/@integer@",
         "\/api\/v2\/shop\/product-bundle-items\/@integer@"
