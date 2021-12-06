@@ -1,6 +1,6 @@
 {
   "@context": "\/api\/v2\/contexts\/Product",
-  "@id": "@string@",
+  "@id": "\/api\/v2\/shop\/products\/WHISKEY_DOUBLE_PACK",
   "@type": "Product",
   "productTaxons": "@*@",
   "mainTaxon": "@string@||@null@",
@@ -8,21 +8,21 @@
   "averageRating": "@integer@",
   "images": "@*@",
   "id": "@integer@",
-  "code": "@string@",
+  "code": "WHISKEY_DOUBLE_PACK",
   "variants": "@*@",
   "options": "@*@",
   "createdAt": "@string@",
   "updatedAt": "@string@",
   "translations": "@json@",
-  "productBundle": {
-    "@id": "@string@",
+  "bundle": {
+    "@id": "\/api\/v2\/shop\/product-bundles\/@integer@",
     "@type": "ProductBundle",
-    "productBundleItems": [
+    "items": [
       {
         "@type": "ProductBundleItem",
         "@id": "@string@",
         "productVariant": {
-          "@id": "/api/v2/shop/product-variants/JOHNNY_WALKER_BLACK",
+          "@id": "\/api\/v2\/shop\/product-variants\/JOHNNY_WALKER_BLACK",
           "@type": "ProductVariant",
           "code": "JOHNNY_WALKER_BLACK",
           "optionValues": "@*@",
@@ -33,15 +33,16 @@
               "name": "Johnny Walker Black"
             }
           },
-          "price": "@integer@",
-          "inStock": "@boolean@"
-        }
+          "price": 1000,
+          "inStock": true
+        },
+        "quantity": 1
       },
       {
         "@type": "ProductBundleItem",
         "@id": "@string@",
         "productVariant": {
-          "@id": "/api/v2/shop/product-variants/JACK_DANIELS_GENTLEMAN",
+          "@id": "\/api\/v2\/shop\/product-variants\/JACK_DANIELS_GENTLEMAN",
           "@type": "ProductVariant",
           "code": "JACK_DANIELS_GENTLEMAN",
           "optionValues": "@*@",
@@ -52,11 +53,13 @@
               "name": "Jack Daniel's Gentleman Jack"
             }
           },
-          "price": "@integer@",
-          "inStock": "@boolean@"
-        }
+          "price": 1000,
+          "inStock": true
+        },
+        "quantity": 1
       }
-    ]
+    ],
+    "isPacked": true
   },
   "isBundle": true,
   "description": "@string@",
