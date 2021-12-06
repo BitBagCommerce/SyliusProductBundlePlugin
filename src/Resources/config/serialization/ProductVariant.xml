@@ -9,7 +9,6 @@
             <group>shop:product_bundle:read</group>
         </attribute>
         <attribute name="product">
-            <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
         </attribute>
         <attribute name="optionValues">
