@@ -32,6 +32,21 @@ final class ProductTest extends JsonApiTestCase
     }
 
     /** @test */
+    public function it_gets_not_bundled_product(): void
+    {
+        $this->client->request(
+            'GET',
+            '/api/v2/shop/products/JOHNNY_WALKER_BLACK',
+            [],
+            [],
+            self::CONTENT_TYPE_HEADER
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponse($response, 'shop/get_not_bundled_product_response', Response::HTTP_OK);
+    }
+
+    /** @test */
     public function it_gets_product_bundle_as_a_subresource(): void
     {
         $this->client->request(
@@ -44,5 +59,20 @@ final class ProductTest extends JsonApiTestCase
         $response = $this->client->getResponse();
 
         $this->assertResponse($response, 'shop/get_product_bundle_response', Response::HTTP_OK);
+    }
+
+    /** @test */
+    public function it_gets_product_bundle_as_a_subresource_on_a_non_bundled_product(): void
+    {
+        $this->client->request(
+            'GET',
+            '/api/v2/shop/products/JOHNNY_WALKER_BLACK/bundle',
+            [],
+            [],
+            self::CONTENT_TYPE_HEADER
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponseCode($response, 404);
     }
 }

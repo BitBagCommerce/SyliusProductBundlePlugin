@@ -1,0 +1,21 @@
+{
+  "@context": "\/api\/v2\/contexts\/Product",
+  "@id": "\/api\/v2\/shop\/products\/JOHNNY_WALKER_BLACK",
+  "@type": "Product",
+  "productTaxons": "@*@",
+  "mainTaxon": "@string@||@null@",
+  "reviews": "@*@",
+  "averageRating": "@integer@",
+  "images": "@*@",
+  "id": "@integer@",
+  "code": "JOHNNY_WALKER_BLACK",
+  "variants": "@*@",
+  "options": "@*@",
+  "createdAt": "@string@",
+  "updatedAt": "@string@",
+  "translations": "@json@",
+  "bundle": "@null@",
+  "isBundle": false,
+  "description": "@string@",
+  "defaultVariant": "@string@"
+}
