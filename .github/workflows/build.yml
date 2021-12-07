@@ -173,10 +173,13 @@ jobs:
         name: Run PHPSpec
         run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
-
       -
         name: Run Behat
         run: vendor/bin/behat --colors --strict -vvv --no-interaction || vendor/bin/behat --colors --strict -vvv --no-interaction --rerun
+
+      -
+        name: Run PHPUnit
+        run: ./vendor/bin/phpunit -c ./phpunit.xml.dist
 
       -
         name: Upload Behat logs
