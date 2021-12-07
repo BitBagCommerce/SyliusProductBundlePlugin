@@ -1,2 +1,5 @@
+imports:
+    - { resource: "@SyliusApiBundle/Resources/config/app/config.yml" }
+
 sylius_api:
     enabled: true
