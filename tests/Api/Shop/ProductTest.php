@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Shop;
 
-use ApiTestCase\JsonApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusProductBundlePlugin\Api\JsonApiTestCase;
 
 final class ProductTest extends JsonApiTestCase
 {

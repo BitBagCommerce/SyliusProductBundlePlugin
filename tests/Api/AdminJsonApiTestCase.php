@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api;
 
-use ApiTestCase\JsonApiTestCase;
-
 abstract class AdminJsonApiTestCase extends JsonApiTestCase
 {
     public function getAuthToken(string $email, string $password): string
