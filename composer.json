@@ -42,6 +42,9 @@
         "bitbag/coding-standard": "^1.0",
         "lchrusciel/api-test-case": "^5.1"
     },
+    "conflict": {
+        "doctrine/orm": "^2.10.0"
+    },
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusProductBundlePlugin\\": "src/"
