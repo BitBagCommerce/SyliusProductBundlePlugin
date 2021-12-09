@@ -14,6 +14,14 @@
                     </attribute>
                 </attribute>
             </collectionOperation>
+
+            <collectionOperation name="admin_post_product-bundle">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/admin/product-bundles</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">admin:product_bundle:create</attribute>
+                </attribute>
+            </collectionOperation>
         </collectionOperations>
         <itemOperations>
             <itemOperation name="admin_get_product-bundle">

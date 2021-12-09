@@ -56,4 +56,33 @@ final class ProductBundleTest extends AdminJsonApiTestCase
 
         $this->assertResponse($response, 'admin/get_product_bundle_response', Response::HTTP_OK);
     }
+
+    public function it_creates_product_bundle(): void
+    {
+        $johnnyWalkerBlack = new \stdClass();
+        $johnnyWalkerBlack->productVariant = '/api/v2/admin/product-variants/JOHNNY_WALKER_BLACK';
+        $johnnyWalkerBlack->quantity = 1;
+        $johnnyWalkerBlue = new \stdClass();
+        $johnnyWalkerBlue->productVariant = '/api/v2/admin/product-variants/JOHNNY_WALKER_BLUE';
+        $johnnyWalkerBlue->quantity = 1;
+
+        $this->client->request(
+            'POST',
+            '/api/v2/admin/product-bundles',
+            [],
+            [],
+            $this->headers,
+            json_encode([
+                'product' => '/api/v2/admin/products/JOHNNY_WALKER_BUNDLE',
+                'items' => [
+                    $johnnyWalkerBlack,
+                    $johnnyWalkerBlue,
+                ],
+                'isPacked' => true,
+            ], JSON_THROW_ON_ERROR)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponse($response, 'admin/post_product_bundle_response', Response::HTTP_CREATED);
+    }
 }

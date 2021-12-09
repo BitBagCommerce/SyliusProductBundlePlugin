@@ -17,6 +17,18 @@ Sylius\Component\Core\Model\ProductTranslation:
         slug: "whiskey-double-pack"
         description: <paragraph(2)>
         translatable: "@product3"
+    productTranslation4:
+        locale: "en_US"
+        name: "Johnny Walker Blue"
+        slug: "johnny-walker-blue"
+        description: <paragraph(2)>
+        translatable: "@product4"
+    productTranslation5:
+        locale: "en_US"
+        name: "Johnny Walker Bundle"
+        slug: "johnny-walker-bundle"
+        description: <paragraph(2)>
+        translatable: "@product5"
 
 Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
     product1:
@@ -43,6 +55,22 @@ Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
             - "@channel_web"
         translations:
             - "@productTranslation3"
+    product4:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "JOHNNY_WALKER_BLUE"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation4"
+    product5:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "JOHNNY_WALKER_BUNDLE"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation5"
 
 Sylius\Component\Product\Model\ProductVariantTranslation:
     productVariantTranslation1:
@@ -57,6 +85,14 @@ Sylius\Component\Product\Model\ProductVariantTranslation:
         name: "Whiskey Double Pack"
         locale: en_US
         translatable: "@productVariant3"
+    productVariantTranslation4:
+        name: "Johnny Walker Blue"
+        locale: en_US
+        translatable: "@productVariant4"
+    productVariantTranslation5:
+        name: "Johnny Walker Bundle"
+        locale: en_US
+        translatable: "@productVariant5"
 
 Sylius\Component\Core\Model\ChannelPricing:
     channelPricing1:
@@ -73,6 +109,16 @@ Sylius\Component\Core\Model\ChannelPricing:
         productVariant: "@productVariant3"
         price: 1800
         originalPrice: 1800
+        channelCode: "WEB"
+    channelPricing4:
+        productVariant: "@productVariant4"
+        price: 2000
+        originalPrice: 2000
+        channelCode: "WEB"
+    channelPricing5:
+        productVariant: "@productVariant5"
+        price: 2500
+        originalPrice: 2500
         channelCode: "WEB"
 
 Sylius\Component\Core\Model\ProductVariant:
@@ -103,6 +149,24 @@ Sylius\Component\Core\Model\ProductVariant:
         position: 3
         translations:
             - "@productVariantTranslation3"
+    productVariant4:
+        code: "JOHNNY_WALKER_BLUE"
+        version: 1
+        product: "@product4"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 4
+        translations:
+            - "@productVariantTranslation4"
+    productVariant5:
+        code: "JOHNNY_WALKER_BUNDLE"
+        version: 1
+        product: "@product5"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 5
+        translations:
+            - "@productVariantTranslation5"
 
 
 BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:
