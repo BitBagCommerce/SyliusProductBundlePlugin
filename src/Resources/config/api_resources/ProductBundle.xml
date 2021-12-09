@@ -42,6 +42,10 @@
                     </attribute>
                 </attribute>
             </itemOperation>
+            <itemOperation name="admin_delete_product-bundle">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="path">/admin/product-bundles/{id}</attribute>
+            </itemOperation>
             <itemOperation name="shop_get_product-bundle">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/product-bundles/{id}</attribute>

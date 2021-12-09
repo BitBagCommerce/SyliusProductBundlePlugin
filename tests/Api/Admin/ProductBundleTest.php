@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusProductBundlePlugin\Api\AdminJsonApiTestCase;
 
@@ -142,5 +143,33 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         $productBundleItem->quantity = $quantity;
 
         return $productBundleItem;
+    }
+
+    /** @test */
+    public function it_deletes_product_bundle(): void
+    {
+        $productBundleId = $this->fixtures['productBundle1']->getId();
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            '/api/v2/admin/product-bundles/' . $productBundleId,
+            [],
+            [],
+            $this->headers
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponseCode($response, Response::HTTP_NO_CONTENT);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            '/api/v2/admin/product-bundles/' . $productBundleId,
+            [],
+            [],
+            $this->headers
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponseCode($response, Response::HTTP_NOT_FOUND);
     }
 }
