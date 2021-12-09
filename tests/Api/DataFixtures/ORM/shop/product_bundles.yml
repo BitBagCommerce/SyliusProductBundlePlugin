@@ -29,6 +29,12 @@ Sylius\Component\Core\Model\ProductTranslation:
         slug: "johnny-walker-bundle"
         description: <paragraph(2)>
         translatable: "@product5"
+    productTranslation6:
+        locale: "en_US"
+        name: "Johnny Walker Gold"
+        slug: "johnny-walker-gold"
+        description: <paragraph(2)>
+        translatable: "@product6"
 
 Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
     product1:
@@ -71,6 +77,14 @@ Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
             - "@channel_web"
         translations:
             - "@productTranslation5"
+    product6:
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        code: "JOHNNY_WALKER_GOLD"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation6"
 
 Sylius\Component\Product\Model\ProductVariantTranslation:
     productVariantTranslation1:
@@ -93,6 +107,10 @@ Sylius\Component\Product\Model\ProductVariantTranslation:
         name: "Johnny Walker Bundle"
         locale: en_US
         translatable: "@productVariant5"
+    productVariantTranslation6:
+        name: "Johnny Walker Gold"
+        locale: en_US
+        translatable: "@productVariant6"
 
 Sylius\Component\Core\Model\ChannelPricing:
     channelPricing1:
@@ -119,6 +137,11 @@ Sylius\Component\Core\Model\ChannelPricing:
         productVariant: "@productVariant5"
         price: 2500
         originalPrice: 2500
+        channelCode: "WEB"
+    channelPricing6:
+        productVariant: "@productVariant6"
+        price: 1000
+        originalPrice: 1000
         channelCode: "WEB"
 
 Sylius\Component\Core\Model\ProductVariant:
@@ -167,6 +190,15 @@ Sylius\Component\Core\Model\ProductVariant:
         position: 5
         translations:
             - "@productVariantTranslation5"
+    productVariant6:
+        code: "JOHNNY_WALKER_GOLD"
+        version: 1
+        product: "@product6"
+        fallbackLocale: en_US
+        currentLocale: en_US
+        position: 6
+        translations:
+            - "@productVariantTranslation6"
 
 
 BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:

@@ -11,15 +11,18 @@
             <group>shop:product_bundle:read</group>
             <group>admin:product_bundle:read</group>
             <group>admin:product_bundle:create</group>
+            <group>admin:product_bundle:update</group>
         </attribute>
         <attribute name="productBundleItems" serialized-name="items">
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
             <group>admin:product_bundle:read</group>
             <group>admin:product_bundle:create</group>
+            <group>admin:product_bundle:update</group>
         </attribute>
         <attribute name="isPackedProduct" serialized-name="isPacked">
             <group>admin:product_bundle:create</group>
+            <group>admin:product_bundle:update</group>
         </attribute>
         <attribute name="packedProduct" serialized-name="isPacked">
             <group>shop:product:read</group>

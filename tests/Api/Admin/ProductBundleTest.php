@@ -57,6 +57,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         $this->assertResponse($response, 'admin/get_product_bundle_response', Response::HTTP_OK);
     }
 
+    /** @test */
     public function it_creates_product_bundle(): void
     {
         $johnnyWalkerBlack = new \stdClass();
@@ -84,5 +85,62 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         $response = $this->client->getResponse();
 
         $this->assertResponse($response, 'admin/post_product_bundle_response', Response::HTTP_CREATED);
+    }
+
+    /** @test */
+    public function it_updates_product_bundle(): void
+    {
+        $productBundleId = $this->fixtures['productBundle1']->getId();
+
+        $this->client->request(
+            'GET',
+            '/api/v2/admin/product-bundles/' . $productBundleId,
+            [],
+            [],
+            $this->headers
+        );
+        /** @var string $baseResponseContent */
+        $baseResponseContent = $this->client->getResponse()->getContent();
+        $baseProductBundle = json_decode($baseResponseContent, true);
+        $baseBundleItems = $baseProductBundle['items'] ?? [];
+
+        $johnnyWalkerBlue = $this->createProductBundleItemObject('JOHNNY_WALKER_BLUE', 1);
+        $johnnyWalkerGold = $this->createProductBundleItemObject('JOHNNY_WALKER_GOLD', 1);
+
+        $this->client->request(
+            'PUT',
+            '/api/v2/admin/product-bundles/' . $productBundleId,
+            [],
+            [],
+            $this->headers,
+            json_encode([
+                'items' => [
+                    $johnnyWalkerBlue,
+                    $johnnyWalkerGold,
+                ],
+                'isPacked' => false,
+            ], JSON_THROW_ON_ERROR)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertResponse($response, 'admin/put_product_bundle_response', Response::HTTP_OK);
+
+        /** @var string $updateResponseContent */
+        $updateResponseContent = $response->getContent();
+        $updatedProductBundle = json_decode($updateResponseContent, true);
+        $updatedBundleItems = $updatedProductBundle['items'] ?? [];
+
+        foreach ($updatedBundleItems as $bundleItem) {
+            $this->assertNotContains($bundleItem, $baseBundleItems);
+        }
+    }
+
+    private function createProductBundleItemObject(string $productVariantCode, int $quantity): object
+    {
+        $productBundleItem = new \stdClass();
+        $productBundleItem->productVariant = '/api/v2/admin/product-variants/' . $productVariantCode;
+        $productBundleItem->quantity = $quantity;
+
+        return $productBundleItem;
     }
 }

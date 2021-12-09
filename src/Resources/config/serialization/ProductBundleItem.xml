@@ -6,11 +6,13 @@
     <class name="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem">
         <attribute name="productVariant">
             <group>admin:product_bundle:create</group>
+            <group>admin:product_bundle:update</group>
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
         </attribute>
         <attribute name="quantity">
             <group>admin:product_bundle:create</group>
+            <group>admin:product_bundle:update</group>
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
         </attribute>

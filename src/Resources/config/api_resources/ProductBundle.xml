@@ -33,6 +33,15 @@
                     </attribute>
                 </attribute>
             </itemOperation>
+            <itemOperation name="admin_put_product-bundle">
+                <attribute name="method">PUT</attribute>
+                <attribute name="path">/admin/product-bundles/{id}</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">
+                        <attribute>admin:product_bundle:update</attribute>
+                    </attribute>
+                </attribute>
+            </itemOperation>
             <itemOperation name="shop_get_product-bundle">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/product-bundles/{id}</attribute>
