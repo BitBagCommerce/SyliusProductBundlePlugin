@@ -10,57 +10,57 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
-use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use Sylius\Component\Order\Model\OrderInterface;
-
-final class AddProductBundleToCartCommand
+final class AddProductBundleToCartCommand implements ProductBundleIdAwareInterface
 {
-    /** @var OrderInterface */
-    private $cart;
+    /** @var string|null */
+    private $orderToken;
 
-    /** @var OrderItemInterface */
-    private $cartItem;
+    /** @var int|null */
+    private $orderId;
 
-    /** @var ProductInterface */
-    private $product;
+    /** @var int|null */
+    private $productBundleId;
 
-    /** @var AddProductBundleItemToCartCommand[] */
-    private $productBundleItems = [];
+    /** @var int */
+    private $quantity;
 
-    public function __construct(
-        OrderInterface $cart,
-        OrderItemInterface $cartItem,
-        ProductInterface $product
-    ) {
-        $this->cart = $cart;
-        $this->cartItem = $cartItem;
-        $this->product = $product;
-        assert(null !== $product->getProductBundle());
-        /** @var ProductBundleItemInterface $productBundleItem */
-        foreach ($product->getProductBundle()->getProductBundleItems() as $productBundleItem) {
-            $this->productBundleItems[] = new AddProductBundleItemToCartCommand($productBundleItem);
-        }
+    public function __construct(int $quantity)
+    {
+        $this->quantity = $quantity;
     }
 
-    public function getProduct(): ProductInterface
+    public function getOrderToken(): ?string
     {
-        return $this->product;
+        return $this->orderToken;
     }
 
-    public function getProductBundleItems(): array
+    public function setOrderToken(?string $orderTokenValue): void
     {
-        return $this->productBundleItems;
+        $this->orderToken = $orderTokenValue;
     }
 
-    public function getCart(): OrderInterface
+    public function getOrderId(): ?int
     {
-        return $this->cart;
+        return $this->orderId;
     }
 
-    public function getCartItem(): OrderItemInterface
+    public function setOrderId(int $id): void
     {
-        return $this->cartItem;
+        $this->orderId = $id;
+    }
+
+    public function getProductBundleId(): ?int
+    {
+        return $this->productBundleId;
+    }
+
+    public function setProductBundleId(int $id): void
+    {
+        $this->productBundleId = $id;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
     }
 }
