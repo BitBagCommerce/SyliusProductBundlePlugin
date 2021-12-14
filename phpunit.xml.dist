@@ -8,6 +8,9 @@
         <testsuite name="SyliusProductBundlePlugin Api Test Suite">
             <directory>./tests/Api</directory>
         </testsuite>
+        <testsuite name="SyliusProductBundlePlugin Unit Test Suite">
+            <directory>./tests/Api</directory>
+        </testsuite>
     </testsuites>
 
     <php>
