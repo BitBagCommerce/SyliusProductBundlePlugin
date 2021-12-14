@@ -6,5 +6,13 @@
             <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product.inner" />
             <argument type="service" id="bitbag_sylius_product_bundle.factory.product_bundle" />
         </service>
+        <service
+                id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item"
+                class="BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactory"
+                decorates="bitbag_sylius_product_bundle.factory.product_bundle_order_item"
+                public="false"
+        >
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item.inner" />
+        </service>
     </services>
 </container>
