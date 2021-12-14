@@ -24,7 +24,7 @@ final class AddProductBundleToCartCommand implements ProductBundleIdAwareInterfa
     /** @var int */
     private $quantity;
 
-    public function __construct(int $quantity)
+    public function __construct(int $quantity = 1)
     {
         $this->quantity = $quantity;
     }
