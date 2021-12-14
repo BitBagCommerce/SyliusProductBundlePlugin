@@ -55,6 +55,18 @@
                     </attribute>
                 </attribute>
             </itemOperation>
+            <itemOperation name="shop_add_to_cart">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="path">/shop/product-bundles/{id}/add-to-cart</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand</attribute>
+                <attribute name="output">false</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:product_bundle:add_to_cart</attribute>
+                    </attribute>
+                </attribute>
+            </itemOperation>
         </itemOperations>
         <subresourceOperations>
             <subresourceOperation name="api_products_product_bundle_get_subresource">
