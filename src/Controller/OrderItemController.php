@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Controller;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,10 +91,10 @@ class OrderItemController extends BaseOrderItemController
         /** @var ProductInterface $product */
         $product = $orderItem->getProduct();
         assert(null !== $configuration->getFormType());
+
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
-            null,
-//            new AddProductBundleToCartCommand($cart, $orderItem, $product),
+            new AddProductBundleToCartDto($cart, $orderItem, $product),
             $configuration->getFormOptions()
         );
 
@@ -121,9 +122,10 @@ class OrderItemController extends BaseOrderItemController
         OrderItemInterface $orderItem,
         Request $request
     ): ?Response {
-        /** @var AddProductBundleToCartCommand $addProductBundleToCartCommand */
-        $addProductBundleToCartCommand = $form->getData();
-        $errors = $this->getCartItemErrors($addProductBundleToCartCommand->getCartItem());
+        /** @var AddProductBundleToCartDto $addProductBundleToCartDto */
+        $addProductBundleToCartDto = $form->getData();
+
+        $errors = $this->getCartItemErrors($addProductBundleToCartDto->getCartItem());
         if (0 < count($errors)) {
             $form = $this->getAddToCartFormWithErrors($errors, $form);
 
@@ -138,7 +140,23 @@ class OrderItemController extends BaseOrderItemController
 
             return $this->redirectHandler->redirectToIndex($configuration, $orderItem);
         }
+
+        $cart = $addProductBundleToCartDto->getCart();
+        if (null === $cart->getId()) {
+            $this->manager->persist($cart);
+            $this->manager->flush();
+        }
+
+        $quantity = $addProductBundleToCartDto->getCartItem()->getQuantity();
+
+        $addProductBundleToCartCommand = new AddProductBundleToCartCommand($quantity);
+        $addProductBundleToCartCommand->setOrderId($cart->getId());
+        $addProductBundleToCartCommand->setProductBundleId(
+            $addProductBundleToCartDto->getProduct()->getProductBundle()->getId()
+        );
+
         $this->messageBus->dispatch($addProductBundleToCartCommand);
+
         $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
         if ($resourceControllerEvent->hasResponse()) {
             return $resourceControllerEvent->getResponse();

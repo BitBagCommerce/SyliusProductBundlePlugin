@@ -15,8 +15,10 @@ use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -61,7 +63,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
     {
-        $cart = $this->orderRepository->findCartByTokenValue($addProductBundleToCartCommand->getOrderToken());
+        $cart = $this->getCart($addProductBundleToCartCommand);
         Assert::notNull($cart);
 
         /** @var ProductBundleInterface|null $productBundle */
@@ -86,5 +88,14 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderEntityManager->persist($cart);
         $this->orderEntityManager->flush();
+    }
+
+    private function getCart(AddProductBundleToCartCommand $addProductBundleToCartCommand): ?BaseOrderInterface
+    {
+        if (null !== $addProductBundleToCartCommand->getOrderToken()) {
+            return $this->orderRepository->findCartByTokenValue($addProductBundleToCartCommand->getOrderToken());
+        }
+
+        return $this->orderRepository->findCartById($addProductBundleToCartCommand->getOrderId());
     }
 }

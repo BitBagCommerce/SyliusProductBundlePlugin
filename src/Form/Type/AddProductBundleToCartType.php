@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Form\Type;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\OrderBundle\Form\Type\CartItemType;
 use Symfony\Component\Form\AbstractType;
@@ -43,7 +44,7 @@ final class AddProductBundleToCartType extends AbstractType
             ])
             ->setAllowedTypes('product', ProductInterface::class)
             ->setDefaults([
-                'data_class' => AddProductBundleToCartCommand::class,
+                'data_class' => AddProductBundleToCartDto::class,
             ])
         ;
     }
