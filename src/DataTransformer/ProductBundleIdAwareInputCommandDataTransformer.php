@@ -20,11 +20,14 @@ final class ProductBundleIdAwareInputCommandDataTransformer implements CommandDa
 {
     private const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
 
-    public function transform($object, string $to, array $context = [])
+    /**
+     * @param mixed $object
+     */
+    public function transform($object, string $to, array $context = []): ProductBundleIdAwareInterface
     {
         Assert::isInstanceOf($object, ProductBundleIdAwareInterface::class);
 
-        /** @var AddProductBundleToCartCommand $object */
+        /** @var ProductBundleIdAwareInterface $object */
         /** @var ProductBundleInterface $productBundle */
         $productBundle = $context[self::OBJECT_TO_POPULATE_KEY];
 
@@ -33,6 +36,9 @@ final class ProductBundleIdAwareInputCommandDataTransformer implements CommandDa
         return $object;
     }
 
+    /**
+     * @param mixed $object
+     */
     public function supportsTransformation($object): bool
     {
         return $object instanceof ProductBundleIdAwareInterface;
