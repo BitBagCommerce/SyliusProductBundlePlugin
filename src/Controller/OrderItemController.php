@@ -92,7 +92,8 @@ class OrderItemController extends BaseOrderItemController
         assert(null !== $configuration->getFormType());
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
-            new AddProductBundleToCartCommand($cart, $orderItem, $product),
+            null,
+//            new AddProductBundleToCartCommand($cart, $orderItem, $product),
             $configuration->getFormOptions()
         );
 

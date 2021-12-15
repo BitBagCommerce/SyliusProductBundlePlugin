@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Handler;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
@@ -22,7 +21,6 @@ use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
@@ -61,7 +59,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $this->orderEntityManager = $orderEntityManager;
     }
 
-    public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): Response
+    public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
     {
         $cart = $this->orderRepository->findCartByTokenValue($addProductBundleToCartCommand->getOrderToken());
         Assert::notNull($cart);
@@ -88,7 +86,5 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderEntityManager->persist($cart);
         $this->orderEntityManager->flush();
-
-        return new Response(null, Response::HTTP_OK);
     }
 }
