@@ -34,7 +34,17 @@ final class AddProductBundleToCartDto
         $this->product = $product;
         $this->productBundleItems = new ArrayCollection();
 
-        foreach ($product->getProductBundle()->getProductBundleItems() as $productBundleItem) {
+        $this->processProductBundleItems();
+    }
+
+    private function processProductBundleItems(): void
+    {
+        $productBundle = $this->product->getProductBundle();
+        if (null === $productBundle) {
+            return;
+        }
+
+        foreach ($productBundle->getProductBundleItems() as $productBundleItem) {
             $this->productBundleItems->add(new AddProductBundleItemToCartCommand($productBundleItem));
         }
     }
