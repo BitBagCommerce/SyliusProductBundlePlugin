@@ -70,9 +70,12 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $productBundle = $this->productBundleRepository->find($addProductBundleToCartCommand->getProductBundleId());
         Assert::notNull($productBundle);
 
-        /** @var ProductVariantInterface|null $productVariant */
-        $productVariant = $productBundle->getProduct()->getVariants()[0] ?? null;
-        Assert::notNull($productVariant);
+        $product = $productBundle->getProduct();
+        Assert::notNull($product);
+
+        /** @var ProductVariantInterface|false $productVariant */
+        $productVariant = $product->getVariants()->first();
+        Assert::notFalse($productVariant);
 
         /** @var OrderItemInterface $cartItem */
         $cartItem = $this->orderItemFactory->createNew();
