@@ -67,6 +67,16 @@
                         <attribute>shop:product_bundle:add_to_cart</attribute>
                     </attribute>
                 </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">
+                        Adds the product bundle to the cart retrieved by token.
+                    </attribute>
+                    <attribute name="responses">
+                        <attribute name="200">
+                            <attribute name="description">Product bundle added to the cart</attribute>
+                        </attribute>
+                    </attribute>
+                </attribute>
             </itemOperation>
         </itemOperations>
         <subresourceOperations>
