@@ -15,8 +15,6 @@ use Tests\BitBag\SyliusProductBundlePlugin\Api\JsonApiTestCase;
 
 final class ProductTest extends JsonApiTestCase
 {
-    public const CONTENT_TYPE_HEADER = ['CONTENT_TYPE' => 'application/ld+json', 'HTTP_ACCEPT' => 'application/ld+json'];
-
     protected function setUp(): void
     {
         $this->loadFixturesFromFiles(['general/channels.yml', 'shop/product_bundles.yml']);

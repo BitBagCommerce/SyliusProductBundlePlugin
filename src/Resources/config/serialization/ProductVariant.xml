@@ -7,6 +7,8 @@
         <attribute name="code">
             <group>shop:product:read</group>
             <group>shop:product_bundle:read</group>
+            <group>shop:order_item:read</group>
+            <group>shop:cart:read</group>
         </attribute>
         <attribute name="product">
             <group>shop:product_bundle:read</group>

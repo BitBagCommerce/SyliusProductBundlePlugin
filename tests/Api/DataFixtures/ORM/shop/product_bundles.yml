@@ -200,7 +200,6 @@ Sylius\Component\Core\Model\ProductVariant:
         translations:
             - "@productVariantTranslation6"
 
-
 BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:
     productBundleItem1:
         productVariant: "@productVariant1"

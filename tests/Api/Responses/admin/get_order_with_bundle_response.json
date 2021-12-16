@@ -1,0 +1,52 @@
+{
+  "@context": "\/api\/v2\/contexts\/Order",
+  "@id": "\/api\/v2\/admin\/orders\/zszRdAaZIx",
+  "@type": "Order",
+  "customer": "\/api\/v2\/admin\/customers\/@integer@",
+  "channel": "\/api\/v2\/admin\/channels\/WEB",
+  "shippingAddress": "@*@",
+  "billingAddress": "@*@",
+  "payments": "@*@",
+  "shipments": "@*@",
+  "currencyCode": "EUR",
+  "localeCode": "en_US",
+  "checkoutState": "completed",
+  "paymentState": "awaiting_payment",
+  "shippingState": "ready",
+  "tokenValue": "zszRdAaZIx",
+  "id": "@integer@",
+  "number": "@string@",
+  "items": [
+    {
+      "@id": "\/api\/v2\/admin\/order-items\/@integer@",
+      "@type": "OrderItem",
+      "variant": "\/api\/v2\/admin\/product-variants\/WHISKEY_DOUBLE_PACK",
+      "productName": "Whiskey Double Pack",
+      "id": "@integer@",
+      "quantity": 1,
+      "total": 1800,
+      "productBundleOrderItems": [
+        {
+          "@type": "ProductBundleOrderItem",
+          "@id": "@string@",
+          "id": "@integer@",
+          "productVariant": "\/api\/v2\/admin\/product-variants\/JOHNNY_WALKER_BLACK",
+          "quantity": 1
+        },
+        {
+          "@type": "ProductBundleOrderItem",
+          "@id": "@string@",
+          "id": "@integer@",
+          "productVariant": "\/api\/v2\/admin\/product-variants\/JACK_DANIELS_GENTLEMAN",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 1800
+    }
+  ],
+  "total": 1800,
+  "state": "new",
+  "taxTotal": 0,
+  "shippingTotal": 0,
+  "orderPromotionTotal": 0
+}

@@ -1,0 +1,73 @@
+Sylius\Component\Core\Model\Address:
+    address_joe_doe:
+        firstName: Joe
+        lastName: Doe
+        street: 'Warszawska'
+        city: 'Warszawa'
+        postcode: '00-001'
+        countryCode: 'PL'
+
+Sylius\Component\Core\Model\Customer:
+    customer_joe_doe:
+        email: joe@localhost
+        emailCanonical: joe@localhost
+
+Sylius\Component\Addressing\Model\Zone:
+    zone_world:
+        code: 'WORLD'
+        name: 'World'
+        type: 'country'
+        scope: 'all'
+
+Sylius\Component\Core\Model\ShippingMethod:
+    shipping_method_ups:
+        zone: '@zone_world'
+        code: 'ups'
+        channels:
+            - '@channel_web'
+        position: 0
+        categoryRequirement: 1
+        calculator: 'flat_rate'
+
+Sylius\Component\Core\Model\Shipment:
+    shipment_1:
+        state: 'ready'
+        method: '@shipping_method_ups'
+        order: '@order_with_bundle'
+
+Sylius\Component\Core\Model\OrderItemUnit:
+    order_item_unit_1:
+        __construct: ['@order_item_1']
+        shipment: '@shipment_1'
+
+BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem:
+    product_bundle_order_item_{1..2}:
+        orderItem: '@order_item_1'
+        productBundleItem: '@productBundleItem<current()>'
+        productVariant: '@productVariant<current()>'
+        quantity: 1
+
+Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem:
+    order_item_1:
+        order: '@order_with_bundle'
+        unitPrice: 1800
+        variant: '@productVariant3'
+        productName: 'Whiskey Double Pack'
+        variantname: 'Whiskey Double Pack'
+
+Sylius\Component\Core\Model\Order:
+    order_with_bundle:
+        shippingAddress: '@address_joe_doe'
+        billingAddress: '@address_joe_doe'
+        channel: '@channel_web'
+        customer: '@customer_joe_doe'
+        state: 'new'
+        items:
+            - '@order_item_1'
+        currencyCode: 'EUR'
+        localeCode: 'en_US'
+        checkoutState: 'completed'
+        payment_state: 'awaiting_payment'
+        shipping_state: 'ready'
+        tokenValue: 'zszRdAaZIx'
+        number: "000000001"
