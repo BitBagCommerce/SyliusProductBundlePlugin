@@ -11,11 +11,13 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Shop;
 
 use Sylius\Component\Core\Model\OrderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusProductBundlePlugin\Api\JsonApiTestCase;
 
 final class OrderTest extends JsonApiTestCase
 {
+    private const ENDPOINT_ORDERS_ITEM = '/api/v2/shop/orders/%s';
 
     /** @var array|object[]  */
     private $fixtures = [];
@@ -36,11 +38,11 @@ final class OrderTest extends JsonApiTestCase
         $order = $this->fixtures['order_with_bundle'];
 
         $this->client->request(
-            'GET',
-            '/api/v2/shop/orders/' . $order->getTokenValue(),
+            Request::METHOD_GET,
+            sprintf(self::ENDPOINT_ORDERS_ITEM, $order->getTokenValue()),
             [],
             [],
-            self::CONTENT_TYPE_HEADER
+            self::DEFAULT_HEADER
         );
         $response = $this->client->getResponse();
 

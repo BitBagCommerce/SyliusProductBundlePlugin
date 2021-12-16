@@ -10,31 +10,38 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Admin;
 
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusProductBundlePlugin\Api\AdminJsonApiTestCase;
 
 final class ProductBundleTest extends AdminJsonApiTestCase
 {
+    private const JOHNNY_WALKER_BUNDLE_PRODUCT_IRI = '/api/v2/admin/products/JOHNNY_WALKER_BUNDLE';
+    private const ENDPOINT_PRODUCT_BUNDLES_COLLECTION = '/api/v2/admin/product-bundles';
+    private const ENDPOINT_PRODUCT_BUNDLES_ITEM = '/api/v2/admin/product-bundles/%d';
+
+    /** @var object[]  */
     private $fixtures = [];
-    private $headers = [];
+    /** @var string[]  */
+    private $authHeaders = [];
 
     protected function setUp(): void
     {
         $this->fixtures = $this->loadFixturesFromFiles(['general/channels.yml', 'general/authentication.yml', 'shop/product_bundles.yml']);
         $authToken = $this->getAuthToken('api@example.com', 'sylius');
-        $this->headers = $this->getHeaders($authToken);
+        $this->authHeaders = $this->getHeaders($authToken);
     }
 
     /** @test */
     public function it_gets_product_bundles_collection(): void
     {
         $this->client->request(
-            'GET',
-            '/api/v2/admin/product-bundles',
+            Request::METHOD_GET,
+            self::ENDPOINT_PRODUCT_BUNDLES_COLLECTION,
             [],
             [],
-            $this->headers
+            $this->authHeaders
         );
         $response = $this->client->getResponse();
 
@@ -44,14 +51,15 @@ final class ProductBundleTest extends AdminJsonApiTestCase
     /** @test */
     public function it_gets_product_bundle(): void
     {
-        $productBundleId = $this->fixtures['productBundle1']->getId();
+        /** @var ProductBundleInterface $productBundleId */
+        $productBundleId = $this->fixtures['productBundle1'];
 
         $this->client->request(
-            'GET',
-            '/api/v2/admin/product-bundles/' . $productBundleId,
+            Request::METHOD_GET,
+            sprintf(self::ENDPOINT_PRODUCT_BUNDLES_ITEM, $productBundleId->getId()),
             [],
             [],
-            $this->headers
+            $this->authHeaders
         );
         $response = $this->client->getResponse();
 
@@ -61,21 +69,17 @@ final class ProductBundleTest extends AdminJsonApiTestCase
     /** @test */
     public function it_creates_product_bundle(): void
     {
-        $johnnyWalkerBlack = new \stdClass();
-        $johnnyWalkerBlack->productVariant = '/api/v2/admin/product-variants/JOHNNY_WALKER_BLACK';
-        $johnnyWalkerBlack->quantity = 1;
-        $johnnyWalkerBlue = new \stdClass();
-        $johnnyWalkerBlue->productVariant = '/api/v2/admin/product-variants/JOHNNY_WALKER_BLUE';
-        $johnnyWalkerBlue->quantity = 1;
+        $johnnyWalkerBlack = $this->createProductBundleItemObject('JOHNNY_WALKER_BLACK');
+        $johnnyWalkerBlue = $this->createProductBundleItemObject('JOHNNY_WALKER_BLUE');
 
         $this->client->request(
-            'POST',
-            '/api/v2/admin/product-bundles',
+            Request::METHOD_POST,
+            self::ENDPOINT_PRODUCT_BUNDLES_COLLECTION,
             [],
             [],
-            $this->headers,
+            $this->authHeaders,
             json_encode([
-                'product' => '/api/v2/admin/products/JOHNNY_WALKER_BUNDLE',
+                'product' => self::JOHNNY_WALKER_BUNDLE_PRODUCT_IRI,
                 'items' => [
                     $johnnyWalkerBlack,
                     $johnnyWalkerBlue,
@@ -91,29 +95,30 @@ final class ProductBundleTest extends AdminJsonApiTestCase
     /** @test */
     public function it_updates_product_bundle(): void
     {
-        $productBundleId = $this->fixtures['productBundle1']->getId();
+        /** @var ProductBundleInterface $productBundle */
+        $productBundle = $this->fixtures['productBundle1'];
 
         $this->client->request(
-            'GET',
-            '/api/v2/admin/product-bundles/' . $productBundleId,
+            Request::METHOD_GET,
+            sprintf(self::ENDPOINT_PRODUCT_BUNDLES_ITEM, $productBundle->getId()),
             [],
             [],
-            $this->headers
+            $this->authHeaders
         );
         /** @var string $baseResponseContent */
         $baseResponseContent = $this->client->getResponse()->getContent();
-        $baseProductBundle = json_decode($baseResponseContent, true);
+        $baseProductBundle = json_decode($baseResponseContent, true, 512, JSON_THROW_ON_ERROR);
         $baseBundleItems = $baseProductBundle['items'] ?? [];
 
-        $johnnyWalkerBlue = $this->createProductBundleItemObject('JOHNNY_WALKER_BLUE', 1);
-        $johnnyWalkerGold = $this->createProductBundleItemObject('JOHNNY_WALKER_GOLD', 1);
+        $johnnyWalkerBlue = $this->createProductBundleItemObject('JOHNNY_WALKER_BLUE');
+        $johnnyWalkerGold = $this->createProductBundleItemObject('JOHNNY_WALKER_GOLD');
 
         $this->client->request(
-            'PUT',
-            '/api/v2/admin/product-bundles/' . $productBundleId,
+            Request::METHOD_PUT,
+            sprintf(self::ENDPOINT_PRODUCT_BUNDLES_ITEM, $productBundle->getId()),
             [],
             [],
-            $this->headers,
+            $this->authHeaders,
             json_encode([
                 'items' => [
                     $johnnyWalkerBlue,
@@ -128,7 +133,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
 
         /** @var string $updateResponseContent */
         $updateResponseContent = $response->getContent();
-        $updatedProductBundle = json_decode($updateResponseContent, true);
+        $updatedProductBundle = json_decode($updateResponseContent, true, 512, JSON_THROW_ON_ERROR);
         $updatedBundleItems = $updatedProductBundle['items'] ?? [];
 
         foreach ($updatedBundleItems as $bundleItem) {
@@ -136,7 +141,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         }
     }
 
-    private function createProductBundleItemObject(string $productVariantCode, int $quantity): object
+    private function createProductBundleItemObject(string $productVariantCode, int $quantity = 1): object
     {
         $productBundleItem = new \stdClass();
         $productBundleItem->productVariant = '/api/v2/admin/product-variants/' . $productVariantCode;
@@ -148,14 +153,15 @@ final class ProductBundleTest extends AdminJsonApiTestCase
     /** @test */
     public function it_deletes_product_bundle(): void
     {
-        $productBundleId = $this->fixtures['productBundle1']->getId();
+        /** @var ProductBundleInterface $productBundle */
+        $productBundle = $this->fixtures['productBundle1'];
 
         $this->client->request(
             Request::METHOD_DELETE,
-            '/api/v2/admin/product-bundles/' . $productBundleId,
+            sprintf(self::ENDPOINT_PRODUCT_BUNDLES_ITEM, $productBundle->getId()),
             [],
             [],
-            $this->headers
+            $this->authHeaders
         );
         $response = $this->client->getResponse();
 
@@ -163,10 +169,10 @@ final class ProductBundleTest extends AdminJsonApiTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            '/api/v2/admin/product-bundles/' . $productBundleId,
+            sprintf(self::ENDPOINT_PRODUCT_BUNDLES_ITEM, $productBundle->getId()),
             [],
             [],
-            $this->headers
+            $this->authHeaders
         );
         $response = $this->client->getResponse();
 
