@@ -117,7 +117,7 @@
         <property name="variants" readable="true"/>
         <property name="averageRating" readable="true" />
         <property name="productBundle" writable="false">
-            <subresource resourceClass="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle" collection="false" />
+            <subresource resourceClass="%bitbag_sylius_product_bundle.model.product_bundle.class%" collection="false" />
         </property>
         <property name="bundle" writable="false" />
     </resource>
