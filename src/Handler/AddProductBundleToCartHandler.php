@@ -11,17 +11,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
@@ -46,9 +43,6 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
     /** @var OrderItemQuantityModifierInterface */
     private $orderItemQuantityModifier;
 
-    /** @var EntityManagerInterface */
-    private $orderEntityManager;
-
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         RepositoryInterface $productBundleRepository,
@@ -56,7 +50,6 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
         OrderModifierInterface $orderModifier,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        EntityManagerInterface $orderEntityManager
     ) {
         $this->orderRepository = $orderRepository;
         $this->productBundleRepository = $productBundleRepository;
@@ -64,7 +57,6 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $this->productBundleOrderItemFactory = $productBundleOrderItemFactory;
         $this->orderModifier = $orderModifier;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
-        $this->orderEntityManager = $orderEntityManager;
     }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
@@ -92,8 +84,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         }
 
         $this->orderModifier->addToOrder($cart, $cartItem);
-        $this->orderEntityManager->persist($cart);
-        $this->orderEntityManager->flush();
+        $this->orderRepository->add($cart);
     }
 
     private function getCart(AddProductBundleToCartCommand $addProductBundleToCartCommand): ?BaseOrderInterface

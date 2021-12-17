@@ -21,7 +21,6 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Model\Order;
@@ -56,9 +55,6 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     /** @var mixed|MockObject|OrderItemQuantityModifierInterface */
     private $orderItemQuantityModifier;
 
-    /** @var EntityManagerInterface|mixed|MockObject */
-    private $orderManager;
-
     protected function setUp(): void
     {
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
@@ -67,7 +63,6 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $this->productBundleOrderItemFactory = $this->createMock(ProductBundleOrderItemFactoryInterface::class);
         $this->orderModifier = $this->createMock(OrderModifierInterface::class);
         $this->orderItemQuantityModifier = $this->createMock(OrderItemQuantityModifierInterface::class);
-        $this->orderManager = $this->createMock(EntityManagerInterface::class);
     }
 
     /** @test */
@@ -255,12 +250,9 @@ final class AddProductBundleToCartHandlerTest extends TestCase
             ->method('addToOrder')
             ->with($cart, $cartItem)
         ;
-        $this->orderManager->expects($this->once())
-            ->method('persist')
+        $this->orderRepository->expects($this->once())
+            ->method('add')
             ->with($cart)
-        ;
-        $this->orderManager->expects($this->once())
-            ->method('flush')
         ;
 
         $handler = $this->createHandler();
@@ -276,7 +268,6 @@ final class AddProductBundleToCartHandlerTest extends TestCase
             $this->productBundleOrderItemFactory,
             $this->orderModifier,
             $this->orderItemQuantityModifier,
-            $this->orderManager
         );
     }
 
