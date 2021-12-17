@@ -30,14 +30,14 @@
           "@type": "ProductBundleOrderItem",
           "@id": "@string@",
           "id": "@integer@",
-          "productVariant": "\/api\/v2\/admin\/product-variants\/JOHNNY_WALKER_BLACK",
+          "productVariant": "\/api\/v2\/admin\/product-variants\/@string@",
           "quantity": 1
         },
         {
           "@type": "ProductBundleOrderItem",
           "@id": "@string@",
           "id": "@integer@",
-          "productVariant": "\/api\/v2\/admin\/product-variants\/JACK_DANIELS_GENTLEMAN",
+          "productVariant": "\/api\/v2\/admin\/product-variants\/@string@",
           "quantity": 1
         }
       ],
