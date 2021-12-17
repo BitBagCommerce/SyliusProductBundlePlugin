@@ -27,10 +27,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Webmozart\Assert\InvalidArgumentException;
 
-/**
- * @property AddProductBundleToCartCommand $value
- * @property ValidAddProductBundleToCartCommand $constraint
- */
 final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintValidatorTestCase
 {
     /** @var ObjectRepository|mixed|MockObject */
@@ -47,8 +43,6 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->productBundleRepository = $this->createMock(ObjectRepository::class);
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $this->availabilityChecker = $this->createMock(AvailabilityCheckerInterface::class);
-        $this->value = new AddProductBundleToCartCommand();
-        $this->constraint = new ValidAddProductBundleToCartCommand();
 
         parent::setUp();
     }
