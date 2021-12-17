@@ -16,6 +16,5 @@ if (class_exists('FOS\OAuthServerBundle\FOSOAuthServerBundle')) {
 if (class_exists('Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle')) {
     $bundles[Sylius\Bundle\AdminApiBundle\SyliusAdminApiBundle::class] = ['all' => true];
 }
-dump($bundles);
 
 return $bundles;
