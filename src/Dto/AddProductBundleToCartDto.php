@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 
-final class AddProductBundleToCartDto
+final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterface
 {
     /** @var OrderInterface */
     private $cart;

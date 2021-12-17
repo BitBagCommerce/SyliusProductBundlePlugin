@@ -12,12 +12,15 @@ namespace BitBag\SyliusProductBundlePlugin\Controller;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
+use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
 use Sylius\Bundle\ResourceBundle\Controller;
+use Sylius\Component\Order\Model\OrderInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\CartActions;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
@@ -151,14 +154,7 @@ class OrderItemController extends BaseOrderItemController
             $this->orderRepository->add($cart);
         }
 
-        $quantity = $addProductBundleToCartDto->getCartItem()->getQuantity();
-
-        $addProductBundleToCartCommand = new AddProductBundleToCartCommand($quantity);
-        $addProductBundleToCartCommand->setOrderId($cart->getId());
-        $addProductBundleToCartCommand->setProductBundleId(
-            $addProductBundleToCartDto->getProduct()->getProductBundle()->getId()
-        );
-
+        $addProductBundleToCartCommand = $this->createAddProductBundleToCartCommandFromDto($addProductBundleToCartDto, $cart);
         $this->messageBus->dispatch($addProductBundleToCartCommand);
 
         $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
@@ -175,5 +171,22 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $response;
+    }
+
+    private function createAddProductBundleToCartCommandFromDto(
+        AddProductBundleToCartDtoInterface $dto,
+        OrderInterface $cart
+    ): AddProductBundleToCartCommand {
+        $quantity = $dto->getCartItem()->getQuantity();
+        /** @var ProductInterface $productBundle */
+        $productBundle = $dto->getProduct()->getProductBundle();
+
+        $command = new AddProductBundleToCartCommand($quantity);
+        $command->setOrderId($cart->getId());
+        $command->setProductBundleId(
+            $productBundle->getId()
+        );
+
+        return $command;
     }
 }
