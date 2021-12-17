@@ -7,6 +7,8 @@ bitbag_sylius_product_bundle:
         cart_doesnt_exist: "Cart with provided ID or token does not exist."
         product_variant_insufficient_stock: "Product variant with {{ code }} code does not have sufficient stock."
         product_doesnt_exist: "Product {{ name }} does not exist."
+    product:
+        not_a_bundle: "Product has to be a bundle."
     product_bundle_item:
         product_variant:
             not_blank: Product variant cannot be blank.

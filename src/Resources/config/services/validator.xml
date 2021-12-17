@@ -15,5 +15,8 @@
                     alias="bitbag_sylius_product_bundle_validator_valid_add_product_bundle_to_cart_command"
             />
         </service>
+        <service id="bitbag_sylius_product_bundle.validator.is_product_bundle" class="BitBag\SyliusProductBundlePlugin\Validator\IsProductBundleValidator">
+            <tag name="validator.constraint_validator" alias="bitbag_sylius_product_bundle_validator_is_product_bundle" />
+        </service>
     </services>
 </container>
