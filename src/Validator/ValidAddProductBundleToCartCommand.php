@@ -14,13 +14,19 @@ use Symfony\Component\Validator\Constraint;
 
 final class ValidAddProductBundleToCartCommand extends Constraint
 {
-    const NO_ORDER_ID_OR_TOKEN_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.no_order_id_or_token";
-    const PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.product_bundle_doesnt_exist";
-    const PRODUCT_DISABLED_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.product_disabled";
-    const PRODUCT_VARIANT_DISABLED_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.product_variant_disabled";
-    const CART_DOESNT_EXIST_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.cart_doesnt_exist";
-    const PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.product_variant_insufficient_stock";
-    const PRODUCT_DOESNT_EXIST_MESSAGE = "bitbag_sylius_product_bundle.add_to_cart.product_doesnt_exist";
+    public const NO_ORDER_ID_OR_TOKEN_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.no_order_id_or_token';
+
+    public const PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_bundle_doesnt_exist';
+
+    public const PRODUCT_DISABLED_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_disabled';
+
+    public const PRODUCT_VARIANT_DISABLED_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_variant_disabled';
+
+    public const CART_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.cart_doesnt_exist';
+
+    public const PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_variant_insufficient_stock';
+
+    public const PRODUCT_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_doesnt_exist';
 
     public function validatedBy(): string
     {

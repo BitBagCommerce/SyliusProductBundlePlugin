@@ -18,12 +18,15 @@ use Tests\BitBag\SyliusProductBundlePlugin\Api\AdminJsonApiTestCase;
 final class ProductBundleTest extends AdminJsonApiTestCase
 {
     private const JOHNNY_WALKER_BUNDLE_PRODUCT_IRI = '/api/v2/admin/products/JOHNNY_WALKER_BUNDLE';
+
     private const ENDPOINT_PRODUCT_BUNDLES_COLLECTION = '/api/v2/admin/product-bundles';
+
     private const ENDPOINT_PRODUCT_BUNDLES_ITEM = '/api/v2/admin/product-bundles/%d';
 
-    /** @var object[]  */
+    /** @var object[] */
     private $fixtures = [];
-    /** @var string[]  */
+
+    /** @var string[] */
     private $authHeaders = [];
 
     protected function setUp(): void
@@ -85,7 +88,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
                     $johnnyWalkerBlue,
                 ],
                 'isPacked' => true,
-            ], JSON_THROW_ON_ERROR)
+            ], \JSON_THROW_ON_ERROR)
         );
         $response = $this->client->getResponse();
 
@@ -107,7 +110,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         );
         /** @var string $baseResponseContent */
         $baseResponseContent = $this->client->getResponse()->getContent();
-        $baseProductBundle = json_decode($baseResponseContent, true, 512, JSON_THROW_ON_ERROR);
+        $baseProductBundle = json_decode($baseResponseContent, true, 512, \JSON_THROW_ON_ERROR);
         $baseBundleItems = $baseProductBundle['items'] ?? [];
 
         $johnnyWalkerBlue = $this->createProductBundleItemObject('JOHNNY_WALKER_BLUE');
@@ -125,7 +128,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
                     $johnnyWalkerGold,
                 ],
                 'isPacked' => false,
-            ], JSON_THROW_ON_ERROR)
+            ], \JSON_THROW_ON_ERROR)
         );
         $response = $this->client->getResponse();
 
@@ -133,7 +136,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
 
         /** @var string $updateResponseContent */
         $updateResponseContent = $response->getContent();
-        $updatedProductBundle = json_decode($updateResponseContent, true, 512, JSON_THROW_ON_ERROR);
+        $updatedProductBundle = json_decode($updateResponseContent, true, 512, \JSON_THROW_ON_ERROR);
         $updatedBundleItems = $updatedProductBundle['items'] ?? [];
 
         foreach ($updatedBundleItems as $bundleItem) {

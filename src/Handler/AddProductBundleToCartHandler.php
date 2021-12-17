@@ -15,7 +15,6 @@ use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
@@ -30,17 +29,23 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
 {
     /** @var OrderRepositoryInterface */
     private $orderRepository;
+
     /** @var RepositoryInterface */
     private $productBundleRepository;
+
     /** @var FactoryInterface */
     private $orderItemFactory;
+
     /** @var ProductBundleOrderItemFactoryInterface */
     private $productBundleOrderItemFactory;
-    /** @var OrderModifierInterface  */
+
+    /** @var OrderModifierInterface */
     private $orderModifier;
+
     /** @var OrderItemQuantityModifierInterface */
     private $orderItemQuantityModifier;
-    /** @var EntityManagerInterface  */
+
+    /** @var EntityManagerInterface */
     private $orderEntityManager;
 
     public function __construct(

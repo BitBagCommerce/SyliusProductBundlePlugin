@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api\Utils;
 
 use Sylius\Bundle\ApiBundle\Command\Cart\PickupCart;
-use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Order\Model\OrderInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 trait CartHelperTrait

@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class JsonApiTestCase extends BaseJsonApiTestCase
 {
     public const DEFAULT_HEADER = ['CONTENT_TYPE' => 'application/ld+json', 'HTTP_ACCEPT' => 'application/ld+json'];
+
     public const PATCH_HEADER = ['CONTENT_TYPE' => 'application/merge-patch+json', 'HTTP_ACCEPT' => 'application/ld+json'];
 
     protected static function getContainer(): ContainerInterface

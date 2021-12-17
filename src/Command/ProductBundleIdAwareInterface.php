@@ -15,5 +15,6 @@ use Sylius\Bundle\ApiBundle\Command\CommandAwareDataTransformerInterface;
 interface ProductBundleIdAwareInterface extends CommandAwareDataTransformerInterface
 {
     public function getProductBundleId(): ?int;
+
     public function setProductBundleId(int $id): void;
 }

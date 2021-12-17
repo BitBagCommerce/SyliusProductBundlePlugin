@@ -19,7 +19,7 @@ final class OrderTest extends JsonApiTestCase
 {
     private const ENDPOINT_ORDERS_ITEM = '/api/v2/shop/orders/%s';
 
-    /** @var array|object[]  */
+    /** @var array|object[] */
     private $fixtures = [];
 
     protected function setUp(): void
@@ -27,7 +27,7 @@ final class OrderTest extends JsonApiTestCase
         $this->fixtures = $this->loadFixturesFromFiles([
             'general/channels.yml',
             'shop/product_bundles.yml',
-            'shop/orders.yml'
+            'shop/orders.yml',
         ]);
     }
 

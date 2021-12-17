@@ -11,24 +11,30 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Dto;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 
 final class AddProductBundleToCartDto
 {
     /** @var OrderInterface */
     private $cart;
+
     /** @var OrderItemInterface */
     private $cartItem;
+
     /** @var ProductInterface */
     private $product;
+
     /** @var ArrayCollection */
     private $productBundleItems;
 
-    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem, ProductInterface $product)
-    {
+    public function __construct(
+        OrderInterface $cart,
+        OrderItemInterface $cartItem,
+        ProductInterface $product
+    ) {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
         $this->product = $product;
@@ -79,9 +85,6 @@ final class AddProductBundleToCartDto
         $this->product = $product;
     }
 
-    /**
-     * @return ArrayCollection
-     */
     public function getProductBundleItems(): ArrayCollection
     {
         return $this->productBundleItems;

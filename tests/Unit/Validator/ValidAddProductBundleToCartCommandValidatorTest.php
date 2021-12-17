@@ -35,9 +35,11 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
 {
     /** @var ObjectRepository|mixed|MockObject */
     private $productBundleRepository;
-    /** @var mixed|MockObject|OrderRepositoryInterface  */
+
+    /** @var mixed|MockObject|OrderRepositoryInterface */
     private $orderRepository;
-    /** @var mixed|MockObject|AvailabilityCheckerInterface  */
+
+    /** @var mixed|MockObject|AvailabilityCheckerInterface */
     private $availabilityChecker;
 
     protected function setUp(): void
@@ -101,7 +103,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate($value, new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE)
-            ->setParameter('{{ id }}', "1")
+            ->setParameter('{{ id }}', '1')
             ->assertRaised()
         ;
     }
@@ -111,7 +113,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
     {
         $product = $this->createMock(ProductInterface::class);
         $product->expects(self::once())->method('isEnabled')->willReturn(false);
-        $product->expects(self::once())->method('getCode')->willReturn("WHISKEY_PACK");
+        $product->expects(self::once())->method('getCode')->willReturn('WHISKEY_PACK');
 
         $productBundle = $this->createMock(ProductBundleInterface::class);
         $productBundle->expects(self::once())->method('getProduct')->willReturn($product);
@@ -129,7 +131,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate($value, new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::PRODUCT_DISABLED_MESSAGE)
-            ->setParameter('{{ code }}', "WHISKEY_PACK")
+            ->setParameter('{{ code }}', 'WHISKEY_PACK')
             ->assertRaised()
         ;
     }
@@ -139,7 +141,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
     {
         $productVariant = $this->createMock(ProductVariantInterface::class);
         $productVariant->expects(self::once())->method('isEnabled')->willReturn(false);
-        $productVariant->expects(self::once())->method('getCode')->willReturn("WHISKEY_PACK");
+        $productVariant->expects(self::once())->method('getCode')->willReturn('WHISKEY_PACK');
 
         $variantsCollection = new ArrayCollection([$productVariant]);
 
@@ -163,7 +165,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate($value, new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_DISABLED_MESSAGE)
-            ->setParameter('{{ code }}', "WHISKEY_PACK")
+            ->setParameter('{{ code }}', 'WHISKEY_PACK')
             ->assertRaised()
         ;
     }
@@ -222,7 +224,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
 
         $productVariant = $this->createMock(ProductVariantInterface::class);
         $productVariant->expects(self::once())->method('isEnabled')->willReturn(true);
-        $productVariant->expects(self::once())->method('getCode')->willReturn("WHISKEY_PACK");
+        $productVariant->expects(self::once())->method('getCode')->willReturn('WHISKEY_PACK');
 
         $variantsCollection = new ArrayCollection([$productVariant]);
 
@@ -246,7 +248,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate($value, new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE)
-            ->setParameter('{{ code }}', "WHISKEY_PACK")
+            ->setParameter('{{ code }}', 'WHISKEY_PACK')
             ->assertRaised()
         ;
     }
@@ -276,7 +278,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $product = $this->createMock(ProductInterface::class);
         $product->expects(self::once())->method('isEnabled')->willReturn(true);
         $product->expects(self::once())->method('getVariants')->willReturn($variantsCollection);
-        $product->expects(self::once())->method('getName')->willReturn("Whiskey Pack");
+        $product->expects(self::once())->method('getName')->willReturn('Whiskey Pack');
         $product->expects(self::once())->method('hasChannel')->willReturn(false);
 
         $productBundle = $this->createMock(ProductBundleInterface::class);
@@ -295,7 +297,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate($value, new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::PRODUCT_DOESNT_EXIST_MESSAGE)
-            ->setParameter('{{ name }}', "Whiskey Pack")
+            ->setParameter('{{ name }}', 'Whiskey Pack')
             ->assertRaised()
         ;
     }

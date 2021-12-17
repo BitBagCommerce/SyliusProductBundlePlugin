@@ -19,10 +19,7 @@ final class BitBagSyliusProductBundlePlugin extends Bundle
 {
     use SyliusPluginTrait;
 
-    /**
-     * @return void
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new AuthenticationManagerPolyfillPass());
 

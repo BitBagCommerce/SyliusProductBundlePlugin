@@ -22,7 +22,7 @@ final class ProductBundleOrderItemFactoryTest extends TestCase
 {
     private const PRODUCT_VARIANT_CODE = 'MY_VARIANT';
 
-    /** @var mixed|MockObject|FactoryInterface  */
+    /** @var mixed|MockObject|FactoryInterface */
     private $baseProductBundleOrderItemFactory;
 
     protected function setUp(): void

@@ -38,19 +38,25 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class AddProductBundleToCartHandlerTest extends TestCase
 {
-    /** @var mixed|MockObject|OrderRepositoryInterface  */
+    /** @var mixed|MockObject|OrderRepositoryInterface */
     private $orderRepository;
-    /** @var mixed|MockObject|RepositoryInterface  */
+
+    /** @var mixed|MockObject|RepositoryInterface */
     private $productBundleRepository;
-    /** @var mixed|MockObject|FactoryInterface  */
+
+    /** @var mixed|MockObject|FactoryInterface */
     private $orderItemFactory;
-    /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject  */
+
+    /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject */
     private $productBundleOrderItemFactory;
-    /** @var mixed|MockObject|OrderModifierInterface  */
+
+    /** @var mixed|MockObject|OrderModifierInterface */
     private $orderModifier;
-    /** @var mixed|MockObject|OrderItemQuantityModifierInterface  */
+
+    /** @var mixed|MockObject|OrderItemQuantityModifierInterface */
     private $orderItemQuantityModifier;
-    /** @var EntityManagerInterface|mixed|MockObject  */
+
+    /** @var EntityManagerInterface|mixed|MockObject */
     private $orderManager;
 
     protected function setUp(): void

@@ -26,8 +26,10 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
 {
     /** @var ObjectRepository */
     private $productBundleRepository;
+
     /** @var OrderRepositoryInterface */
     private $orderRepository;
+
     /** @var AvailabilityCheckerInterface */
     private $availabilityChecker;
 
@@ -41,13 +43,14 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
         $this->availabilityChecker = $availabilityChecker;
     }
 
+    /**
+     * @param AddProductBundleToCartCommand|mixed $value
+     * @param ValidAddProductBundleToCartCommand|Constraint $constraint
+     */
     public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($value, AddProductBundleToCartCommand::class);
         Assert::isInstanceOf($constraint, ValidAddProductBundleToCartCommand::class);
-
-        /** @var AddProductBundleToCartCommand $value */
-        /** @var ValidAddProductBundleToCartCommand $constraint */
 
         if (null === $value->getOrderId() && null === $value->getOrderToken()) {
             $this->context->addViolation(

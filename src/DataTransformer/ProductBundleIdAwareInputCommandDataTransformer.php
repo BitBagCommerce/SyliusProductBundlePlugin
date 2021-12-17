@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\DataTransformer;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Command\ProductBundleIdAwareInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
@@ -21,13 +20,15 @@ final class ProductBundleIdAwareInputCommandDataTransformer implements CommandDa
     private const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
 
     /**
-     * @param mixed $object
+     * @param ProductBundleIdAwareInterface|mixed $object
      */
-    public function transform($object, string $to, array $context = []): ProductBundleIdAwareInterface
-    {
+    public function transform(
+        $object,
+        string $to,
+        array $context = []
+    ): ProductBundleIdAwareInterface {
         Assert::isInstanceOf($object, ProductBundleIdAwareInterface::class);
 
-        /** @var ProductBundleIdAwareInterface $object */
         /** @var ProductBundleInterface $productBundle */
         $productBundle = $context[self::OBJECT_TO_POPULATE_KEY];
 

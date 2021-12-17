@@ -17,6 +17,7 @@ use Tests\BitBag\SyliusProductBundlePlugin\Api\JsonApiTestCase;
 final class ProductTest extends JsonApiTestCase
 {
     private const ENDPOINT_PRODUCTS_ITEM = '/api/v2/shop/products/%s';
+
     private const ENDPOINT_PRODUCTS_ITEM_PRODUCT_BUNDLE = '/api/v2/shop/products/%s/bundle';
 
     protected function setUp(): void

@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Form\Type;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\OrderBundle\Form\Type\CartItemType;

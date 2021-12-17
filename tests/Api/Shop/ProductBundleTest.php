@@ -22,9 +22,10 @@ final class ProductBundleTest extends JsonApiTestCase
     use CartHelperTrait;
 
     private const CART_TOKEN = 'zszRdAaZIx';
+
     private const ENDPOINT_PRODUCT_BUNDLE_ADD_TO_CART = '/api/v2/shop/product-bundles/%d/add-to-cart';
 
-    /** @var object[]  */
+    /** @var object[] */
     private $fixtures;
 
     protected function setUp(): void
@@ -50,7 +51,7 @@ final class ProductBundleTest extends JsonApiTestCase
             self::PATCH_HEADER,
             json_encode([
                 'orderToken' => self::CART_TOKEN,
-            ], JSON_THROW_ON_ERROR)
+            ], \JSON_THROW_ON_ERROR)
         );
         $response = $this->client->getResponse();
 

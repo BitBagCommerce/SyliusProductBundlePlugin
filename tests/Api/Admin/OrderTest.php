@@ -19,9 +19,10 @@ final class OrderTest extends AdminJsonApiTestCase
 {
     private const ENDPOINT_ORDERS_ITEM = '/api/v2/admin/orders/%s';
 
-    /** @var array|object[]  */
+    /** @var array|object[] */
     private $fixtures = [];
-    /** @var array|string[]  */
+
+    /** @var array|string[] */
     private $authHeaders = [];
 
     protected function setUp(): void
@@ -30,7 +31,7 @@ final class OrderTest extends AdminJsonApiTestCase
             'general/channels.yml',
             'general/authentication.yml',
             'shop/product_bundles.yml',
-            'shop/orders.yml'
+            'shop/orders.yml',
         ]);
         $authToken = $this->getAuthToken('api@example.com', 'sylius');
         $this->authHeaders = $this->getHeaders($authToken);
