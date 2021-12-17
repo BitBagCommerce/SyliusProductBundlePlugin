@@ -49,7 +49,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     composer require bitbag/product-bundle-plugin
     ```
 
-2. Add plugin dependencies to your `config/bundles.php` file:
+2. Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
 
     ```php
         return [
