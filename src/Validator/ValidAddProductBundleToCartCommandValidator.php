@@ -12,6 +12,7 @@ namespace BitBag\SyliusProductBundlePlugin\Validator;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -54,7 +55,7 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
 
         if (null === $value->getOrderId() && null === $value->getOrderToken()) {
             $this->context->addViolation(
-                $constraint::NO_ORDER_ID_OR_TOKEN_MESSAGE
+                ValidAddProductBundleToCartCommand::NO_ORDER_ID_OR_TOKEN_MESSAGE
             );
 
             return;
@@ -65,7 +66,7 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
 
         if (null === $productBundle) {
             $this->context->addViolation(
-                $constraint::PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE,
+                ValidAddProductBundleToCartCommand::PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE,
                 [
                     '{{ id }}' => $value->getProductBundleId(),
                 ]
@@ -74,10 +75,11 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
             return;
         }
 
+        /** @var ProductInterface $product */
         $product = $productBundle->getProduct();
         if (!$product->isEnabled()) {
             $this->context->addViolation(
-                $constraint::PRODUCT_DISABLED_MESSAGE,
+                ValidAddProductBundleToCartCommand::PRODUCT_DISABLED_MESSAGE,
                 [
                     '{{ code }}' => $product->getCode(),
                 ]
@@ -90,7 +92,7 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
         $productVariant = $product->getVariants()->first();
         if (!$productVariant->isEnabled()) {
             $this->context->addViolation(
-                $constraint::PRODUCT_VARIANT_DISABLED_MESSAGE,
+                ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_DISABLED_MESSAGE,
                 [
                     '{{ code }}' => $productVariant->getCode(),
                 ]
@@ -112,7 +114,7 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
         $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
         if (!$this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
             $this->context->addViolation(
-                $constraint::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
+                ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
                 [
                     '{{ code }}' => $productVariant->getCode(),
                 ]
@@ -126,7 +128,7 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
 
         if (!$product->hasChannel($channel)) {
             $this->context->addViolation(
-                $constraint::PRODUCT_DOESNT_EXIST_MESSAGE,
+                ValidAddProductBundleToCartCommand::PRODUCT_DOESNT_EXIST_MESSAGE,
                 [
                     '{{ name }}' => $product->getName(),
                 ]
@@ -145,9 +147,12 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
 
     private function getCurrentProductVariantQuantityFromCart(OrderInterface $cart, ProductVariantInterface $productVariant): int
     {
+        /** @var OrderItemInterface $item */
         foreach ($cart->getItems() as $item) {
-            /** @var OrderItemInterface $item */
-            if ($item->getVariant()->getCode() === $productVariant->getCode() && $productVariant->isTracked()) {
+            /** @var ProductVariantInterface $itemProductVariant */
+            $itemProductVariant = $item->getVariant();
+
+            if ($productVariant->isTracked() && $itemProductVariant->getCode() === $productVariant->getCode()) {
                 return $item->getQuantity();
             }
         }
