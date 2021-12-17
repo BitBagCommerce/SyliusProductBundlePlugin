@@ -4,6 +4,7 @@
     <services>
         <service id="bitbag_sylius_product_bundle.controller.order_item" class="BitBag\SyliusProductBundlePlugin\Controller\OrderItemController" parent="sylius.controller.order_item">
             <argument type="service" id="bitbag_sylius_product_bundle.command_bus"/>
+            <argument type="service" id="sylius.repository.order" />
         </service>
     </services>
 </container>

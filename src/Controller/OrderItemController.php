@@ -33,6 +33,9 @@ class OrderItemController extends BaseOrderItemController
     /** @var MessageBusInterface */
     protected $messageBus;
 
+    /** @var OrderRepositoryInterface  */
+    protected $orderRepository;
+
     public function __construct(
         MetadataInterface $metadata,
         Controller\RequestConfigurationFactoryInterface $requestConfigurationFactory,
@@ -51,7 +54,8 @@ class OrderItemController extends BaseOrderItemController
         Controller\StateMachineInterface $stateMachine,
         Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
         Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        OrderRepositoryInterface $orderRepository
     ) {
         parent::__construct(
             $metadata,
@@ -74,6 +78,7 @@ class OrderItemController extends BaseOrderItemController
         );
 
         $this->messageBus = $messageBus;
+        $this->orderRepository = $orderRepository;
     }
 
     public function addProductBundleAction(Request $request): ?Response
@@ -143,8 +148,7 @@ class OrderItemController extends BaseOrderItemController
 
         $cart = $addProductBundleToCartDto->getCart();
         if (null === $cart->getId()) {
-            $this->manager->persist($cart);
-            $this->manager->flush();
+            $this->orderRepository->add($cart);
         }
 
         $quantity = $addProductBundleToCartDto->getCartItem()->getQuantity();
