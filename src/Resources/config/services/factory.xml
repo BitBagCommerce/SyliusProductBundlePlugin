@@ -17,8 +17,9 @@
                 id="bitbag_sylius_product_bundle.custom_factory.order_item"
                 class="BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactory"
                 decorates="sylius.factory.order_item"
+                decoration-priority="128"
         >
-            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item.inner" />
+            <argument type="service" id=".inner" />
         </service>
     </services>
 </container>

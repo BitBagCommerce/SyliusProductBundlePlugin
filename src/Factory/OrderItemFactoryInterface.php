@@ -11,10 +11,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Factory;
 
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
+use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-interface OrderItemFactoryInterface extends FactoryInterface
+interface OrderItemFactoryInterface extends FactoryInterface, CartItemFactoryInterface
 {
     public function createWithVariant(ProductVariantInterface $productVariant): OrderItemInterface;
 }
