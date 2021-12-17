@@ -13,6 +13,7 @@ namespace BitBag\SyliusProductBundlePlugin\Handler;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -33,7 +34,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
     /** @var RepositoryInterface */
     private $productBundleRepository;
 
-    /** @var FactoryInterface */
+    /** @var OrderItemFactoryInterface */
     private $orderItemFactory;
 
     /** @var ProductBundleOrderItemFactoryInterface */
@@ -51,7 +52,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         RepositoryInterface $productBundleRepository,
-        FactoryInterface $orderItemFactory,
+        OrderItemFactoryInterface $orderItemFactory,
         ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
         OrderModifierInterface $orderModifier,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
@@ -82,10 +83,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $productVariant = $product->getVariants()->first();
         Assert::notFalse($productVariant);
 
-        /** @var OrderItemInterface $cartItem */
-        $cartItem = $this->orderItemFactory->createNew();
-        $cartItem->setVariant($productVariant);
-
+        $cartItem = $this->orderItemFactory->createWithVariant($productVariant);
         $this->orderItemQuantityModifier->modify($cartItem, $addProductBundleToCartCommand->getQuantity());
 
         foreach ($productBundle->getProductBundleItems() as $bundleItem) {

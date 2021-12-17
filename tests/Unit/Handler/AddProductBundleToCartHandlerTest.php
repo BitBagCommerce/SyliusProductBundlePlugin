@@ -18,6 +18,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,6 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem;
 use Webmozart\Assert\InvalidArgumentException;
@@ -44,7 +44,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     /** @var mixed|MockObject|RepositoryInterface */
     private $productBundleRepository;
 
-    /** @var mixed|MockObject|FactoryInterface */
+    /** @var OrderItemFactoryInterface|mixed|MockObject  */
     private $orderItemFactory;
 
     /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject */
@@ -63,7 +63,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     {
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $this->productBundleRepository = $this->createMock(RepositoryInterface::class);
-        $this->orderItemFactory = $this->createMock(FactoryInterface::class);
+        $this->orderItemFactory = $this->createMock(OrderItemFactoryInterface::class);
         $this->productBundleOrderItemFactory = $this->createMock(ProductBundleOrderItemFactoryInterface::class);
         $this->orderModifier = $this->createMock(OrderModifierInterface::class);
         $this->orderItemQuantityModifier = $this->createMock(OrderItemQuantityModifierInterface::class);
@@ -155,15 +155,9 @@ final class AddProductBundleToCartHandlerTest extends TestCase
 
         $this->makeProductBundleRepositoryStagePassable($productBundle);
 
-        $cartItem = $this->createMock(OrderItemInterface::class);
-        $cartItem->expects($this->once())
-            ->method('setVariant')
-            ->with($productVariant)
-        ;
-
         $this->orderItemFactory->expects($this->once())
-            ->method('createNew')
-            ->willReturn($cartItem)
+            ->method('createWithVariant')
+            ->with($productVariant)
         ;
 
         $handler = $this->createHandler();
@@ -184,7 +178,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
 
         $cartItem = new OrderItem();
         $this->orderItemFactory->expects($this->once())
-            ->method('createNew')
+            ->method('createWithVariant')
             ->willReturn($cartItem)
         ;
         $this->orderItemQuantityModifier->expects($this->once())
@@ -225,7 +219,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         ;
 
         $this->orderItemFactory->expects($this->once())
-            ->method('createNew')
+            ->method('createWithVariant')
             ->willReturn($cart)
         ;
 
@@ -253,7 +247,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
 
         $cartItem = new OrderItem();
         $this->orderItemFactory->expects($this->once())
-            ->method('createNew')
+            ->method('createWithVariant')
             ->willReturn($cartItem)
         ;
 
