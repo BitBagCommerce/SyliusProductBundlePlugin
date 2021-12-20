@@ -19,9 +19,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
 use Sylius\Bundle\ResourceBundle\Controller;
-use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\CartActions;
+use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -36,7 +36,7 @@ class OrderItemController extends BaseOrderItemController
     /** @var MessageBusInterface */
     protected $messageBus;
 
-    /** @var OrderRepositoryInterface  */
+    /** @var OrderRepositoryInterface */
     protected $orderRepository;
 
     public function __construct(

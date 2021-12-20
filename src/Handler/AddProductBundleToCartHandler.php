@@ -49,7 +49,7 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         OrderItemFactoryInterface $orderItemFactory,
         ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
         OrderModifierInterface $orderModifier,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        OrderItemQuantityModifierInterface $orderItemQuantityModifier
     ) {
         $this->orderRepository = $orderRepository;
         $this->productBundleRepository = $productBundleRepository;

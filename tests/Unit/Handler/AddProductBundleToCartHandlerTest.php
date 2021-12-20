@@ -43,7 +43,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     /** @var mixed|MockObject|RepositoryInterface */
     private $productBundleRepository;
 
-    /** @var OrderItemFactoryInterface|mixed|MockObject  */
+    /** @var OrderItemFactoryInterface|mixed|MockObject */
     private $orderItemFactory;
 
     /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject */
