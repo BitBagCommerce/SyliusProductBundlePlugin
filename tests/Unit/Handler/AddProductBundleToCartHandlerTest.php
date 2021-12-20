@@ -65,8 +65,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $this->orderItemQuantityModifier = $this->createMock(OrderItemQuantityModifierInterface::class);
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_cart_not_found(): void
+    public function testThrowExceptionIfCartNotFound(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -83,8 +82,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_product_bundle_not_found(): void
+    public function testThrowExceptionIfProductBundleNotFound(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -103,8 +101,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_product_bundle_doesnt_have_set_product(): void
+    public function testThrowExceptionIfProductIsNotSetOnProductBundle(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -118,8 +115,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_product_has_no_variant(): void
+    public function testThrowExceptionIfProductHasNoVariant(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -137,8 +133,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_create_new_order_item_and_set_variant_from_command(): void
+    public function testCreateNewOrderItemAndSetVariantFromCommand(): void
     {
         $command = new AddProductBundleToCartCommand();
         $command->setOrderId(1);
@@ -159,8 +154,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_assign_quantity_from_command(): void
+    public function testAssignQuantityFromCommand(): void
     {
         $command = new AddProductBundleToCartCommand(5);
         $command->setOrderId(1);
@@ -185,8 +179,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_add_product_bundle_order_items_to_cart(): void
+    public function createAddProductBundleOrderItemToCart(): void
     {
         $command = new AddProductBundleToCartCommand(5);
         $command->setOrderId(1);
@@ -228,8 +221,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    /** @test */
-    public function it_should_add_cart_item_to_cart_and_persist_it(): void
+    public function testAddCartItemToCartAndPersistIt(): void
     {
         $command = new AddProductBundleToCartCommand(5);
         $command->setOrderId(1);

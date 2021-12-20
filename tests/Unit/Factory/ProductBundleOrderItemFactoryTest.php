@@ -35,8 +35,7 @@ final class ProductBundleOrderItemFactoryTest extends TestCase
         ;
     }
 
-    /** @test */
-    public function it_should_create_new_product_bundle_order_item_from_product_bundle_item(): void
+    public function testCreateProductBundleOrderItemFromProductBundleItem(): void
     {
         $factory = new ProductBundleOrderItemFactory($this->baseProductBundleOrderItemFactory);
 

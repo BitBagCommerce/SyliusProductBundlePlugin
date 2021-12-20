@@ -19,8 +19,7 @@ use Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem;
 
 final class OrderItemFactoryTest extends TestCase
 {
-    /** @test */
-    public function it_should_allow_to_create_order_item_with_variant(): void
+    public function testCreateOrderItemWithVariant(): void
     {
         $productVariant = new ProductVariant();
         $orderItem = new OrderItem();

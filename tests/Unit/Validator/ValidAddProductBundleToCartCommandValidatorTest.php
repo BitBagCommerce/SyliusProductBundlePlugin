@@ -56,16 +56,14 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         );
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_value_is_not_an_add_product_bundle_to_cart_command_instance(): void
+    public function testThrowExceptionIfValueIsNotAddProductBundleToCartCommandInstance(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->validator->validate(new \stdClass(), new ValidAddProductBundleToCartCommand());
     }
 
-    /** @test */
-    public function it_should_throw_exception_if_constraint_is_not_an_valid_add_product_bundle_to_cart_command_constraint_instance(): void
+    public function testThrowExceptionIfConstraintIsNotValidAddProductBundleToCartCommandConstraintInstance(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -74,16 +72,14 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         $this->validator->validate(new AddProductBundleToCartCommand(), $constraint);
     }
 
-    /** @test */
-    public function it_should_add_violation_if_both_order_id_and_token_are_null(): void
+    public function testAddViolationIfBothOrderIdAndTokenAreNull(): void
     {
         $this->validator->validate(new AddProductBundleToCartCommand(), new ValidAddProductBundleToCartCommand());
 
         $this->buildViolation(ValidAddProductBundleToCartCommand::NO_ORDER_ID_OR_TOKEN_MESSAGE)->assertRaised();
     }
 
-    /** @test */
-    public function it_should_add_violation_if_product_bundle_if_product_bundle_doesnt_exist(): void
+    public function testAddViolationIfProductBundleDoesntExist(): void
     {
         $value = new AddProductBundleToCartCommand();
         $value->setProductBundleId(1);
@@ -102,8 +98,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         ;
     }
 
-    /** @test */
-    public function it_should_add_violation_if_product_related_to_product_bundle_is_disabled(): void
+    public function testAddViolationIfProductRelatedToProductBundleIsDisabled(): void
     {
         $product = $this->createMock(ProductInterface::class);
         $product->expects(self::once())->method('isEnabled')->willReturn(false);
@@ -130,8 +125,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         ;
     }
 
-    /** @test */
-    public function it_should_add_violation_if_product_variant_related_to_is_disabled(): void
+    public function testAddViolationIfProductVariantRelatedToProductIsDisabled(): void
     {
         $productVariant = $this->createMock(ProductVariantInterface::class);
         $productVariant->expects(self::once())->method('isEnabled')->willReturn(false);
@@ -164,8 +158,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         ;
     }
 
-    /** @test */
-    public function it_should_add_violation_if_cart_doesnt_exist(): void
+    public function testAddViolationIfCartDoesntExist(): void
     {
         $this->orderRepository->expects(self::once())
             ->method('findCartById')
@@ -202,8 +195,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         ;
     }
 
-    /** @test */
-    public function it_should_add_violation_if_insufficient_stock(): void
+    public function testAddViolationIfInsufficientStock(): void
     {
         $this->availabilityChecker->expects(self::once())->method('isStockSufficient')->willReturn(false);
 
@@ -247,8 +239,7 @@ final class ValidAddProductBundleToCartCommandValidatorTest extends ConstraintVa
         ;
     }
 
-    /** @test */
-    public function it_should_add_violation_if_cart_and_product_channels_are_different(): void
+    public function testAddViolationIfCartChannelAndProductChannelsAreDifferent(): void
     {
         $channel = $this->createMock(ChannelInterface::class);
 

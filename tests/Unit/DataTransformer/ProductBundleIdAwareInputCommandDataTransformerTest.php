@@ -22,8 +22,7 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
 {
     private const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
 
-    /** @test */
-    public function it_should_support_only_instances_implementing_required_interface(): void
+    public function testSupportOnlyProductBundleIdAwareInterfaceInstances(): void
     {
         $productBundleIdAwareObject = $this->createMock(ProductBundleIdAwareInterface::class);
         $plainObject = new stdClass();
@@ -33,8 +32,7 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
         $this->assertFalse($dataTransformer->supportsTransformation($plainObject));
     }
 
-    /** @test */
-    public function it_should_throw_exception_while_transforming_if_instance_doesnt_implement_required_interface(): void
+    public function testThrowExceptionIfObjectDoesntImplementRequiredInterface(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -44,8 +42,7 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
         $dataTransformer->transform($plainObject, '');
     }
 
-    /** @test */
-    public function it_should_set_product_bundle_id_from_object_to_populate(): void
+    public function testSetProductBundleIdFromObjectToPopulate(): void
     {
         $command = new AddProductBundleToCartCommand();
         $productBundle = $this->createMock(ProductBundle::class);
