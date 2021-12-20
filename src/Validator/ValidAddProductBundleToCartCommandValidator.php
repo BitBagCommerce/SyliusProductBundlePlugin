@@ -14,11 +14,13 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Persistence\ObjectRepository;
+use Sylius\Component\Channel\Model\ChannelInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
-use Sylius\Component\Order\Model\OrderInterface;
+use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -53,96 +55,57 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
         Assert::isInstanceOf($value, AddProductBundleToCartCommand::class);
         Assert::isInstanceOf($constraint, ValidAddProductBundleToCartCommand::class);
 
-        if (null === $value->getOrderId() && null === $value->getOrderToken()) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::NO_ORDER_ID_OR_TOKEN_MESSAGE
-            );
-
+        if (false === $this->validateOrderTokenAndId($value)) {
             return;
         }
 
-        /** @var ProductBundleInterface|null $productBundle */
+        /** @var ProductBundleInterface $productBundle */
         $productBundle = $this->productBundleRepository->find($value->getProductBundleId());
-
-        if (null === $productBundle) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE,
-                [
-                    '{{ id }}' => $value->getProductBundleId(),
-                ]
-            );
-
+        if (false === $this->validateProductBundle($productBundle, $value)) {
             return;
         }
 
         /** @var ProductInterface $product */
         $product = $productBundle->getProduct();
-        if (!$product->isEnabled()) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::PRODUCT_DISABLED_MESSAGE,
-                [
-                    '{{ code }}' => $product->getCode(),
-                ]
-            );
-
+        if (false === $this->validateIsProductEnabled($product)) {
             return;
         }
 
         /** @var ProductVariantInterface $productVariant */
         $productVariant = $product->getVariants()->first();
-        if (!$productVariant->isEnabled()) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_DISABLED_MESSAGE,
-                [
-                    '{{ code }}' => $productVariant->getCode(),
-                ]
-            );
-
+        if (false === $this->validateProductVariant($productVariant)) {
             return;
         }
 
-        /** @var \Sylius\Component\Core\Model\OrderInterface|null $cart */
+        /** @var OrderInterface $cart */
         $cart = $this->getCart($value);
-        if (null === $cart) {
-            $this->context->addViolation(
-                $constraint::CART_DOESNT_EXIST_MESSAGE
-            );
-
+        if (false === $this->validateCart($cart)) {
             return;
         }
 
-        $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
-        if (!$this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
-                [
-                    '{{ code }}' => $productVariant->getCode(),
-                ]
-            );
-
+        if (false === $this->validateProductStock($cart, $productVariant, $value)) {
             return;
         }
 
+        /** @var ChannelInterface $channel */
         $channel = $cart->getChannel();
-        Assert::notNull($channel);
-
-        if (!$product->hasChannel($channel)) {
-            $this->context->addViolation(
-                ValidAddProductBundleToCartCommand::PRODUCT_DOESNT_EXIST_MESSAGE,
-                [
-                    '{{ name }}' => $product->getName(),
-                ]
-            );
-        }
+        $this->validateChannel($product, $channel);
     }
 
-    private function getCart(AddProductBundleToCartCommand $value): ?OrderInterface
+    private function getCart(AddProductBundleToCartCommand $value): ?BaseOrderInterface
     {
+        /** @var OrderInterface|null $cart */
+        $cart = null;
+
         if (null !== $value->getOrderToken()) {
-            return $this->orderRepository->findCartByTokenValue($value->getOrderToken());
+            $cart = $this->orderRepository->findCartByTokenValue($value->getOrderToken());
         }
 
-        return $this->orderRepository->findCartById($value->getOrderId());
+        if (null === $cart) {
+            $cart = $this->orderRepository->findCartById($value->getOrderId());
+        }
+
+        return $cart;
     }
 
     private function getCurrentProductVariantQuantityFromCart(OrderInterface $cart, ProductVariantInterface $productVariant): int
@@ -158,5 +121,115 @@ final class ValidAddProductBundleToCartCommandValidator extends ConstraintValida
         }
 
         return 0;
+    }
+
+    private function validateOrderTokenAndId(AddProductBundleToCartCommand $value): bool
+    {
+        if (null !== $value->getOrderId() || null !== $value->getOrderToken()) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::NO_ORDER_ID_OR_TOKEN_MESSAGE
+        );
+
+        return false;
+    }
+
+    private function validateProductBundle(?ProductBundleInterface $productBundle, AddProductBundleToCartCommand $value): bool
+    {
+        if (null !== $productBundle) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE,
+            [
+                '{{ id }}' => $value->getProductBundleId(),
+            ]
+        );
+
+        return false;
+    }
+
+    private function validateIsProductEnabled(ProductInterface $product): bool
+    {
+        if ($product->isEnabled()) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::PRODUCT_DISABLED_MESSAGE,
+            [
+                '{{ code }}' => $product->getCode(),
+            ]
+        );
+
+        return false;
+    }
+
+    private function validateProductVariant(ProductVariantInterface $productVariant): bool
+    {
+        if ($productVariant->isEnabled()) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_DISABLED_MESSAGE,
+            [
+                '{{ code }}' => $productVariant->getCode(),
+            ]
+        );
+
+        return false;
+    }
+
+    private function validateCart(?OrderInterface $cart): bool
+    {
+        if (null !== $cart) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::CART_DOESNT_EXIST_MESSAGE
+        );
+
+        return false;
+    }
+
+    private function validateProductStock(
+        OrderInterface $cart,
+        ProductVariantInterface $productVariant,
+        AddProductBundleToCartCommand $value
+    ): bool {
+        $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
+        if ($this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
+            [
+                '{{ code }}' => $productVariant->getCode(),
+            ]
+        );
+
+        return false;
+    }
+
+    private function validateChannel(ProductInterface $product, ChannelInterface $channel): bool
+    {
+        if ($product->hasChannel($channel)) {
+            return true;
+        }
+
+        $this->context->addViolation(
+            ValidAddProductBundleToCartCommand::PRODUCT_DOESNT_EXIST_MESSAGE,
+            [
+                '{{ name }}' => $product->getName(),
+            ]
+        );
+
+        return false;
     }
 }

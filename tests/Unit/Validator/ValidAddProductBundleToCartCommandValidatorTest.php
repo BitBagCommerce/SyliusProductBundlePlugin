@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Validator;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Validator\ValidAddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Validator\ValidAddProductBundleToCartCommandValidator;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +20,6 @@ use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
