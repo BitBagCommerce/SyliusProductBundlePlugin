@@ -12,13 +12,9 @@ namespace BitBag\SyliusProductBundlePlugin\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
-use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
@@ -31,32 +27,17 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
     /** @var RepositoryInterface */
     private $productBundleRepository;
 
-    /** @var OrderItemFactoryInterface */
-    private $orderItemFactory;
-
-    /** @var ProductBundleOrderItemFactoryInterface */
-    private $productBundleOrderItemFactory;
-
-    /** @var OrderModifierInterface */
-    private $orderModifier;
-
-    /** @var OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
+    /** @var CartProcessorInterface */
+    private $cartProcessor;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         RepositoryInterface $productBundleRepository,
-        OrderItemFactoryInterface $orderItemFactory,
-        ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
-        OrderModifierInterface $orderModifier,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier
+        CartProcessorInterface $cartItemProcessor
     ) {
         $this->orderRepository = $orderRepository;
         $this->productBundleRepository = $productBundleRepository;
-        $this->orderItemFactory = $orderItemFactory;
-        $this->productBundleOrderItemFactory = $productBundleOrderItemFactory;
-        $this->orderModifier = $orderModifier;
-        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
+        $this->cartProcessor = $cartItemProcessor;
     }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
@@ -68,22 +49,10 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $productBundle = $this->productBundleRepository->find($addProductBundleToCartCommand->getProductBundleId());
         Assert::notNull($productBundle);
 
-        $product = $productBundle->getProduct();
-        Assert::notNull($product);
+        $quantity = $addProductBundleToCartCommand->getQuantity();
+        Assert::greaterThan($quantity, 0);
 
-        /** @var ProductVariantInterface|false $productVariant */
-        $productVariant = $product->getVariants()->first();
-        Assert::notFalse($productVariant);
-
-        $cartItem = $this->orderItemFactory->createWithVariant($productVariant);
-        $this->orderItemQuantityModifier->modify($cartItem, $addProductBundleToCartCommand->getQuantity());
-
-        foreach ($productBundle->getProductBundleItems() as $bundleItem) {
-            $productBundleOrderItem = $this->productBundleOrderItemFactory->createFromProductBundleItem($bundleItem);
-            $cartItem->addProductBundleOrderItem($productBundleOrderItem);
-        }
-
-        $this->orderModifier->addToOrder($cart, $cartItem);
+        $this->cartProcessor->process($cart, $productBundle, $quantity);
         $this->orderRepository->add($cart);
     }
 

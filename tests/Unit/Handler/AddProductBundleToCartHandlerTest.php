@@ -11,28 +11,15 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundle;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
-use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
+use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\Product;
-use Sylius\Component\Core\Model\ProductVariant;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem;
 use Webmozart\Assert\InvalidArgumentException;
 
 final class AddProductBundleToCartHandlerTest extends TestCase
@@ -43,34 +30,19 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     /** @var mixed|MockObject|RepositoryInterface */
     private $productBundleRepository;
 
-    /** @var OrderItemFactoryInterface|mixed|MockObject */
-    private $orderItemFactory;
-
-    /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject */
-    private $productBundleOrderItemFactory;
-
-    /** @var mixed|MockObject|OrderModifierInterface */
-    private $orderModifier;
-
-    /** @var mixed|MockObject|OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
+    /** @var CartProcessorInterface|mixed|MockObject */
+    private $cartProcessor;
 
     protected function setUp(): void
     {
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $this->productBundleRepository = $this->createMock(RepositoryInterface::class);
-        $this->orderItemFactory = $this->createMock(OrderItemFactoryInterface::class);
-        $this->productBundleOrderItemFactory = $this->createMock(ProductBundleOrderItemFactoryInterface::class);
-        $this->orderModifier = $this->createMock(OrderModifierInterface::class);
-        $this->orderItemQuantityModifier = $this->createMock(OrderItemQuantityModifierInterface::class);
+        $this->cartProcessor = $this->createMock(CartProcessorInterface::class);
     }
 
     public function testThrowExceptionIfCartNotFound(): void
     {
         $this->expectException(InvalidArgumentException::class);
-
-        $command = new AddProductBundleToCartCommand();
-        $command->setOrderId(1);
 
         $this->orderRepository
             ->expects(self::once())
@@ -78,6 +50,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
             ->willReturn(null)
         ;
 
+        $command = new AddProductBundleToCartCommand();
         $handler = $this->createHandler();
         $handler($command);
     }
@@ -85,9 +58,6 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     public function testThrowExceptionIfProductBundleNotFound(): void
     {
         $this->expectException(InvalidArgumentException::class);
-
-        $command = new AddProductBundleToCartCommand();
-        $command->setOrderId(1);
 
         $this->makeOrderRepositoryStagePassable();
 
@@ -97,156 +67,49 @@ final class AddProductBundleToCartHandlerTest extends TestCase
             ->willReturn(null)
         ;
 
+        $command = new AddProductBundleToCartCommand();
         $handler = $this->createHandler();
         $handler($command);
     }
 
-    public function testThrowExceptionIfProductIsNotSetOnProductBundle(): void
+    public function testThrowExceptionIfQuantityNotGreaterThanZero(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
+        $this->makeOrderRepositoryStagePassable();
+        $this->makeProductBundleRepositoryStagePassable();
+
+        $command = new AddProductBundleToCartCommand(-1);
+        $handler = $this->createHandler();
+        $handler($command);
+    }
+
+    public function testProcessCart(): void
+    {
+        $this->cartProcessor->expects(self::once())
+            ->method('process')
+        ;
+
+        $this->makeOrderRepositoryStagePassable();
+        $this->makeProductBundleRepositoryStagePassable();
+
         $command = new AddProductBundleToCartCommand();
-        $command->setOrderId(1);
-
-        $this->makeOrderRepositoryStagePassable();
-        $this->makeProductBundleRepositoryStagePassable(new ProductBundle());
-
         $handler = $this->createHandler();
         $handler($command);
     }
 
-    public function testThrowExceptionIfProductHasNoVariant(): void
+    public function testAddCartToRepository(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $order = new Order();
+        $this->makeOrderRepositoryStagePassable($order);
+        $this->makeProductBundleRepositoryStagePassable();
 
-        $command = new AddProductBundleToCartCommand();
-        $command->setOrderId(1);
-
-        $this->makeOrderRepositoryStagePassable();
-
-        $productBundle = new ProductBundle();
-        $productBundle->setProduct(new Product());
-
-        $this->makeProductBundleRepositoryStagePassable($productBundle);
-
-        $handler = $this->createHandler();
-        $handler($command);
-    }
-
-    public function testCreateNewOrderItemAndSetVariantFromCommand(): void
-    {
-        $command = new AddProductBundleToCartCommand();
-        $command->setOrderId(1);
-
-        $this->makeOrderRepositoryStagePassable();
-
-        $productBundle = $this->createBasicProductBundle();
-        $productVariant = $productBundle->getProduct()->getVariants()->first();
-
-        $this->makeProductBundleRepositoryStagePassable($productBundle);
-
-        $this->orderItemFactory->expects(self::once())
-            ->method('createWithVariant')
-            ->with($productVariant)
-        ;
-
-        $handler = $this->createHandler();
-        $handler($command);
-    }
-
-    public function testAssignQuantityFromCommand(): void
-    {
-        $command = new AddProductBundleToCartCommand(5);
-        $command->setOrderId(1);
-
-        $this->makeOrderRepositoryStagePassable();
-
-        $productBundle = $this->createBasicProductBundle();
-
-        $this->makeProductBundleRepositoryStagePassable($productBundle);
-
-        $cartItem = new OrderItem();
-        $this->orderItemFactory->expects(self::once())
-            ->method('createWithVariant')
-            ->willReturn($cartItem)
-        ;
-        $this->orderItemQuantityModifier->expects(self::once())
-            ->method('modify')
-            ->with($cartItem, 5)
-        ;
-
-        $handler = $this->createHandler();
-        $handler($command);
-    }
-
-    public function createAddProductBundleOrderItemToCart(): void
-    {
-        $command = new AddProductBundleToCartCommand(5);
-        $command->setOrderId(1);
-
-        $this->makeOrderRepositoryStagePassable();
-
-        $productVariant1 = new ProductVariant();
-        $productVariant2 = new ProductVariant();
-
-        $bundleItem1 = $this->createProductBundleItem($productVariant1, 1);
-        $bundleItem2 = $this->createProductBundleItem($productVariant2, 2);
-        $productBundle = $this->createBasicProductBundle();
-        $productBundle->addProductBundleItem($bundleItem1);
-        $productBundle->addProductBundleItem($bundleItem2);
-
-        $this->makeProductBundleRepositoryStagePassable($productBundle);
-
-        $bundleOrderItem1 = $this->createProductBundleOrderItemFromProductBundleItem($bundleItem1);
-        $bundleOrderItem2 = $this->createProductBundleOrderItemFromProductBundleItem($bundleItem2);
-
-        $cart = $this->createMock(OrderItemInterface::class);
-        $cart->expects(self::exactly(2))
-            ->method('addProductBundleOrderItem')
-            ->withConsecutive([$bundleOrderItem1], [$bundleOrderItem2])
-        ;
-
-        $this->orderItemFactory->expects(self::once())
-            ->method('createWithVariant')
-            ->willReturn($cart)
-        ;
-
-        $this->productBundleOrderItemFactory->expects(self::exactly(2))
-            ->method('createFromProductBundleItem')
-            ->withConsecutive([$bundleItem1], [$bundleItem2])
-            ->willReturnOnConsecutiveCalls($bundleOrderItem1, $bundleOrderItem2)
-        ;
-
-        $handler = $this->createHandler();
-        $handler($command);
-    }
-
-    public function testAddCartItemToCartAndPersistIt(): void
-    {
-        $command = new AddProductBundleToCartCommand(5);
-        $command->setOrderId(1);
-
-        $cart = new Order();
-        $this->makeOrderRepositoryStagePassable($cart);
-
-        $bundle = $this->createBasicProductBundle();
-        $this->makeProductBundleRepositoryStagePassable($bundle);
-
-        $cartItem = new OrderItem();
-        $this->orderItemFactory->expects(self::once())
-            ->method('createWithVariant')
-            ->willReturn($cartItem)
-        ;
-
-        $this->orderModifier->expects(self::once())
-            ->method('addToOrder')
-            ->with($cart, $cartItem)
-        ;
         $this->orderRepository->expects(self::once())
             ->method('add')
-            ->with($cart)
+            ->with($order)
         ;
 
+        $command = new AddProductBundleToCartCommand();
         $handler = $this->createHandler();
         $handler($command);
     }
@@ -256,10 +119,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         return new AddProductBundleToCartHandler(
             $this->orderRepository,
             $this->productBundleRepository,
-            $this->orderItemFactory,
-            $this->productBundleOrderItemFactory,
-            $this->orderModifier,
-            $this->orderItemQuantityModifier,
+            $this->cartProcessor
         );
     }
 
@@ -276,50 +136,12 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         ;
     }
 
-    private function makeProductBundleRepositoryStagePassable(?ProductBundleInterface $productBundle = null): void
+    private function makeProductBundleRepositoryStagePassable(): void
     {
-        if (null === $productBundle) {
-            $productBundle = new ProductBundle();
-        }
-
         $this->productBundleRepository
             ->expects(self::once())
             ->method('find')
-            ->willReturn($productBundle)
+            ->willReturn(new ProductBundle())
         ;
-    }
-
-    private function createBasicProductBundle(): ProductBundleInterface
-    {
-        $productVariant = new ProductVariant();
-
-        $product = new Product();
-        $product->addVariant($productVariant);
-
-        $productBundle = new ProductBundle();
-        $productBundle->setProduct($product);
-
-        return $productBundle;
-    }
-
-    private function createProductBundleItem(
-        ProductVariantInterface $productVariant,
-        int $quantity
-    ): ProductBundleItemInterface {
-        $productBundleItem = new ProductBundleItem();
-        $productBundleItem->setQuantity($quantity);
-        $productBundleItem->setProductVariant($productVariant);
-
-        return $productBundleItem;
-    }
-
-    private function createProductBundleOrderItemFromProductBundleItem(ProductBundleItemInterface $bundleItem): ProductBundleOrderItemInterface
-    {
-        $orderItem = new ProductBundleOrderItem();
-        $orderItem->setProductBundleItem($bundleItem);
-        $orderItem->setQuantity($bundleItem->getQuantity());
-        $orderItem->setProductVariant($bundleItem->getProductVariant());
-
-        return $orderItem;
     }
 }
