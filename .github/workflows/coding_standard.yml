@@ -23,7 +23,7 @@ jobs:
             matrix:
                 php: [7.4, 7.3, 8.0]
                 symfony: [^4.4, ^5.2]
-                sylius: [~1.8.0, ~1.9.0, ~1.10.0]
+                sylius: [~1.10.0]
                 node: [10.x]
                 mysql: [5.7]
 
@@ -82,11 +82,11 @@ jobs:
                 name: Restrict Sylius version
                 if: matrix.sylius != ''
                 run: composer require "sylius/sylius:${{ matrix.sylius }}" --no-update --no-scripts --no-interaction
-                
+
             -
                 name: Install PHP dependencies
                 run: composer install --no-interaction
-                
+
             -   name: Run ECS
                 run: vendor/bin/ecs
 
@@ -98,4 +98,4 @@ jobs:
                 name: Run PHPStan in /test directory
                 run: ./vendor/bin/phpstan analyze --configuration=vendor/bitbag/coding-standard/phpstan.neon tests --level=5
 
-           
+

@@ -29,7 +29,6 @@ final class ProductBundleOrderItemFactoryTest extends TestCase
     {
         $this->baseProductBundleOrderItemFactory = $this->createMock(FactoryInterface::class);
         $this->baseProductBundleOrderItemFactory
-            ->expects($this->any())
             ->method('createNew')
             ->willReturn(new ProductBundleOrderItem())
         ;
@@ -49,8 +48,8 @@ final class ProductBundleOrderItemFactoryTest extends TestCase
         $orderItem = $factory->createFromProductBundleItem($productBundleItem);
         $orderItemProductVariant = $orderItem->getProductVariant();
 
-        $this->assertEquals($productBundleItem, $orderItem->getProductBundleItem());
-        $this->assertSame($productBundleItem->getQuantity(), $orderItem->getQuantity());
-        $this->assertSame($productVariant->getCode(), $orderItemProductVariant->getCode());
+        self::assertEquals($productBundleItem, $orderItem->getProductBundleItem());
+        self::assertSame($productBundleItem->getQuantity(), $orderItem->getQuantity());
+        self::assertSame($productVariant->getCode(), $orderItemProductVariant->getCode());
     }
 }

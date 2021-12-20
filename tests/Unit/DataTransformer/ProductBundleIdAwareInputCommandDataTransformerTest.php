@@ -28,8 +28,8 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
         $plainObject = new stdClass();
         $dataTransformer = new ProductBundleIdAwareInputCommandDataTransformer();
 
-        $this->assertTrue($dataTransformer->supportsTransformation($productBundleIdAwareObject));
-        $this->assertFalse($dataTransformer->supportsTransformation($plainObject));
+        self::assertTrue($dataTransformer->supportsTransformation($productBundleIdAwareObject));
+        self::assertFalse($dataTransformer->supportsTransformation($plainObject));
     }
 
     public function testThrowExceptionIfObjectDoesntImplementRequiredInterface(): void
@@ -46,7 +46,7 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
     {
         $command = new AddProductBundleToCartCommand();
         $productBundle = $this->createMock(ProductBundle::class);
-        $productBundle->expects($this->once())->method('getId')->willReturn(1000);
+        $productBundle->expects(self::once())->method('getId')->willReturn(1000);
         $context = [
             self::OBJECT_TO_POPULATE_KEY => $productBundle,
         ];
@@ -54,6 +54,6 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
 
         $transformedObject = $dataTransformer->transform($command, '', $context);
 
-        $this->assertSame(1000, $transformedObject->getProductBundleId());
+        self::assertSame(1000, $transformedObject->getProductBundleId());
     }
 }

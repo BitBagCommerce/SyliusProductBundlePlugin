@@ -20,7 +20,7 @@ trait CartHelperTrait
     public function createCart(string $tokenValue): void
     {
         /** @var MessageBusInterface $commandBus */
-        $commandBus = $this->getContainer()->get('sylius.command_bus');
+        $commandBus = self::getContainer()->get('sylius.command_bus');
 
         $command = new PickupCart($tokenValue, 'en_US');
         $command->setChannelCode('WEB');
@@ -31,7 +31,7 @@ trait CartHelperTrait
     public function findCart(string $tokenValue): ?OrderInterface
     {
         /** @var OrderRepositoryInterface $orderManager */
-        $orderManager = $this->getContainer()->get('sylius.repository.order');
+        $orderManager = self::getContainer()->get('sylius.repository.order');
 
         return $orderManager->findCartByTokenValue($tokenValue);
     }

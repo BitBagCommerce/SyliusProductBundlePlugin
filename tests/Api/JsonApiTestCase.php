@@ -22,6 +22,7 @@ abstract class JsonApiTestCase extends BaseJsonApiTestCase
     protected static function getContainer(): ContainerInterface
     {
         if (is_callable('parent::getContainer')) {
+            /* @phpstan-ignore-next-line */
             return parent::getContainer();
         }
 

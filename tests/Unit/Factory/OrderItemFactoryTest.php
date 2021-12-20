@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Factory;
 
-use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactory;
 use PHPUnit\Framework\TestCase;
+use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\ProductVariant;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem;
 
 final class OrderItemFactoryTest extends TestCase
@@ -24,8 +23,8 @@ final class OrderItemFactoryTest extends TestCase
         $productVariant = new ProductVariant();
         $orderItem = new OrderItem();
 
-        $baseFactory = $this->createMock(FactoryInterface::class);
-        $baseFactory->expects($this->once())
+        $baseFactory = $this->createMock(CartItemFactoryInterface::class);
+        $baseFactory->expects(self::once())
             ->method('createNew')
             ->willReturn($orderItem)
         ;
@@ -33,7 +32,6 @@ final class OrderItemFactoryTest extends TestCase
         $factory = new OrderItemFactory($baseFactory);
         $orderItemWithVariant = $factory->createWithVariant($productVariant);
 
-        $this->assertInstanceOf(OrderItemInterface::class, $orderItemWithVariant);
-        $this->assertSame($productVariant, $orderItemWithVariant->getVariant());
+        self::assertSame($productVariant, $orderItemWithVariant->getVariant());
     }
 }

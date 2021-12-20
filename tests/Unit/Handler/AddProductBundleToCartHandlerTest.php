@@ -73,7 +73,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $command->setOrderId(1);
 
         $this->orderRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findCartById')
             ->willReturn(null)
         ;
@@ -92,7 +92,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $this->makeOrderRepositoryStagePassable();
 
         $this->productBundleRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('find')
             ->willReturn(null)
         ;
@@ -145,7 +145,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
 
         $this->makeProductBundleRepositoryStagePassable($productBundle);
 
-        $this->orderItemFactory->expects($this->once())
+        $this->orderItemFactory->expects(self::once())
             ->method('createWithVariant')
             ->with($productVariant)
         ;
@@ -166,11 +166,11 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $this->makeProductBundleRepositoryStagePassable($productBundle);
 
         $cartItem = new OrderItem();
-        $this->orderItemFactory->expects($this->once())
+        $this->orderItemFactory->expects(self::once())
             ->method('createWithVariant')
             ->willReturn($cartItem)
         ;
-        $this->orderItemQuantityModifier->expects($this->once())
+        $this->orderItemQuantityModifier->expects(self::once())
             ->method('modify')
             ->with($cartItem, 5)
         ;
@@ -201,17 +201,17 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $bundleOrderItem2 = $this->createProductBundleOrderItemFromProductBundleItem($bundleItem2);
 
         $cart = $this->createMock(OrderItemInterface::class);
-        $cart->expects($this->exactly(2))
+        $cart->expects(self::exactly(2))
             ->method('addProductBundleOrderItem')
             ->withConsecutive([$bundleOrderItem1], [$bundleOrderItem2])
         ;
 
-        $this->orderItemFactory->expects($this->once())
+        $this->orderItemFactory->expects(self::once())
             ->method('createWithVariant')
             ->willReturn($cart)
         ;
 
-        $this->productBundleOrderItemFactory->expects($this->exactly(2))
+        $this->productBundleOrderItemFactory->expects(self::exactly(2))
             ->method('createFromProductBundleItem')
             ->withConsecutive([$bundleItem1], [$bundleItem2])
             ->willReturnOnConsecutiveCalls($bundleOrderItem1, $bundleOrderItem2)
@@ -233,16 +233,16 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $this->makeProductBundleRepositoryStagePassable($bundle);
 
         $cartItem = new OrderItem();
-        $this->orderItemFactory->expects($this->once())
+        $this->orderItemFactory->expects(self::once())
             ->method('createWithVariant')
             ->willReturn($cartItem)
         ;
 
-        $this->orderModifier->expects($this->once())
+        $this->orderModifier->expects(self::once())
             ->method('addToOrder')
             ->with($cart, $cartItem)
         ;
-        $this->orderRepository->expects($this->once())
+        $this->orderRepository->expects(self::once())
             ->method('add')
             ->with($cart)
         ;
@@ -270,7 +270,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         }
 
         $this->orderRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findCartById')
             ->willReturn($order)
         ;
@@ -283,7 +283,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         }
 
         $this->productBundleRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('find')
             ->willReturn($productBundle)
         ;

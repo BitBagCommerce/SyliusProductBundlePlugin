@@ -62,8 +62,8 @@ final class ProductBundleTest extends JsonApiTestCase
         $cartItem = $cart->getItems()->first();
         $cartProduct = $cartItem->getProduct();
 
-        $this->assertCount(1, $cart->getItems());
-        $this->assertCount(2, $cartItem->getProductBundleOrderItems());
-        $this->assertSame($productBundle->getProduct()->getId(), $cartProduct->getId());
+        self::assertCount(1, $cart->getItems());
+        self::assertCount(2, $cartItem->getProductBundleOrderItems());
+        self::assertSame($productBundle->getProduct()->getId(), $cartProduct->getId());
     }
 }

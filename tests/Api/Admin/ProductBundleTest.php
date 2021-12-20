@@ -140,7 +140,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
         $updatedBundleItems = $updatedProductBundle['items'] ?? [];
 
         foreach ($updatedBundleItems as $bundleItem) {
-            $this->assertNotContains($bundleItem, $baseBundleItems);
+            self::assertNotContains($bundleItem, $baseBundleItems);
         }
     }
 
