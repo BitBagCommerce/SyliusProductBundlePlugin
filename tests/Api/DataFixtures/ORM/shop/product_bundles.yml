@@ -1,212 +1,113 @@
 Sylius\Component\Core\Model\ProductTranslation:
-    productTranslation1:
+    productTranslation (template):
         locale: "en_US"
+        description: <paragraph(2)>
+        translatable: "@product<current()>"
+    productTranslation{1} (extends productTranslation):
         name: "Johnny Walker Black"
         slug: "johnny-walker-black"
-        description: <paragraph(2)>
-        translatable: "@product1"
-    productTranslation2:
-        locale: "en_US"
+    productTranslation{2} (extends productTranslation):
         name: "Jack Daniel's Gentleman Jack"
         slug: "jack-daniels-gentleman-jack"
-        description: <paragraph(2)>
-        translatable: "@product2"
-    productTranslation3:
-        locale: "en_US"
+    productTranslation{3} (extends productTranslation):
         name: "Whiskey Double Pack"
         slug: "whiskey-double-pack"
-        description: <paragraph(2)>
-        translatable: "@product3"
-    productTranslation4:
-        locale: "en_US"
+    productTranslation{4} (extends productTranslation) :
         name: "Johnny Walker Blue"
         slug: "johnny-walker-blue"
-        description: <paragraph(2)>
-        translatable: "@product4"
-    productTranslation5:
-        locale: "en_US"
+    productTranslation{5} (extends productTranslation) :
         name: "Johnny Walker Bundle"
         slug: "johnny-walker-bundle"
-        description: <paragraph(2)>
-        translatable: "@product5"
-    productTranslation6:
-        locale: "en_US"
+    productTranslation{6} (extends productTranslation) :
         name: "Johnny Walker Gold"
         slug: "johnny-walker-gold"
-        description: <paragraph(2)>
-        translatable: "@product6"
 
 Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
-    product1:
+    product (template):
         fallbackLocale: "en_US"
         currentLocale: "en_US"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation<current()>"
+    product{1} (extends product):
         code: "JOHNNY_WALKER_BLACK"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation1"
-    product2:
-        fallbackLocale: "en_US"
-        currentLocale: "en_US"
+    product{2} (extends product):
         code: "JACK_DANIELS_GENTLEMAN"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation2"
-    product3:
-        fallbackLocale: "en_US"
-        currentLocale: "en_US"
+    product{3} (extends product):
         code: "WHISKEY_DOUBLE_PACK"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation3"
-    product4:
-        fallbackLocale: "en_US"
-        currentLocale: "en_US"
+    product{4} (extends product):
         code: "JOHNNY_WALKER_BLUE"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation4"
-    product5:
-        fallbackLocale: "en_US"
-        currentLocale: "en_US"
+    product{5} (extends product):
         code: "JOHNNY_WALKER_BUNDLE"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation5"
-    product6:
-        fallbackLocale: "en_US"
-        currentLocale: "en_US"
+    product{6} (extends product):
         code: "JOHNNY_WALKER_GOLD"
-        channels:
-            - "@channel_web"
-        translations:
-            - "@productTranslation6"
 
 Sylius\Component\Product\Model\ProductVariantTranslation:
-    productVariantTranslation1:
+    productVariantTranslation (template):
+        locale: en_US
+        translatable: "@productVariant<current()>"
+    productVariantTranslation{1} (extends productVariantTranslation):
         name: "Johnny Walker Black"
-        locale: en_US
-        translatable: "@productVariant1"
-    productVariantTranslation2:
+    productVariantTranslation{2} (extends productVariantTranslation):
         name: "Jack Daniel's Gentleman Jack"
-        locale: en_US
-        translatable: "@productVariant2"
-    productVariantTranslation3:
+    productVariantTranslation{3} (extends productVariantTranslation):
         name: "Whiskey Double Pack"
-        locale: en_US
-        translatable: "@productVariant3"
-    productVariantTranslation4:
+    productVariantTranslation{4} (extends productVariantTranslation):
         name: "Johnny Walker Blue"
-        locale: en_US
-        translatable: "@productVariant4"
-    productVariantTranslation5:
+    productVariantTranslation{5} (extends productVariantTranslation):
         name: "Johnny Walker Bundle"
-        locale: en_US
-        translatable: "@productVariant5"
-    productVariantTranslation6:
+    productVariantTranslation{6} (extends productVariantTranslation):
         name: "Johnny Walker Gold"
-        locale: en_US
-        translatable: "@productVariant6"
 
 Sylius\Component\Core\Model\ChannelPricing:
-    channelPricing1:
-        productVariant: "@productVariant1"
+    channelPricing (template):
+        productVariant: "@productVariant<current()>"
+        channelCode: "WEB"
+    channelPricing{1} (extends channelPricing):
         price: 1000
         originalPrice: 1000
-        channelCode: "WEB"
-    channelPricing2:
-        productVariant: "@productVariant2"
+    channelPricing{2} (extends channelPricing):
         price: 1000
         originalPrice: 1000
-        channelCode: "WEB"
-    channelPricing3:
-        productVariant: "@productVariant3"
+    channelPricing{3} (extends channelPricing):
         price: 1800
         originalPrice: 1800
-        channelCode: "WEB"
-    channelPricing4:
-        productVariant: "@productVariant4"
+    channelPricing{4} (extends channelPricing):
         price: 2000
         originalPrice: 2000
-        channelCode: "WEB"
-    channelPricing5:
-        productVariant: "@productVariant5"
+    channelPricing{5} (extends channelPricing):
         price: 2500
         originalPrice: 2500
-        channelCode: "WEB"
-    channelPricing6:
-        productVariant: "@productVariant6"
+    channelPricing{6} (extends channelPricing):
         price: 1000
         originalPrice: 1000
-        channelCode: "WEB"
 
 Sylius\Component\Core\Model\ProductVariant:
-    productVariant1:
+    productVariant (template):
+        version: 1
+        product: "@product<current()>"
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        position: "<current()>"
+        translations:
+            - "@productVariantTranslation<current()>"
+    productVariant{1} (extends productVariant):
         code: "JOHNNY_WALKER_BLACK"
-        version: 1
-        product: "@product1"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 1
-        translations:
-            - "@productVariantTranslation1"
-    productVariant2:
+    productVariant{2} (extends productVariant):
         code: "JACK_DANIELS_GENTLEMAN"
-        version: 1
-        product: "@product2"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 2
-        translations:
-            - "@productVariantTranslation2"
-    productVariant3:
+    productVariant{3} (extends productVariant):
         code: "WHISKEY_DOUBLE_PACK"
-        version: 1
-        product: "@product3"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 3
-        translations:
-            - "@productVariantTranslation3"
-    productVariant4:
+    productVariant{4} (extends productVariant):
         code: "JOHNNY_WALKER_BLUE"
-        version: 1
-        product: "@product4"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 4
-        translations:
-            - "@productVariantTranslation4"
-    productVariant5:
+    productVariant{5} (extends productVariant):
         code: "JOHNNY_WALKER_BUNDLE"
-        version: 1
-        product: "@product5"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 5
-        translations:
-            - "@productVariantTranslation5"
-    productVariant6:
+    productVariant{6} (extends productVariant):
         code: "JOHNNY_WALKER_GOLD"
-        version: 1
-        product: "@product6"
-        fallbackLocale: en_US
-        currentLocale: en_US
-        position: 6
-        translations:
-            - "@productVariantTranslation6"
 
 BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:
-    productBundleItem1:
-        productVariant: "@productVariant1"
-        quantity: 1
-        productBundle: "@productBundle1"
-    productBundleItem2:
-        productVariant: "@productVariant2"
+    productBundleItem{1..2}:
+        productVariant: "@productVariant<current()>"
         quantity: 1
         productBundle: "@productBundle1"
 
