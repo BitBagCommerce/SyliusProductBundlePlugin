@@ -20,8 +20,6 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
 {
-    private const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
-
     public function testSupportOnlyProductBundleIdAwareInterfaceInstances(): void
     {
         $productBundleIdAwareObject = $this->createMock(ProductBundleIdAwareInterface::class);
@@ -48,7 +46,7 @@ final class ProductBundleIdAwareInputCommandDataTransformerTest extends TestCase
         $productBundle = $this->createMock(ProductBundle::class);
         $productBundle->expects(self::once())->method('getId')->willReturn(1000);
         $context = [
-            self::OBJECT_TO_POPULATE_KEY => $productBundle,
+            ProductBundleIdAwareInputCommandDataTransformer::OBJECT_TO_POPULATE_KEY => $productBundle,
         ];
         $dataTransformer = new ProductBundleIdAwareInputCommandDataTransformer();
 

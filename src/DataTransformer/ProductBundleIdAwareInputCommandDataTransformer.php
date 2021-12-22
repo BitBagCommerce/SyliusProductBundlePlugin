@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
 
 final class ProductBundleIdAwareInputCommandDataTransformer implements CommandDataTransformerInterface
 {
-    private const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
+    public const OBJECT_TO_POPULATE_KEY = 'object_to_populate';
 
     /**
      * @param ProductBundleIdAwareInterface|mixed $object
