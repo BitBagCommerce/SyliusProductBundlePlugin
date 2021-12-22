@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
-final class AddProductBundleToCartCommand implements ProductBundleIdAwareInterface
+final class AddProductBundleToCartCommand implements ProductBundleIdAwareInterface, OrderIdentifierAwareInterface
 {
     /** @var string|null */
     private $orderToken;
