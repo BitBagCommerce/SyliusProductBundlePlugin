@@ -19,6 +19,13 @@ Sylius\Component\Addressing\Model\Zone:
         type: 'country'
         scope: 'all'
 
+Sylius\Component\Shipping\Model\ShippingMethodTranslation:
+    shipping_method_translation_ups:
+        name: 'UPS'
+        description: 'UPS'
+        locale: 'en_US'
+        translatable: '@shipping_method_ups'
+
 Sylius\Component\Core\Model\ShippingMethod:
     shipping_method_ups:
         zone: '@zone_world'
@@ -28,6 +35,11 @@ Sylius\Component\Core\Model\ShippingMethod:
         position: 0
         categoryRequirement: 1
         calculator: 'flat_rate'
+        configuration:
+            WEB:
+                amount: 0
+        translations:
+            - '@shipping_method_translation_ups'
 
 Sylius\Component\Core\Model\Shipment:
     shipment_1:
