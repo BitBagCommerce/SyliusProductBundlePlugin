@@ -10,11 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
-use Sylius\Bundle\ApiBundle\Command\CommandAwareDataTransformerInterface;
-
-interface ProductBundleIdAwareInterface extends CommandAwareDataTransformerInterface
+interface OrderIdentityAwareInterface
 {
-    public function getProductBundleId(): ?int;
-
-    public function setProductBundleId(int $id): void;
+    public function getOrderId(): int;
 }

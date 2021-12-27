@@ -11,12 +11,13 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Dto;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\ProductCodeAwareInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 
-final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterface
+final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterface, ProductCodeAwareInterface
 {
     /** @var OrderInterface */
     private $cart;
@@ -88,5 +89,10 @@ final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterf
     public function getProductBundleItems(): ArrayCollection
     {
         return $this->productBundleItems;
+    }
+
+    public function getProductCode(): string
+    {
+        return $this->product->getCode();
     }
 }

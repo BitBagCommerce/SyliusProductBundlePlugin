@@ -12,17 +12,17 @@ namespace BitBag\SyliusProductBundlePlugin\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-final class IsProductBundle extends Constraint
+final class HasExistingCart extends Constraint
 {
-    public const NOT_A_BUNDLE = 'bitbag_sylius_product_bundle.product.not_a_bundle';
+    public const CART_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.cart_doesnt_exist';
 
     public function validatedBy(): string
     {
-        return 'bitbag_sylius_product_bundle_validator_is_product_bundle';
+        return 'bitbag_sylius_product_bundle_validator_has_existing_cart';
     }
 
     public function getTargets(): string
     {
-        return self::PROPERTY_CONSTRAINT;
+        return self::CLASS_CONSTRAINT;
     }
 }

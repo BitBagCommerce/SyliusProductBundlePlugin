@@ -12,22 +12,22 @@ namespace BitBag\SyliusProductBundlePlugin\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-final class HasValidProductBundleIdentifier extends Constraint
+final class HasAvailableProductBundle extends Constraint
 {
-    public const PRODUCT_BUNDLE_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_bundle_doesnt_exist';
-
     public const PRODUCT_DISABLED_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_disabled';
-
-    public const PRODUCT_VARIANT_DOESNT_EXIST_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_variant_doesnt_exist';
 
     public const PRODUCT_VARIANT_DISABLED_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_variant_disabled';
 
+    public const PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_variant_insufficient_stock';
+
+    public const PRODUCT_DOESNT_EXIST_IN_CHANNEL_MESSAGE = 'bitbag_sylius_product_bundle.add_to_cart.product_doesnt_exist_in_channel';
+
     public function validatedBy(): string
     {
-        return 'bitbag_sylius_product_bundle_validator_has_valid_product_bundle_identifier';
+        return 'bitbag_sylius_product_bundle_validator_has_available_product_bundle';
     }
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

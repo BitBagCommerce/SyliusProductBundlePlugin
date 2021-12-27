@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
-interface OrderIdentifierAwareInterface
+interface ProductCodeAwareInterface
 {
-    public function getOrderToken(): ?string;
-
-    public function getOrderId(): ?int;
+    public function getProductCode(): string;
 }

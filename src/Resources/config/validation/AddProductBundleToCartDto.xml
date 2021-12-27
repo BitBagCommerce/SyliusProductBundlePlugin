@@ -12,8 +12,6 @@
         https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
     <class name="BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto">
-        <property name="product">
-            <constraint name="BitBag\SyliusProductBundlePlugin\Validator\IsProductBundle" />
-        </property>
+        <constraint name="BitBag\SyliusProductBundlePlugin\Validator\HasProductBundle" />
     </class>
 </constraint-mapping>
