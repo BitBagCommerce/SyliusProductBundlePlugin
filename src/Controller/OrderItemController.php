@@ -177,16 +177,10 @@ class OrderItemController extends BaseOrderItemController
         AddProductBundleToCartDtoInterface $dto,
         OrderInterface $cart
     ): AddProductBundleToCartCommand {
+        $cartId = $cart->getId();
+        $productCode = $dto->getProduct()->getCode();
         $quantity = $dto->getCartItem()->getQuantity();
-        /** @var ProductInterface $productBundle */
-        $productBundle = $dto->getProduct()->getProductBundle();
 
-        $command = new AddProductBundleToCartCommand($quantity);
-        $command->setOrderId($cart->getId());
-        $command->setProductBundleId(
-            $productBundle->getId()
-        );
-
-        return $command;
+        return new AddProductBundleToCartCommand($cartId, $productCode, $quantity);
     }
 }

@@ -4,7 +4,7 @@
     <services>
         <service id="bitbag_sylius_product_bundle.handler.add_product_bundle_to_cart" class="BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler">
             <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle" />
+            <argument type="service" id="sylius.repository.product" />
             <argument type="service" id="bitbag_sylius_product_bundle.processor.cart_item_processor" />
 
             <tag name="messenger.message_handler"/>

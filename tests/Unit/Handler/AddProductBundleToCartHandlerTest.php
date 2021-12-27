@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundle;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sylius\Component\Core\Model\Order;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\ProductBundleMother;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\ProductMother;
 use Webmozart\Assert\InvalidArgumentException;
 
 final class AddProductBundleToCartHandlerTest extends TestCase
@@ -27,8 +27,8 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     /** @var mixed|MockObject|OrderRepositoryInterface */
     private $orderRepository;
 
-    /** @var mixed|MockObject|RepositoryInterface */
-    private $productBundleRepository;
+    /** @var mixed|MockObject|ProductRepositoryInterface */
+    private $productRepository;
 
     /** @var CartProcessorInterface|mixed|MockObject */
     private $cartProcessor;
@@ -36,38 +36,60 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
-        $this->productBundleRepository = $this->createMock(RepositoryInterface::class);
+        $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->cartProcessor = $this->createMock(CartProcessorInterface::class);
     }
 
-    public function testThrowExceptionIfCartNotFound(): void
+    public function testThrowExceptionIfCartDoesntExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected a value other than null.');
 
-        $this->orderRepository
-            ->expects(self::once())
+        $this->orderRepository->expects(self::once())
             ->method('findCartById')
             ->willReturn(null)
         ;
 
-        $command = new AddProductBundleToCartCommand();
+        $command = new AddProductBundleToCartCommand(0, '', 1);
         $handler = $this->createHandler();
         $handler($command);
     }
 
-    public function testThrowExceptionIfProductBundleNotFound(): void
+    public function testThrowExceptionIfProductDoesntExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected a value other than null.');
 
-        $this->makeOrderRepositoryStagePassable();
-
-        $this->productBundleRepository
-            ->expects(self::once())
-            ->method('find')
+        $cart = OrderMother::create();
+        $this->orderRepository->method('findCartById')
+            ->willReturn($cart)
+        ;
+        $this->productRepository->expects(self::once())
+            ->method('findOneByCode')
             ->willReturn(null)
         ;
 
-        $command = new AddProductBundleToCartCommand();
+        $command = new AddProductBundleToCartCommand(0, '', 1);
+        $handler = $this->createHandler();
+        $handler($command);
+    }
+
+    public function testThrowExceptionIfProductIsNotBundle(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected a value to be true. Got: false');
+
+        $cart = OrderMother::create();
+        $this->orderRepository->method('findCartById')
+            ->willReturn($cart)
+        ;
+
+        $product = ProductMother::create();
+        $this->productRepository->method('findOneByCode')
+            ->willReturn($product)
+        ;
+
+        $command = new AddProductBundleToCartCommand(0, '', 1);
         $handler = $this->createHandler();
         $handler($command);
     }
@@ -75,41 +97,66 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     public function testThrowExceptionIfQuantityNotGreaterThanZero(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected a value greater than 0. Got: 0');
 
-        $this->makeOrderRepositoryStagePassable();
-        $this->makeProductBundleRepositoryStagePassable();
+        $cart = OrderMother::create();
+        $this->orderRepository->method('findCartById')
+            ->willReturn($cart)
+        ;
 
-        $command = new AddProductBundleToCartCommand(-1);
+        $productBundle = ProductBundleMother::create();
+        $product = ProductMother::createWithBundle($productBundle);
+        $this->productRepository->method('findOneByCode')
+            ->willReturn($product)
+        ;
+
+        $command = new AddProductBundleToCartCommand(0, '', 0);
         $handler = $this->createHandler();
         $handler($command);
     }
 
     public function testProcessCart(): void
     {
-        $this->cartProcessor->expects(self::once())
-            ->method('process')
+        $cart = OrderMother::create();
+        $this->orderRepository->method('findCartById')
+            ->willReturn($cart)
         ;
 
-        $this->makeOrderRepositoryStagePassable();
-        $this->makeProductBundleRepositoryStagePassable();
+        $productBundle = ProductBundleMother::create();
+        $product = ProductMother::createWithBundle($productBundle);
+        $this->productRepository->method('findOneByCode')
+            ->willReturn($product)
+        ;
 
-        $command = new AddProductBundleToCartCommand();
+        $this->cartProcessor->expects(self::once())
+            ->method('process')
+            ->with($cart, $productBundle, 2)
+        ;
+
+        $command = new AddProductBundleToCartCommand(1, '', 2);
         $handler = $this->createHandler();
         $handler($command);
     }
 
     public function testAddCartToRepository(): void
     {
-        $order = new Order();
-        $this->makeOrderRepositoryStagePassable($order);
-        $this->makeProductBundleRepositoryStagePassable();
+        $cart = OrderMother::create();
+        $this->orderRepository->method('findCartById')
+            ->willReturn($cart)
+        ;
+
+        $productBundle = ProductBundleMother::create();
+        $product = ProductMother::createWithBundle($productBundle);
+        $this->productRepository->method('findOneByCode')
+            ->willReturn($product)
+        ;
 
         $this->orderRepository->expects(self::once())
             ->method('add')
-            ->with($order)
+            ->with($cart)
         ;
 
-        $command = new AddProductBundleToCartCommand();
+        $command = new AddProductBundleToCartCommand(1, '', 1);
         $handler = $this->createHandler();
         $handler($command);
     }
@@ -118,30 +165,8 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     {
         return new AddProductBundleToCartHandler(
             $this->orderRepository,
-            $this->productBundleRepository,
+            $this->productRepository,
             $this->cartProcessor
         );
-    }
-
-    private function makeOrderRepositoryStagePassable(?OrderInterface $order = null): void
-    {
-        if (null === $order) {
-            $order = new Order();
-        }
-
-        $this->orderRepository
-            ->expects(self::once())
-            ->method('findCartById')
-            ->willReturn($order)
-        ;
-    }
-
-    private function makeProductBundleRepositoryStagePassable(): void
-    {
-        $this->productBundleRepository
-            ->expects(self::once())
-            ->method('find')
-            ->willReturn(new ProductBundle())
-        ;
     }
 }

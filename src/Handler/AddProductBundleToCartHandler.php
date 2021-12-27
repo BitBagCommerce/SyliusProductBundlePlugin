@@ -12,10 +12,10 @@ namespace BitBag\SyliusProductBundlePlugin\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Order\Model\OrderInterface as BaseOrderInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
@@ -24,44 +24,38 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
     /** @var OrderRepositoryInterface */
     private $orderRepository;
 
-    /** @var RepositoryInterface */
-    private $productBundleRepository;
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
 
     /** @var CartProcessorInterface */
     private $cartProcessor;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
-        RepositoryInterface $productBundleRepository,
+        ProductRepositoryInterface $productRepository,
         CartProcessorInterface $cartItemProcessor
     ) {
         $this->orderRepository = $orderRepository;
-        $this->productBundleRepository = $productBundleRepository;
+        $this->productRepository = $productRepository;
         $this->cartProcessor = $cartItemProcessor;
     }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
     {
-        $cart = $this->getCart($addProductBundleToCartCommand);
+        $cart = $this->orderRepository->findCartById($addProductBundleToCartCommand->getOrderId());
         Assert::notNull($cart);
 
-        /** @var ProductBundleInterface|null $productBundle */
-        $productBundle = $this->productBundleRepository->find($addProductBundleToCartCommand->getProductBundleId());
-        Assert::notNull($productBundle);
+        /** @var ProductInterface|null $product */
+        $product = $this->productRepository->findOneByCode($addProductBundleToCartCommand->getProductCode());
+        Assert::notNull($product);
+        Assert::true($product->isBundle());
 
+        /** @var ProductBundleInterface|null $productBundle */
+        $productBundle = $product->getProductBundle();
         $quantity = $addProductBundleToCartCommand->getQuantity();
         Assert::greaterThan($quantity, 0);
 
         $this->cartProcessor->process($cart, $productBundle, $quantity);
         $this->orderRepository->add($cart);
-    }
-
-    private function getCart(AddProductBundleToCartCommand $addProductBundleToCartCommand): ?BaseOrderInterface
-    {
-        if (null !== $addProductBundleToCartCommand->getOrderToken()) {
-            return $this->orderRepository->findCartByTokenValue($addProductBundleToCartCommand->getOrderToken());
-        }
-
-        return $this->orderRepository->findCartById($addProductBundleToCartCommand->getOrderId());
     }
 }
