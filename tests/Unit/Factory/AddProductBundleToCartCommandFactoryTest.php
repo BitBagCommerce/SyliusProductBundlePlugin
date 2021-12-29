@@ -39,11 +39,7 @@ final class AddProductBundleToCartCommandFactoryTest extends TestCase
 
     public function testCreateAddProductBundleToCartCommandObjectFromDto(): void
     {
-        $cart = OrderMother::createWithId(self::ORDER_ID);
-        $orderItem = OrderItemMother::create();
-        $product = ProductMother::createWithCode(self::PRODUCT_CODE);
-        $bundleItems = [];
-        $dto = AddProductBundleToCartDtoMother::create($cart, $orderItem, $product, $bundleItems);
+        $dto = AddProductBundleToCartDtoMother::createWithOrderIdAndProductCode(self::ORDER_ID, self::PRODUCT_CODE);
 
         $factory = new AddProductBundleToCartCommandFactory();
         $command = $factory->createFromDto($dto);

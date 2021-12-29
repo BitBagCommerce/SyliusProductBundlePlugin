@@ -17,12 +17,23 @@ use Sylius\Component\Core\Model\OrderInterface;
 
 final class AddProductBundleToCartDtoMother
 {
-    public static function create(
-        OrderInterface $order,
-        OrderItemInterface $orderItem,
-        ProductInterface $product,
-        array $productBundleItems
-    ): AddProductBundleToCartDto {
+    public static function create(): AddProductBundleToCartDto
+    {
+        $order = OrderMother::create();
+        $orderItem = OrderItemMother::create();
+        $product = ProductMother::create();
+        $productBundleItems = [];
+
+        return new AddProductBundleToCartDto($order, $orderItem, $product, $productBundleItems);
+    }
+
+    public static function createWithOrderIdAndProductCode(int $orderId, string $productCode): AddProductBundleToCartDto
+    {
+        $order = OrderMother::createWithId($orderId);
+        $orderItem = OrderItemMother::create();
+        $product = ProductMother::createWithCode($productCode);
+        $productBundleItems = [];
+
         return new AddProductBundleToCartDto($order, $orderItem, $product, $productBundleItems);
     }
 }
