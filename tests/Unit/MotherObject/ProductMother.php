@@ -56,11 +56,19 @@ final class ProductMother
         return $product;
     }
 
-    public static function createDisabledWithCode(string $code): ProductInterface
+    public static function createWithCode(string $code): ProductInterface
     {
         $product = self::create();
 
         $product->setCode($code);
+
+        return $product;
+    }
+
+    public static function createDisabledWithCode(string $code): ProductInterface
+    {
+        $product = self::createWithCode($code);
+
         $product->disable();
 
         return $product;

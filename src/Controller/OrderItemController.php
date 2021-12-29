@@ -10,20 +10,17 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Controller;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
-use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartCommandFactoryInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemController;
 use Sylius\Bundle\ResourceBundle\Controller;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\CartActions;
-use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -40,6 +37,12 @@ class OrderItemController extends BaseOrderItemController
 
     /** @var OrderRepositoryInterface */
     protected $orderRepository;
+
+    /** @var AddProductBundleToCartDtoFactoryInterface */
+    private $addProductBundleToCartDtoFactory;
+
+    /** @var AddProductBundleToCartCommandFactoryInterface */
+    private $addProductBundleToCartCommandFactory;
 
     public function __construct(
         MetadataInterface $metadata,
@@ -60,7 +63,9 @@ class OrderItemController extends BaseOrderItemController
         Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
         Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
         MessageBusInterface $messageBus,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        AddProductBundleToCartDtoFactoryInterface $addProductBundleToCartDtoFactory,
+        AddProductBundleToCartCommandFactoryInterface $addProductBundleToCartCommandFactory
     ) {
         parent::__construct(
             $metadata,
@@ -84,6 +89,8 @@ class OrderItemController extends BaseOrderItemController
 
         $this->messageBus = $messageBus;
         $this->orderRepository = $orderRepository;
+        $this->addProductBundleToCartDtoFactory = $addProductBundleToCartDtoFactory;
+        $this->addProductBundleToCartCommandFactory = $addProductBundleToCartCommandFactory;
     }
 
     public function addProductBundleAction(Request $request): ?Response
@@ -102,7 +109,7 @@ class OrderItemController extends BaseOrderItemController
         $product = $orderItem->getProduct();
         assert(null !== $configuration->getFormType());
 
-        $addProductBundleToCartDto = $this->createAddProductBundleToCartDto($cart, $orderItem, $product);
+        $addProductBundleToCartDto = $this->addProductBundleToCartDtoFactory->createNew($cart, $orderItem, $product);
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
             $addProductBundleToCartDto,
@@ -157,7 +164,7 @@ class OrderItemController extends BaseOrderItemController
             $this->orderRepository->add($cart);
         }
 
-        $addProductBundleToCartCommand = $this->createAddProductBundleToCartCommandFromDto($addProductBundleToCartDto, $cart);
+        $addProductBundleToCartCommand = $this->addProductBundleToCartCommandFactory->createFromDto($addProductBundleToCartDto);
         $this->messageBus->dispatch($addProductBundleToCartCommand);
 
         $resourceControllerEvent = $this->eventDispatcher->dispatchPostEvent(CartActions::ADD, $configuration, $orderItem);
@@ -174,37 +181,5 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $response;
-    }
-
-    private function createAddProductBundleToCartDto(
-        OrderInterface $cart,
-        OrderItemInterface $orderItem,
-        ProductInterface $product
-    ): AddProductBundleToCartDto {
-        $processedProductBundleItems = $this->getProcessedProductBundleItems($product->getProductBundle());
-
-        return new AddProductBundleToCartDto($cart, $orderItem, $product, $processedProductBundleItems);
-    }
-
-    private function getProcessedProductBundleItems(ProductBundleInterface $productBundle): array
-    {
-        $addProductBundleItemToCartCommands = [];
-
-        foreach ($productBundle->getProductBundleItems() as $bundleItem) {
-            $addProductBundleItemToCartCommands[] = new AddProductBundleItemToCartCommand($bundleItem);
-        }
-
-        return $addProductBundleItemToCartCommands;
-    }
-
-    private function createAddProductBundleToCartCommandFromDto(
-        AddProductBundleToCartDtoInterface $dto,
-        OrderInterface $cart
-    ): AddProductBundleToCartCommand {
-        $cartId = $cart->getId();
-        $productCode = $dto->getProduct()->getCode();
-        $quantity = $dto->getCartItem()->getQuantity();
-
-        return new AddProductBundleToCartCommand($cartId, $productCode, $quantity);
     }
 }

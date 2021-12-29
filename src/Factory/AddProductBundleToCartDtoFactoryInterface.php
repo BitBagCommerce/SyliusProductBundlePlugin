@@ -8,21 +8,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject;
+namespace BitBag\SyliusProductBundlePlugin\Factory;
 
-use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
+use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Order\Model\OrderInterface;
 
-final class AddProductBundleToCartDtoMother
+interface AddProductBundleToCartDtoFactoryInterface
 {
-    public static function create(
+    public function createNew(
         OrderInterface $order,
         OrderItemInterface $orderItem,
-        ProductInterface $product,
-        array $productBundleItems
-    ): AddProductBundleToCartDto {
-        return new AddProductBundleToCartDto($order, $orderItem, $product, $productBundleItems);
-    }
+        ProductInterface $product
+    ): AddProductBundleToCartDtoInterface;
 }

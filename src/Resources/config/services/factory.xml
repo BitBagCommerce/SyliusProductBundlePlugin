@@ -21,5 +21,20 @@
         >
             <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.order_item.inner" />
         </service>
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleItemToCartCommandFactory"
+        />
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_command"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartCommandFactory"
+        />
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_dto"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory"
+        >
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command" />
+        </service>
+
     </services>
 </container>

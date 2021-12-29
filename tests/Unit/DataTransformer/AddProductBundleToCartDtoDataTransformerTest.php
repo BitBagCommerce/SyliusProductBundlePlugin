@@ -20,7 +20,7 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\DataTransformer\AddProductBundleToCartDtoDataTransformer;
 use BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto;
 use PHPUnit\Framework\TestCase;
-use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\AddProductBundleToCartDtoMother;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\Api\AddProductBundleToCartDtoMother;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
 use Webmozart\Assert\InvalidArgumentException;
 
