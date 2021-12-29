@@ -31,29 +31,19 @@ final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterf
     /** @var ArrayCollection */
     private $productBundleItems;
 
+    /**
+     * @param AddProductBundleItemToCartCommand[] $productBundleItems
+     */
     public function __construct(
         OrderInterface $cart,
         OrderItemInterface $cartItem,
-        ProductInterface $product
+        ProductInterface $product,
+        array $productBundleItems
     ) {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
         $this->product = $product;
-        $this->productBundleItems = new ArrayCollection();
-
-        $this->processProductBundleItems();
-    }
-
-    private function processProductBundleItems(): void
-    {
-        $productBundle = $this->product->getProductBundle();
-        if (null === $productBundle) {
-            return;
-        }
-
-        foreach ($productBundle->getProductBundleItems() as $productBundleItem) {
-            $this->productBundleItems->add(new AddProductBundleItemToCartCommand($productBundleItem));
-        }
+        $this->productBundleItems = new ArrayCollection($productBundleItems);
     }
 
     public function getCart(): OrderInterface

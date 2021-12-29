@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Controller;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
@@ -100,9 +102,10 @@ class OrderItemController extends BaseOrderItemController
         $product = $orderItem->getProduct();
         assert(null !== $configuration->getFormType());
 
+        $addProductBundleToCartDto = $this->createAddProductBundleToCartDto($cart, $orderItem, $product);
         $form = $this->getFormFactory()->create(
             $configuration->getFormType(),
-            new AddProductBundleToCartDto($cart, $orderItem, $product),
+            $addProductBundleToCartDto,
             $configuration->getFormOptions()
         );
 
@@ -171,6 +174,27 @@ class OrderItemController extends BaseOrderItemController
         }
 
         return $response;
+    }
+
+    private function createAddProductBundleToCartDto(
+        OrderInterface $cart,
+        OrderItemInterface $orderItem,
+        ProductInterface $product
+    ): AddProductBundleToCartDto {
+        $processedProductBundleItems = $this->getProcessedProductBundleItems($product->getProductBundle());
+
+        return new AddProductBundleToCartDto($cart, $orderItem, $product, $processedProductBundleItems);
+    }
+
+    private function getProcessedProductBundleItems(ProductBundleInterface $productBundle): array
+    {
+        $addProductBundleItemToCartCommands = [];
+
+        foreach ($productBundle->getProductBundleItems() as $bundleItem) {
+            $addProductBundleItemToCartCommands[] = new AddProductBundleItemToCartCommand($bundleItem);
+        }
+
+        return $addProductBundleItemToCartCommands;
     }
 
     private function createAddProductBundleToCartCommandFromDto(
