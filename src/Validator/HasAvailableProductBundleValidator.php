@@ -14,6 +14,7 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -55,21 +56,13 @@ final class HasAvailableProductBundleValidator extends ConstraintValidator
         $product = $this->productRepository->findOneByCode($value->getProductCode());
         Assert::notNull($product);
 
-        if (!$product->isEnabled()) {
-            $this->context->addViolation(HasAvailableProductBundle::PRODUCT_DISABLED_MESSAGE, [
-                '{{ code }}' => $product->getCode(),
-            ]);
-
+        if (false === $this->validateIfProductIsEnabled($product)) {
             return;
         }
 
         /** @var ProductVariantInterface $productVariant */
         $productVariant = $product->getVariants()->first();
-        if (!$productVariant->isEnabled()) {
-            $this->context->addViolation(HasAvailableProductBundle::PRODUCT_VARIANT_DISABLED_MESSAGE, [
-                '{{ code }}' => $productVariant->getCode(),
-            ]);
-
+        if (false === $this->validateIfProductVariantIsEnabled($productVariant)) {
             return;
         }
 
@@ -77,18 +70,59 @@ final class HasAvailableProductBundleValidator extends ConstraintValidator
         $cart = $this->orderRepository->findCartById($value->getOrderId());
         Assert::notNull($cart);
 
+        if (false === $this->validateIfProductAndCartChannelsMatch($product, $cart)) {
+            return;
+        }
+
+        $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
+        $this->validateProductVariantStock($productVariant, $targetQuantity);
+    }
+
+    private function validateIfProductIsEnabled(ProductInterface $product): bool
+    {
+        if (!$product->isEnabled()) {
+            $this->context->addViolation(HasAvailableProductBundle::PRODUCT_DISABLED_MESSAGE, [
+                '{{ code }}' => $product->getCode(),
+            ]);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validateIfProductVariantIsEnabled(ProductVariantInterface $productVariant): bool
+    {
+        if (!$productVariant->isEnabled()) {
+            $this->context->addViolation(HasAvailableProductBundle::PRODUCT_VARIANT_DISABLED_MESSAGE, [
+                '{{ code }}' => $productVariant->getCode(),
+            ]);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validateIfProductAndCartChannelsMatch(ProductInterface $product, OrderInterface $cart): bool
+    {
         /** @var ChannelInterface $channel */
         $channel = $cart->getChannel();
+
         if (!$product->hasChannel($channel)) {
             $this->context->addViolation(HasAvailableProductBundle::PRODUCT_DOESNT_EXIST_IN_CHANNEL_MESSAGE, [
                 '{{ channel }}' => $channel->getName(),
                 '{{ code }}' => $product->getCode(),
             ]);
 
-            return;
+            return false;
         }
 
-        $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
+        return true;
+    }
+
+    private function validateProductVariantStock(ProductVariantInterface $productVariant, int $targetQuantity): void
+    {
         if ($this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
             return;
         }
