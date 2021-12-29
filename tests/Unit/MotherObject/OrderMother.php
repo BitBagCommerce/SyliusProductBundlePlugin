@@ -25,10 +25,11 @@ final class OrderMother
     {
         $order = self::create();
 
-        $orderReflection = new \ReflectionClass($order);
-        $idProperty = $orderReflection->getProperty('id');
-        $idProperty->setAccessible(true);
-        $idProperty->setValue($order, $id);
+        $setIdClosure = function (int $id): void {
+            /** @phpstan-ignore-next-line  */
+            $this->id = $id;
+        };
+        ($setIdClosure->bindTo($order, $order))($id);
 
         return $order;
     }
