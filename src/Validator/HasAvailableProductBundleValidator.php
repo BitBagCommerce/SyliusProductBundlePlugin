@@ -89,20 +89,20 @@ final class HasAvailableProductBundleValidator extends ConstraintValidator
         }
 
         $targetQuantity = $value->getQuantity() + $this->getCurrentProductVariantQuantityFromCart($cart, $productVariant);
-        if (!$this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
-            $this->context->addViolation(
-                HasAvailableProductBundle::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
-                [
-                    '{{ code }}' => $productVariant->getCode(),
-                ]
-            );
-
+        if ($this->availabilityChecker->isStockSufficient($productVariant, $targetQuantity)) {
             return;
         }
+
+        $this->context->addViolation(
+            HasAvailableProductBundle::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE,
+            [
+                '{{ code }}' => $productVariant->getCode(),
+            ]
+        );
     }
 
     private function getCurrentProductVariantQuantityFromCart(
-        ?OrderInterface $cart,
+        OrderInterface $cart,
         ProductVariantInterface $productVariant
     ): int {
         /** @var OrderItemInterface $item */

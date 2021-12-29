@@ -26,7 +26,7 @@ final class AddProductBundleToCartCommandFactory implements AddProductBundleToCa
     public function createFromDto(AddProductBundleToCartDtoInterface $dto): AddProductBundleToCartCommand
     {
         $cartId = $dto->getCart()->getId();
-        $productCode = $dto->getProduct()->getCode();
+        $productCode = $dto->getProduct()->getCode() ?? '';
         $quantity = $dto->getCartItem()->getQuantity();
 
         return $this->createNew($cartId, $productCode, $quantity);

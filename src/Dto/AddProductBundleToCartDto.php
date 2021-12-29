@@ -83,6 +83,6 @@ final class AddProductBundleToCartDto implements AddProductBundleToCartDtoInterf
 
     public function getProductCode(): string
     {
-        return $this->product->getCode();
+        return $this->product->getCode() ?? '';
     }
 }

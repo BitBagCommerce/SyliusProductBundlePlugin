@@ -33,7 +33,9 @@ final class AddProductBundleToCartDtoFactory implements AddProductBundleToCartDt
         OrderItemInterface $orderItem,
         ProductInterface $product
     ): AddProductBundleToCartDtoInterface {
-        $processedProductBundleItems = $this->getProcessedProductBundleItems($product->getProductBundle());
+        /** @var ProductBundleInterface $productBundle */
+        $productBundle = $product->getProductBundle();
+        $processedProductBundleItems = $this->getProcessedProductBundleItems($productBundle);
 
         return new AddProductBundleToCartDto($order, $orderItem, $product, $processedProductBundleItems);
     }

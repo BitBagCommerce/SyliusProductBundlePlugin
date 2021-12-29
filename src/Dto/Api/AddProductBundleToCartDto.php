@@ -14,7 +14,7 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 
 final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
 {
-    /** @var string */
+    /** @var string|null */
     private $orderTokenValue;
 
     /** @var string */

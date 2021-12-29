@@ -52,6 +52,8 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
 
         /** @var ProductBundleInterface|null $productBundle */
         $productBundle = $product->getProductBundle();
+        Assert::notNull($productBundle);
+
         $quantity = $addProductBundleToCartCommand->getQuantity();
         Assert::greaterThan($quantity, 0);
 
