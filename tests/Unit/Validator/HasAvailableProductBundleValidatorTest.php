@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Validator;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Validator\HasAvailableProductBundle;
 use BitBag\SyliusProductBundlePlugin\Validator\HasAvailableProductBundleValidator;
 use PHPUnit\Framework\MockObject\MockObject;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
@@ -49,62 +51,30 @@ final class HasAvailableProductBundleValidatorTest extends ConstraintValidatorTe
         parent::setUp();
     }
 
-    public function testAddViolationIfProductIsDisabled(): void
-    {
-        $this->productRepository->expects(self::once())
-            ->method('findOneByCode')
-            ->with(self::PRODUCT_CODE)
-            ->willReturn(ProductMother::createDisabledWithCode(self::PRODUCT_CODE))
-        ;
-
-        $command = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
-        $constraint = new HasAvailableProductBundle();
-
-        $this->validator->validate($command, $constraint);
-
-        $this->buildViolation(HasAvailableProductBundle::PRODUCT_DISABLED_MESSAGE)
-            ->setParameter('{{ code }}', self::PRODUCT_CODE)
-            ->assertRaised()
-        ;
-    }
-
-    public function testAddViolationIfProductVariantDisabled(): void
-    {
-        $productVariant = ProductVariantMother::createDisabledWithCode(self::PRODUCT_CODE);
-        $product = ProductMother::createWithProductVariantAndCode($productVariant, self::PRODUCT_CODE);
-
-        $this->productRepository->expects(self::once())
-            ->method('findOneByCode')
-            ->with(self::PRODUCT_CODE)
-            ->willReturn($product)
-        ;
-
-        $command = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
-        $constraint = new HasAvailableProductBundle();
-
-        $this->validator->validate($command, $constraint);
-
-        $this->buildViolation(HasAvailableProductBundle::PRODUCT_VARIANT_DISABLED_MESSAGE)
-            ->setParameter('{{ code }}', self::PRODUCT_CODE)
-            ->assertRaised()
-        ;
-    }
-
-    public function testAddViolationIfCartChannelAndProductChannelAreDifferent(): void
-    {
-        $productVariant = ProductVariantMother::createWithCode(self::PRODUCT_CODE);
-        $product = ProductMother::createWithProductVariantAndCode($productVariant, self::PRODUCT_CODE);
+    /**
+     * @dataProvider pessimisticDataProvider
+     */
+    public function testPessimisticCase(
+        ProductInterface $product,
+        ?OrderInterface $cart,
+        bool $isStockSufficient,
+        string $violationMessage,
+        array $violationParameters
+    ): void {
         $this->productRepository->method('findOneByCode')
             ->with(self::PRODUCT_CODE)
             ->willReturn($product)
         ;
 
-        $channel = ChannelMother::createWithName(self::CHANNEL_NAME);
-        $cart = OrderMother::createWithChannel($channel);
-        $this->orderRepository->expects(self::once())
-            ->method('findCartById')
+        $this->orderRepository->method('findCartById')
             ->with(self::ORDER_ID)
             ->willReturn($cart)
+        ;
+
+        $productVariant = $product->getVariants()->first();
+        $this->availabilityChecker->method('isStockSufficient')
+            ->with($productVariant, 1)
+            ->willReturn($isStockSufficient)
         ;
 
         $command = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
@@ -112,14 +82,60 @@ final class HasAvailableProductBundleValidatorTest extends ConstraintValidatorTe
 
         $this->validator->validate($command, $constraint);
 
-        $this->buildViolation(HasAvailableProductBundle::PRODUCT_DOESNT_EXIST_IN_CHANNEL_MESSAGE)
-            ->setParameter('{{ channel }}', self::CHANNEL_NAME)
-            ->setParameter('{{ code }}', self::PRODUCT_CODE)
-            ->assertRaised()
-        ;
+        $this->buildViolation($violationMessage)
+            ->setParameters($violationParameters)
+            ->assertRaised();
     }
 
-    public function testAddViolationIfNewProductQuantityInTheCartExceedsStock(): void
+    public function pessimisticDataProvider(): iterable
+    {
+        yield $this->getProductDisabledCaseData();
+        yield $this->getProductVariantDisabledCaseData();
+        yield $this->getProductAndCartChannelsAreDifferentCaseData();
+        yield $this->getProductQuantityExceedsStockCaseData();
+    }
+
+    private function getProductDisabledCaseData(): array
+    {
+        $product = ProductMother::createDisabledWithCode(self::PRODUCT_CODE);
+        $violationMessage = HasAvailableProductBundle::PRODUCT_DISABLED_MESSAGE;
+        $violationParameters = [
+            '{{ code }}' => self::PRODUCT_CODE,
+        ];
+
+        return [$product, null, false, $violationMessage, $violationParameters];
+    }
+
+    private function getProductVariantDisabledCaseData(): array
+    {
+        $productVariant = ProductVariantMother::createDisabledWithCode(self::PRODUCT_CODE);
+        $product = ProductMother::createWithProductVariantAndCode($productVariant, self::PRODUCT_CODE);
+        $violationMessage = HasAvailableProductBundle::PRODUCT_VARIANT_DISABLED_MESSAGE;
+        $violationParameters = [
+            '{{ code }}' => self::PRODUCT_CODE,
+        ];
+
+        return [$product, null, false, $violationMessage, $violationParameters];
+    }
+
+    private function getProductAndCartChannelsAreDifferentCaseData(): array
+    {
+        $productVariant = ProductVariantMother::createWithCode(self::PRODUCT_CODE);
+        $product = ProductMother::createWithProductVariantAndCode($productVariant, self::PRODUCT_CODE);
+
+        $channel = ChannelMother::createWithName(self::CHANNEL_NAME);
+        $cart = OrderMother::createWithChannel($channel);
+
+        $violationMessage = HasAvailableProductBundle::PRODUCT_DOESNT_EXIST_IN_CHANNEL_MESSAGE;
+        $violationParameters = [
+            '{{ channel }}' => self::CHANNEL_NAME,
+            '{{ code }}' => self::PRODUCT_CODE,
+        ];
+
+        return [$product, $cart, false, $violationMessage, $violationParameters];
+    }
+
+    private function getProductQuantityExceedsStockCaseData(): array
     {
         $channel = ChannelMother::createWithName(self::CHANNEL_NAME);
         $productVariant = ProductVariantMother::createWithCode(self::PRODUCT_CODE);
@@ -128,32 +144,15 @@ final class HasAvailableProductBundleValidatorTest extends ConstraintValidatorTe
             $productVariant,
             self::PRODUCT_CODE
         );
-        $this->productRepository->method('findOneByCode')
-            ->with(self::PRODUCT_CODE)
-            ->willReturn($product)
-        ;
 
         $cart = OrderMother::createWithChannel($channel);
-        $this->orderRepository->method('findCartById')
-            ->with(self::ORDER_ID)
-            ->willReturn($cart)
-        ;
 
-        $this->availabilityChecker->expects(self::once())
-            ->method('isStockSufficient')
-            ->with($productVariant, 1)
-            ->willReturn(false)
-        ;
+        $violationMessage = HasAvailableProductBundle::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE;
+        $violationParameters = [
+            '{{ code }}' => self::PRODUCT_CODE,
+        ];
 
-        $command = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
-        $constraint = new HasAvailableProductBundle();
-
-        $this->validator->validate($command, $constraint);
-
-        $this->buildViolation(HasAvailableProductBundle::PRODUCT_VARIANT_INSUFFICIENT_STOCK_MESSAGE)
-            ->setParameter('{{ code }}', self::PRODUCT_CODE)
-            ->assertRaised()
-        ;
+        return [$product, $cart, false, $violationMessage, $violationParameters];
     }
 
     protected function createValidator(): HasAvailableProductBundleValidator

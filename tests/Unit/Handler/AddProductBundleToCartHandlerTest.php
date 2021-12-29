@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Handler;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
@@ -55,64 +57,42 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $handler($command);
     }
 
-    public function testThrowExceptionIfProductDoesntExist(): void
-    {
+    /**
+     * @dataProvider pessimisticDataProvider
+     */
+    public function testPessimisticCase(
+        string $exceptionMessage,
+        ?OrderInterface $cart,
+        ?ProductInterface $product,
+        int $quantity
+    ): void {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a value other than null.');
+        $this->expectExceptionMessage($exceptionMessage);
 
-        $cart = OrderMother::create();
-        $this->orderRepository->method('findCartById')
-            ->willReturn($cart)
-        ;
-        $this->productRepository->expects(self::once())
-            ->method('findOneByCode')
-            ->willReturn(null)
-        ;
-
-        $command = new AddProductBundleToCartCommand(0, '', 1);
-        $handler = $this->createHandler();
-        $handler($command);
-    }
-
-    public function testThrowExceptionIfProductIsNotBundle(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a value to be true. Got: false');
-
-        $cart = OrderMother::create();
         $this->orderRepository->method('findCartById')
             ->willReturn($cart)
         ;
 
-        $product = ProductMother::create();
         $this->productRepository->method('findOneByCode')
             ->willReturn($product)
         ;
 
-        $command = new AddProductBundleToCartCommand(0, '', 1);
+        $command = new AddProductBundleToCartCommand(0, '', $quantity);
         $handler = $this->createHandler();
         $handler($command);
     }
 
-    public function testThrowExceptionIfQuantityNotGreaterThanZero(): void
+    public function pessimisticDataProvider(): array
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a value greater than 0. Got: 0');
-
-        $cart = OrderMother::create();
-        $this->orderRepository->method('findCartById')
-            ->willReturn($cart)
-        ;
-
         $productBundle = ProductBundleMother::create();
-        $product = ProductMother::createWithBundle($productBundle);
-        $this->productRepository->method('findOneByCode')
-            ->willReturn($product)
-        ;
+        $productWithBundle = ProductMother::createWithBundle($productBundle);
 
-        $command = new AddProductBundleToCartCommand(0, '', 0);
-        $handler = $this->createHandler();
-        $handler($command);
+        return [
+            ['Expected a value other than null', null, null, 1],
+            ['Expected a value other than null.', OrderMother::create(), null, 1],
+            ['Expected a value to be true. Got: false', OrderMother::create(), ProductMother::create(), 1],
+            ['Expected a value greater than 0. Got: 0', OrderMother::create(), $productWithBundle, 0],
+        ];
     }
 
     public function testProcessCart(): void

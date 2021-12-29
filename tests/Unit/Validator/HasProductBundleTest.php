@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Validator;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Validator\HasProductBundle;
 use BitBag\SyliusProductBundlePlugin\Validator\HasProductBundleValidator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -47,25 +48,11 @@ final class HasProductBundleTest extends ConstraintValidatorTestCase
         $this->validator->validate($value, $constraint);
     }
 
-    public function testAddViolationIfProductDoesntExist(): void
+    /**
+     * @dataProvider pessimisticDataProvider
+     */
+    public function testPessimisticCase(?ProductInterface $product, ?string $violationMessage): void
     {
-        $this->productRepository->expects(self::once())
-            ->method('findOneByCode')
-            ->with(self::PRODUCT_CODE)
-            ->willReturn(null)
-        ;
-
-        $value = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
-        $constraint = new HasProductBundle();
-
-        $this->validator->validate($value, $constraint);
-
-        $this->buildViolation(HasProductBundle::PRODUCT_DOESNT_EXIST_MESSAGE)->assertRaised();
-    }
-
-    public function testAddViolationIfProductIsNotProductBundle(): void
-    {
-        $product = ProductMother::create();
         $this->productRepository->expects(self::once())
             ->method('findOneByCode')
             ->with(self::PRODUCT_CODE)
@@ -77,25 +64,20 @@ final class HasProductBundleTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($value, $constraint);
 
-        $this->buildViolation(HasProductBundle::NOT_A_BUNDLE_MESSAGE)->assertRaised();
+        if (null !== $violationMessage) {
+            $this->buildViolation($violationMessage)->assertRaised();
+        } else {
+            $this->assertNoViolation();
+        }
     }
 
-    public function testNoViolationIfProductIsProductBundle(): void
+    public function pessimisticDataProvider(): array
     {
-        $productBundle = ProductBundleMother::create();
-        $product = ProductMother::createWithBundle($productBundle);
-        $this->productRepository->expects(self::once())
-            ->method('findOneByCode')
-            ->with(self::PRODUCT_CODE)
-            ->willReturn($product)
-        ;
-
-        $value = new AddProductBundleToCartCommand(self::ORDER_ID, self::PRODUCT_CODE);
-        $constraint = new HasProductBundle();
-
-        $this->validator->validate($value, $constraint);
-
-        $this->assertNoViolation();
+        return [
+            [null, HasProductBundle::PRODUCT_DOESNT_EXIST_MESSAGE],
+            [ProductMother::create(), HasProductBundle::NOT_A_BUNDLE_MESSAGE],
+            [ProductMother::createWithBundle(ProductBundleMother::create()), null],
+        ];
     }
 
     protected function createValidator(): HasProductBundleValidator
