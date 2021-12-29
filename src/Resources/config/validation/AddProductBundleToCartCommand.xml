@@ -12,7 +12,7 @@
         https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
     <class name="BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand">
-        <constraint name="Sequentially">
+        <constraint name="BitBag\SyliusProductBundlePlugin\Validator\Sequentially">
             <constraint name="BitBag\SyliusProductBundlePlugin\Validator\HasExistingCart"/>
             <constraint name="BitBag\SyliusProductBundlePlugin\Validator\HasProductBundle"/>
             <constraint name="BitBag\SyliusProductBundlePlugin\Validator\HasAvailableProductBundle"/>

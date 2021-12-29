@@ -25,5 +25,8 @@
 
             <tag name="validator.constraint_validator" alias="bitbag_sylius_product_bundle_validator_has_product_bundle" />
         </service>
+        <service id="bitbag_sylius_product_bundle.validator.sequentially" class="BitBag\SyliusProductBundlePlugin\Validator\SequentiallyValidator">
+            <tag name="validator.constraint_validator" alias="bitbag_sylius_product_bundle_validator_sequentially" />
+        </service>
     </services>
 </container>
