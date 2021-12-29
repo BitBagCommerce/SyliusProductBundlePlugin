@@ -74,9 +74,9 @@ final class HasProductBundleTest extends ConstraintValidatorTestCase
     public function pessimisticDataProvider(): array
     {
         return [
-            [null, HasProductBundle::PRODUCT_DOESNT_EXIST_MESSAGE],
-            [ProductMother::create(), HasProductBundle::NOT_A_BUNDLE_MESSAGE],
-            [ProductMother::createWithBundle(ProductBundleMother::create()), null],
+            'product is a null' => [null, HasProductBundle::PRODUCT_DOESNT_EXIST_MESSAGE],
+            'product is not a bundle' => [ProductMother::create(), HasProductBundle::NOT_A_BUNDLE_MESSAGE],
+            'product is a bundle' => [ProductMother::createWithBundle(ProductBundleMother::create()), null],
         ];
     }
 

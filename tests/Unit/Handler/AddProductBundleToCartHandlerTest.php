@@ -88,10 +88,20 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $productWithBundle = ProductMother::createWithBundle($productBundle);
 
         return [
-            ['Expected a value other than null', null, null, 1],
-            ['Expected a value other than null.', OrderMother::create(), null, 1],
-            ['Expected a value to be true. Got: false', OrderMother::create(), ProductMother::create(), 1],
-            ['Expected a value greater than 0. Got: 0', OrderMother::create(), $productWithBundle, 0],
+            'order is a null' => ['Expected a value other than null', null, null, 1],
+            'product is a null' => ['Expected a value other than null.', OrderMother::create(), null, 1],
+            'product is not a bundle' => [
+                'Expected a value to be true. Got: false',
+                OrderMother::create(),
+                ProductMother::create(),
+                1
+            ],
+            'quantity is not greater than 0' => [
+                'Expected a value greater than 0. Got: 0',
+                OrderMother::create(),
+                $productWithBundle,
+                0
+            ],
         ];
     }
 

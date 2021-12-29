@@ -89,10 +89,10 @@ final class HasAvailableProductBundleValidatorTest extends ConstraintValidatorTe
 
     public function pessimisticDataProvider(): iterable
     {
-        yield $this->getProductDisabledCaseData();
-        yield $this->getProductVariantDisabledCaseData();
-        yield $this->getProductAndCartChannelsAreDifferentCaseData();
-        yield $this->getProductQuantityExceedsStockCaseData();
+        yield 'product is disabled' => $this->getProductDisabledCaseData();
+        yield 'product variant is disabled' => $this->getProductVariantDisabledCaseData();
+        yield 'product\'s channel and cart\'s channel are different' => $this->getProductAndCartChannelsAreDifferentCaseData();
+        yield 'product\'s quantity in the cart exceeds the stock' => $this->getProductQuantityExceedsStockCaseData();
     }
 
     private function getProductDisabledCaseData(): array
