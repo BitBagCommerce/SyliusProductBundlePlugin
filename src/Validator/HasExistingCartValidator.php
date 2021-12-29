@@ -41,10 +41,10 @@ final class HasExistingCartValidator extends ConstraintValidator
 
         $cart = $this->orderRepository->findCartById($value->getOrderId());
 
-        if (null === $cart) {
-            $this->context->addViolation(HasExistingCart::CART_DOESNT_EXIST_MESSAGE);
-
+        if (null !== $cart) {
             return;
         }
+
+        $this->context->addViolation(HasExistingCart::CART_DOESNT_EXIST_MESSAGE);
     }
 }
