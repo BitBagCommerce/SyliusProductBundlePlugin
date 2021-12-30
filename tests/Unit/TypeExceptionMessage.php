@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit;
 
-final class ExceptionMessage
+final class TypeExceptionMessage
 {
     public const EXPECTED_VALUE_OTHER_THAN_NULL = 'Expected a value other than null.';
 
