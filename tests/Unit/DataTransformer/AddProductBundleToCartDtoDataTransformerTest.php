@@ -20,6 +20,7 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\DataTransformer\AddProductBundleToCartDtoDataTransformer;
 use BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto;
 use PHPUnit\Framework\TestCase;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\ExceptionMessage;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\Api\AddProductBundleToCartDtoMother;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
 use Webmozart\Assert\InvalidArgumentException;
@@ -30,7 +31,7 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('Expected an instance of %s. Got: stdClass', AddProductBundleToCartDto::class)
+            sprintf(ExceptionMessage::EXPECTED_INSTANCE_OF_X_GOT_Y, AddProductBundleToCartDto::class, \stdClass::class)
         );
 
         $object = new \stdClass();
@@ -42,7 +43,7 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
     public function testThrowIfObjectToPopulateDoesntExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a value other than null.');
+        $this->expectExceptionMessage(ExceptionMessage::EXPECTED_VALUE_OTHER_THAN_NULL);
 
         $object = AddProductBundleToCartDtoMother::create('PRODUCT_CODE');
         $dataTransformer = new AddProductBundleToCartDtoDataTransformer();

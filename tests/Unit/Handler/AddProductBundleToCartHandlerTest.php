@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Tests\BitBag\SyliusProductBundlePlugin\Unit\ExceptionMessage;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\ProductBundleMother;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\ProductMother;
@@ -45,7 +46,7 @@ final class AddProductBundleToCartHandlerTest extends TestCase
     public function testThrowExceptionIfCartDoesntExist(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a value other than null.');
+        $this->expectExceptionMessage(ExceptionMessage::EXPECTED_VALUE_OTHER_THAN_NULL);
 
         $this->orderRepository->expects(self::once())
             ->method('findCartById')
@@ -88,8 +89,8 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         $productWithBundle = ProductMother::createWithBundle($productBundle);
 
         return [
-            'order is a null' => ['Expected a value other than null', null, null, 1],
-            'product is a null' => ['Expected a value other than null.', OrderMother::create(), null, 1],
+            'order is a null' => [ExceptionMessage::EXPECTED_VALUE_OTHER_THAN_NULL, null, null, 1],
+            'product is a null' => [ExceptionMessage::EXPECTED_VALUE_OTHER_THAN_NULL, OrderMother::create(), null, 1],
             'product is not a bundle' => [
                 'Expected a value to be true. Got: false',
                 OrderMother::create(),
