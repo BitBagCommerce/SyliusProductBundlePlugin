@@ -1,0 +1,14 @@
+{
+  "@context": "\/api\/v2\/contexts\/ProductBundle",
+  "@id": "\/api\/v2\/admin\/product-bundles\/@integer@",
+  "@type": "ProductBundle",
+  "id": "@integer@",
+  "product": "\/api\/v2\/admin\/products\/WHISKEY_DOUBLE_PACK",
+  "items": [
+    "\/api\/v2\/shop\/product-bundle-items\/@integer@",
+    "\/api\/v2\/shop\/product-bundle-items\/@integer@"
+  ],
+  "createdAt": "@datetime@",
+  "updatedAt": "@datetime@",
+  "isPacked": true
+}

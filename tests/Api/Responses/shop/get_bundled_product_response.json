@@ -1,0 +1,67 @@
+{
+  "@context": "\/api\/v2\/contexts\/Product",
+  "@id": "\/api\/v2\/shop\/products\/WHISKEY_DOUBLE_PACK",
+  "@type": "Product",
+  "productTaxons": "@*@",
+  "mainTaxon": "@string@||@null@",
+  "reviews": "@*@",
+  "averageRating": "@integer@",
+  "images": "@*@",
+  "id": "@integer@",
+  "code": "WHISKEY_DOUBLE_PACK",
+  "variants": "@*@",
+  "options": "@*@",
+  "createdAt": "@string@",
+  "updatedAt": "@string@",
+  "translations": "@json@",
+  "bundle": {
+    "@id": "\/api\/v2\/shop\/product-bundles\/@integer@",
+    "@type": "ProductBundle",
+    "items": [
+      {
+        "@type": "ProductBundleItem",
+        "@id": "@string@",
+        "productVariant": {
+          "@id": "\/api\/v2\/shop\/product-variants\/JOHNNY_WALKER_BLACK",
+          "@type": "ProductVariant",
+          "code": "JOHNNY_WALKER_BLACK",
+          "optionValues": "@*@",
+          "translations": {
+            "en_US": {
+              "@id": "/api/v2/shop/product-variant-translation/@integer@",
+              "@type": "ProductVariantTranslation",
+              "name": "Johnny Walker Black"
+            }
+          },
+          "price": 1000,
+          "inStock": true
+        },
+        "quantity": 1
+      },
+      {
+        "@type": "ProductBundleItem",
+        "@id": "@string@",
+        "productVariant": {
+          "@id": "\/api\/v2\/shop\/product-variants\/JACK_DANIELS_GENTLEMAN",
+          "@type": "ProductVariant",
+          "code": "JACK_DANIELS_GENTLEMAN",
+          "optionValues": "@*@",
+          "translations": {
+            "en_US": {
+              "@id": "/api/v2/shop/product-variant-translation/@integer@",
+              "@type": "ProductVariantTranslation",
+              "name": "Jack Daniel's Gentleman Jack"
+            }
+          },
+          "price": 1000,
+          "inStock": true
+        },
+        "quantity": 1
+      }
+    ],
+    "isPacked": true
+  },
+  "isBundle": true,
+  "description": "@string@",
+  "defaultVariant": "@string@"
+}

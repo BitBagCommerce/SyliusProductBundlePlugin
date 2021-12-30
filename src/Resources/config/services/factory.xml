@@ -6,5 +6,35 @@
             <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product.inner" />
             <argument type="service" id="bitbag_sylius_product_bundle.factory.product_bundle" />
         </service>
+        <service
+                id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item"
+                class="BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactory"
+                decorates="bitbag_sylius_product_bundle.factory.product_bundle_order_item"
+        >
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item.inner" />
+        </service>
+        <service
+                id="bitbag_sylius_product_bundle.custom_factory.order_item"
+                class="BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactory"
+                decorates="sylius.factory.order_item"
+                decoration-priority="128"
+        >
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.order_item.inner" />
+        </service>
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleItemToCartCommandFactory"
+        />
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_command"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartCommandFactory"
+        />
+        <service
+                id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_dto"
+                class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory"
+        >
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command" />
+        </service>
+
     </services>
 </container>

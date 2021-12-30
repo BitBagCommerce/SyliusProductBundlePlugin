@@ -10,53 +10,54 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Handler;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Webmozart\Assert\Assert;
 
 final class AddProductBundleToCartHandler implements MessageHandlerInterface
 {
-    /** @var FactoryInterface */
-    private $productBundleOrderItemFactory;
+    /** @var OrderRepositoryInterface */
+    private $orderRepository;
 
-    /** @var OrderModifierInterface */
-    private $orderModifier;
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
 
-    /** @var EntityManagerInterface */
-    private $orderEntityManager;
+    /** @var CartProcessorInterface */
+    private $cartProcessor;
 
     public function __construct(
-        FactoryInterface $productBundleOrderItemFactory,
-        OrderModifierInterface $orderModifier,
-        EntityManagerInterface $orderEntityManager
+        OrderRepositoryInterface $orderRepository,
+        ProductRepositoryInterface $productRepository,
+        CartProcessorInterface $cartItemProcessor
     ) {
-        $this->productBundleOrderItemFactory = $productBundleOrderItemFactory;
-        $this->orderModifier = $orderModifier;
-        $this->orderEntityManager = $orderEntityManager;
+        $this->orderRepository = $orderRepository;
+        $this->productRepository = $productRepository;
+        $this->cartProcessor = $cartItemProcessor;
     }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
     {
-        $cart = $addProductBundleToCartCommand->getCart();
-        $cartItem = $addProductBundleToCartCommand->getCartItem();
+        $cart = $this->orderRepository->findCartById($addProductBundleToCartCommand->getOrderId());
+        Assert::notNull($cart);
 
-        /** @var AddProductBundleItemToCartCommand $productBundleItem */
-        foreach ($addProductBundleToCartCommand->getProductBundleItems() as $productBundleItem) {
-            /** @var ProductBundleOrderItemInterface $productBundleOrderItem */
-            $productBundleOrderItem = $this->productBundleOrderItemFactory->createNew();
+        /** @var ProductInterface|null $product */
+        $product = $this->productRepository->findOneByCode($addProductBundleToCartCommand->getProductCode());
+        Assert::notNull($product);
+        Assert::true($product->isBundle());
 
-            $productBundleOrderItem->setProductVariant($productBundleItem->getProductVariant());
-            $productBundleOrderItem->setQuantity($productBundleItem->getQuantity());
-            $productBundleOrderItem->setProductBundleItem($productBundleItem->getProductBundleItem());
-            $cartItem->addProductBundleOrderItem($productBundleOrderItem);
-        }
+        /** @var ProductBundleInterface|null $productBundle */
+        $productBundle = $product->getProductBundle();
+        Assert::notNull($productBundle);
 
-        $this->orderModifier->addToOrder($cart, $cartItem);
-        $this->orderEntityManager->persist($cart);
-        $this->orderEntityManager->flush();
+        $quantity = $addProductBundleToCartCommand->getQuantity();
+        Assert::greaterThan($quantity, 0);
+
+        $this->cartProcessor->process($cart, $productBundle, $quantity);
+        $this->orderRepository->add($cart);
     }
 }

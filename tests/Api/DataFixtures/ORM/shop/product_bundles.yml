@@ -1,0 +1,120 @@
+Sylius\Component\Core\Model\ProductTranslation:
+    productTranslation (template):
+        locale: "en_US"
+        description: <paragraph(2)>
+        translatable: "@product<current()>"
+    productTranslation{1} (extends productTranslation):
+        name: "Johnny Walker Black"
+        slug: "johnny-walker-black"
+    productTranslation{2} (extends productTranslation):
+        name: "Jack Daniel's Gentleman Jack"
+        slug: "jack-daniels-gentleman-jack"
+    productTranslation{3} (extends productTranslation):
+        name: "Whiskey Double Pack"
+        slug: "whiskey-double-pack"
+    productTranslation{4} (extends productTranslation) :
+        name: "Johnny Walker Blue"
+        slug: "johnny-walker-blue"
+    productTranslation{5} (extends productTranslation) :
+        name: "Johnny Walker Bundle"
+        slug: "johnny-walker-bundle"
+    productTranslation{6} (extends productTranslation) :
+        name: "Johnny Walker Gold"
+        slug: "johnny-walker-gold"
+
+Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
+    product (template):
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        channels:
+            - "@channel_web"
+        translations:
+            - "@productTranslation<current()>"
+    product{1} (extends product):
+        code: "JOHNNY_WALKER_BLACK"
+    product{2} (extends product):
+        code: "JACK_DANIELS_GENTLEMAN"
+    product{3} (extends product):
+        code: "WHISKEY_DOUBLE_PACK"
+    product{4} (extends product):
+        code: "JOHNNY_WALKER_BLUE"
+    product{5} (extends product):
+        code: "JOHNNY_WALKER_BUNDLE"
+    product{6} (extends product):
+        code: "JOHNNY_WALKER_GOLD"
+
+Sylius\Component\Product\Model\ProductVariantTranslation:
+    productVariantTranslation (template):
+        locale: en_US
+        translatable: "@productVariant<current()>"
+    productVariantTranslation{1} (extends productVariantTranslation):
+        name: "Johnny Walker Black"
+    productVariantTranslation{2} (extends productVariantTranslation):
+        name: "Jack Daniel's Gentleman Jack"
+    productVariantTranslation{3} (extends productVariantTranslation):
+        name: "Whiskey Double Pack"
+    productVariantTranslation{4} (extends productVariantTranslation):
+        name: "Johnny Walker Blue"
+    productVariantTranslation{5} (extends productVariantTranslation):
+        name: "Johnny Walker Bundle"
+    productVariantTranslation{6} (extends productVariantTranslation):
+        name: "Johnny Walker Gold"
+
+Sylius\Component\Core\Model\ChannelPricing:
+    channelPricing (template):
+        productVariant: "@productVariant<current()>"
+        channelCode: "WEB"
+    channelPricing{1} (extends channelPricing):
+        price: 1000
+        originalPrice: 1000
+    channelPricing{2} (extends channelPricing):
+        price: 1000
+        originalPrice: 1000
+    channelPricing{3} (extends channelPricing):
+        price: 1800
+        originalPrice: 1800
+    channelPricing{4} (extends channelPricing):
+        price: 2000
+        originalPrice: 2000
+    channelPricing{5} (extends channelPricing):
+        price: 2500
+        originalPrice: 2500
+    channelPricing{6} (extends channelPricing):
+        price: 1000
+        originalPrice: 1000
+
+Sylius\Component\Core\Model\ProductVariant:
+    productVariant (template):
+        version: 1
+        product: "@product<current()>"
+        fallbackLocale: "en_US"
+        currentLocale: "en_US"
+        position: "<current()>"
+        translations:
+            - "@productVariantTranslation<current()>"
+    productVariant{1} (extends productVariant):
+        code: "JOHNNY_WALKER_BLACK"
+    productVariant{2} (extends productVariant):
+        code: "JACK_DANIELS_GENTLEMAN"
+    productVariant{3} (extends productVariant):
+        code: "WHISKEY_DOUBLE_PACK"
+    productVariant{4} (extends productVariant):
+        code: "JOHNNY_WALKER_BLUE"
+    productVariant{5} (extends productVariant):
+        code: "JOHNNY_WALKER_BUNDLE"
+    productVariant{6} (extends productVariant):
+        code: "JOHNNY_WALKER_GOLD"
+
+BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem:
+    productBundleItem{1..2}:
+        productVariant: "@productVariant<current()>"
+        quantity: 1
+        productBundle: "@productBundle1"
+
+BitBag\SyliusProductBundlePlugin\Entity\ProductBundle:
+    productBundle1:
+        product: "@product3"
+        productBundleItems:
+            - "@productBundleItem1"
+            - "@productBundleItem2"
+        isPackedProduct: true

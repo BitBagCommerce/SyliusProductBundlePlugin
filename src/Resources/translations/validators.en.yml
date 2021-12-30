@@ -1,4 +1,16 @@
 bitbag_sylius_product_bundle:
+    add_to_cart:
+        no_order_id_or_token: "Neither order's ID nor order's token provided."
+        cart_doesnt_exist: "Cart does not exist."
+        product_bundle_doesnt_exist: "Product bundle with id {{ id }} does not exist."
+        product_disabled: "Product with {{ code }} code is not enabled."
+        product_variant_disabled: "Product Variant with {{ code }} code is not enabled."
+        product_variant_insufficient_stock: "Product variant with {{ code }} code does not have sufficient stock."
+        product_doesnt_exist: "Product does not exist."
+        product_variant_doesnt_exist: "Product {{ code }} has no variant."
+        product_doesnt_exist_in_channel: "Channel {{ channel }} has no product with code {{ code }}."
+    product:
+        not_a_bundle: "Product has to be a bundle."
     product_bundle_item:
         product_variant:
             not_blank: Product variant cannot be blank.
