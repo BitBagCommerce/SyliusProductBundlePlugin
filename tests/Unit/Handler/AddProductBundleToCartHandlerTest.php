@@ -94,13 +94,13 @@ final class AddProductBundleToCartHandlerTest extends TestCase
                 'Expected a value to be true. Got: false',
                 OrderMother::create(),
                 ProductMother::create(),
-                1
+                1,
             ],
             'quantity is not greater than 0' => [
                 'Expected a value greater than 0. Got: 0',
                 OrderMother::create(),
                 $productWithBundle,
-                0
+                0,
             ],
         ];
     }

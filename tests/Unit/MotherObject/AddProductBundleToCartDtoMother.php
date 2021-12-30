@@ -11,9 +11,6 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject;
 
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
-use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use Sylius\Component\Core\Model\OrderInterface;
 
 final class AddProductBundleToCartDtoMother
 {

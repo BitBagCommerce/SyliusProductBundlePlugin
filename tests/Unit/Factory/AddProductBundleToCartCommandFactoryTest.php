@@ -14,9 +14,6 @@ use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartCommandFactory;
 use PHPUnit\Framework\TestCase;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\AddProductBundleToCartDtoMother;
-use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderItemMother;
-use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
-use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\ProductMother;
 
 final class AddProductBundleToCartCommandFactoryTest extends TestCase
 {
