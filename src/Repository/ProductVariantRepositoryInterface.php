@@ -14,7 +14,7 @@ use Sylius\Component\Product\Repository\ProductVariantRepositoryInterface as Bas
 
 interface ProductVariantRepositoryInterface extends BaseProductVariantRepositoryInterface
 {
-    public function findByPhrase(string $phrase, string $locale): array;
+    public function findByPhrase(string $phrase, string $locale, ?int $limit = null): array;
 
     public function findByCodes(array $codes): array;
 }

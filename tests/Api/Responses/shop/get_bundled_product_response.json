@@ -9,11 +9,12 @@
   "images": "@*@",
   "id": "@integer@",
   "code": "WHISKEY_DOUBLE_PACK",
+  "name": "@string@",
+  "slug": "@string@",
   "variants": "@*@",
   "options": "@*@",
   "createdAt": "@string@",
   "updatedAt": "@string@",
-  "translations": "@json@",
   "bundle": {
     "@id": "\/api\/v2\/shop\/product-bundles\/@integer@",
     "@type": "ProductBundle",
@@ -34,6 +35,7 @@
             }
           },
           "price": 1000,
+          "originalPrice": 1000,
           "inStock": true
         },
         "quantity": 1
@@ -54,6 +56,7 @@
             }
           },
           "price": 1000,
+          "originalPrice": 1000,
           "inStock": true
         },
         "quantity": 1
@@ -63,5 +66,6 @@
   },
   "isBundle": true,
   "description": "@string@",
+  "shortDescription": "@null@",
   "defaultVariant": "@string@"
 }
