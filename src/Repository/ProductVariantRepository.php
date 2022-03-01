@@ -14,7 +14,11 @@ use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository as BaseProduc
 
 class ProductVariantRepository extends BaseProductVariantRepository implements ProductVariantRepositoryInterface
 {
-    public function findByPhrase(string $phrase, string $locale, ?int $limit = null): array
+    public function findByPhrase(
+        string $phrase,
+        string $locale,
+        ?int $limit = null
+    ): array
     {
         $expr = $this->getEntityManager()->getExpressionBuilder();
 
