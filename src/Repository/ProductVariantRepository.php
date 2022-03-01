@@ -18,8 +18,7 @@ class ProductVariantRepository extends BaseProductVariantRepository implements P
         string $phrase,
         string $locale,
         ?int $limit = null
-    ): array
-    {
+    ): array {
         $expr = $this->getEntityManager()->getExpressionBuilder();
 
         return $this->createQueryBuilder('o')
