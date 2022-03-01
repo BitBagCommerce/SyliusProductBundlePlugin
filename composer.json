@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3 || ^8.0",
-        "sylius/sylius": "~1.10.0"
+        "sylius/sylius": "~1.10.0 || ~1.11.0"
     },
     "require-dev": {
         "ext-json": "*",
@@ -45,7 +45,12 @@
         "polishsymfonycommunity/symfony-mocker-container": "^1.0"
     },
     "conflict": {
-        "doctrine/orm": "^2.10.0"
+        "doctrine/dbal": "^3.0",
+        "symfony/symfony": "4.1.8",
+        "symfony/browser-kit": "4.1.8",
+        "symfony/dom-crawler": "4.1.8",
+        "symfony/routing": "4.1.8",
+        "symfony/doctrine-bridge": "4.4.16"
     },
     "autoload": {
         "psr-4": {
