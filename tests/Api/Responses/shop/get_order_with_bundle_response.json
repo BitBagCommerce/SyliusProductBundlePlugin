@@ -23,12 +23,14 @@
         "@type": "ProductVariant",
         "code": "WHISKEY_DOUBLE_PACK",
         "price": 1800,
+        "originalPrice": 1800,
         "inStock": true
       },
       "productName": "Whiskey Double Pack",
       "id": "@integer@",
       "quantity": 1,
       "unitPrice": 1800,
+      "originalUnitPrice": 0,
       "total": 1800,
       "productBundleOrderItems": [
         {
@@ -39,6 +41,7 @@
             "@type": "ProductVariant",
             "code": "@string@",
             "price": 1000,
+            "originalPrice": 1000,
             "inStock": true
           },
           "quantity": 1
@@ -51,11 +54,13 @@
             "@type": "ProductVariant",
             "code": "@string@",
             "price": 1000,
+            "originalPrice": 1000,
             "inStock": true
           },
           "quantity": 1
         }
       ],
+      "discountedUnitPrice": 1800,
       "subtotal": 1800
     }
   ],

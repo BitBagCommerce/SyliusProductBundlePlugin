@@ -21,6 +21,7 @@
           }
         },
         "price": 1000,
+        "originalPrice": 1000,
         "inStock": true
       },
       "quantity": 1
@@ -42,6 +43,7 @@
           }
         },
         "price": 1000,
+        "originalPrice": 1000,
         "inStock": true
       },
       "quantity": 1

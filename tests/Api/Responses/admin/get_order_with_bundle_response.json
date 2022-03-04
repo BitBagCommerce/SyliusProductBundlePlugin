@@ -24,6 +24,8 @@
       "productName": "Whiskey Double Pack",
       "id": "@integer@",
       "quantity": 1,
+      "unitPrice": 1800,
+      "originalUnitPrice": 0,
       "total": 1800,
       "productBundleOrderItems": [
         {
@@ -44,6 +46,7 @@
       "subtotal": 1800
     }
   ],
+  "itemsTotal": 1800,
   "total": 1800,
   "state": "new",
   "taxTotal": 0,
