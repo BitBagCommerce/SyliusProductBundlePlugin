@@ -5,8 +5,8 @@
     "description": "Product bundle for Sylius.",
     "license": "MIT",
     "require": {
-        "php": "^7.3 || ^8.0",
-        "sylius/sylius": "~1.10.0 || ~1.11.0"
+        "php": "^8.0",
+        "sylius/sylius": "~1.11.0"
     },
     "require-dev": {
         "ext-json": "*",
