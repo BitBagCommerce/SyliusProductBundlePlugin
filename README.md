@@ -109,7 +109,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    
    trait ProductTrait
    {
-   use ProductBundlesAwareTrait;
+       use ProductBundlesAwareTrait;
    
        /**
         * @var ProductBundleInterface
