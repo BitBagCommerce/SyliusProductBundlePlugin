@@ -65,5 +65,12 @@
             ]
         },
         "classmap": ["tests/Application/Kernel.php"]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
     }
 }
