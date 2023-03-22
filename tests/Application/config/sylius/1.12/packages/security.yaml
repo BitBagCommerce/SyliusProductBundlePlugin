@@ -11,6 +11,17 @@ security:
       id: sylius.shop_user_provider.email_or_name_based
 
   password_hashers:
+    argon2i:
+      algorithm: argon2i
+      migrate_from: { }
+      hash_algorithm: sha512
+      key_length: 40
+      ignore_case: false
+      encode_as_base64: true
+      iterations: 5000
+      cost: 10
+      memory_cost: null
+      time_cost: null
     Sylius\Component\User\Model\UserInterface: argon2i
   firewalls:
     admin:
@@ -94,7 +105,11 @@ security:
         invalidate_session: false
 
     dev:
-      pattern:  ^/(_(profiler|wdt)|css|images|js)/
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    image_resolver:
+      pattern: ^/media/cache/resolve
       security: false
 
   access_control:
@@ -102,8 +117,6 @@ security:
     - { path: "%sylius.security.admin_regex%/_partial", role: ROLE_NO_ACCESS }
     - { path: "%sylius.security.shop_regex%/_partial", role: PUBLIC_ACCESS, ips: [127.0.0.1, ::1] }
     - { path: "%sylius.security.shop_regex%/_partial", role: ROLE_NO_ACCESS }
-
-    - { path: "%sylius.security.admin_regex%/forgotten-password", role: PUBLIC_ACCESS }
 
     - { path: "%sylius.security.admin_regex%/login", role: PUBLIC_ACCESS }
     - { path: "%sylius.security.shop_regex%/login", role: PUBLIC_ACCESS }
