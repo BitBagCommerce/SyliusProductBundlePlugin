@@ -27,6 +27,10 @@ jobs:
         node: [14.x]
         mysql: [5.7]
 
+        exclude:
+          - sylius: ~1.11.0
+            symfony: ^6.0
+
     env:
       APP_ENV: test
       DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
@@ -110,6 +114,10 @@ jobs:
         name: Get Yarn cache directory
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Copy package.json.dist to package.json
+        if: matrix.sylius != ''
+        run: (cd tests/Application && cp package.json.\${{ matrix.sylius }}.dist package.json)
 
       -
         name: Cache Yarn
