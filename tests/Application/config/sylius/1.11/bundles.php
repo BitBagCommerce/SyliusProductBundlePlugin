@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 $bundles = [
-    Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true]
+    Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true]
 ];
 
 if (class_exists('BabDev\PagerfantaBundle\BabDevPagerfantaBundle')) {
