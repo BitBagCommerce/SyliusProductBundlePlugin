@@ -12,7 +12,7 @@
         "@type": "ProductVariant",
         "code": "JOHNNY_WALKER_BLACK",
         "product": "\/api\/v2\/shop\/products\/JOHNNY_WALKER_BLACK",
-        "optionValues": "@*@",
+        "optionValues": "@...@",
         "translations": {
           "en_US": {
             "@id": "/api/v2/shop/product-variant-translation/@integer@",
@@ -34,7 +34,7 @@
         "@type": "ProductVariant",
         "code": "JACK_DANIELS_GENTLEMAN",
         "product": "\/api\/v2\/shop\/products\/JACK_DANIELS_GENTLEMAN",
-        "optionValues": "@*@",
+        "optionValues": "@...@",
         "translations": {
           "en_US": {
             "@id": "/api/v2/shop/product-variant-translation/@integer@",
