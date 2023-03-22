@@ -7,45 +7,13 @@
     {
       "@type": "ProductBundleItem",
       "@id": "@string@",
-      "productVariant": {
-        "@id": "/api/v2/shop/product-variants/JOHNNY_WALKER_BLACK",
-        "@type": "ProductVariant",
-        "code": "JOHNNY_WALKER_BLACK",
-        "product": "\/api\/v2\/shop\/products\/JOHNNY_WALKER_BLACK",
-        "optionValues": "@...@",
-        "translations": {
-          "en_US": {
-            "@id": "/api/v2/shop/product-variant-translation/@integer@",
-            "@type": "ProductVariantTranslation",
-            "name": "Johnny Walker Black"
-          }
-        },
-        "price": 1000,
-        "originalPrice": 1000,
-        "inStock": true
-      },
+      "productVariant": "@...@",
       "quantity": 1
     },
     {
       "@type": "ProductBundleItem",
       "@id": "@string@",
-      "productVariant": {
-        "@id": "/api/v2/shop/product-variants/JACK_DANIELS_GENTLEMAN",
-        "@type": "ProductVariant",
-        "code": "JACK_DANIELS_GENTLEMAN",
-        "product": "\/api\/v2\/shop\/products\/JACK_DANIELS_GENTLEMAN",
-        "optionValues": "@...@",
-        "translations": {
-          "en_US": {
-            "@id": "@integer@",
-            "@type": "ProductVariantTranslation",
-            "name": "Jack Daniel's Gentleman Jack"
-          }
-        },
-        "price": 1000,
-        "originalPrice": 1000,
-        "inStock": true
-      },
+      "productVariant": "@...@",
       "quantity": 1
     }
   ],
