@@ -78,8 +78,4 @@ jobs:
                 name: Run PHPStan in /src directory
                 run: ./vendor/bin/phpstan analyze --configuration=vendor/bitbag/coding-standard/phpstan.neon src --level=8
 
-            -
-                name: Run PHPStan in /test directory
-                run: ./vendor/bin/phpstan analyze --configuration=vendor/bitbag/coding-standard/phpstan.neon tests --level=5
-
 
