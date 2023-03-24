@@ -23,7 +23,7 @@ bitbag_product_bundle_admin_product_create_bundle:
                     name: bitbag_product_bundle_admin_product_create_bundle
 
 bitbag_product_bundle_admin_ajax_product_variants_by_phrase:
-    path: /ajax/product-variants/search-by-pharse
+    path: /ajax/product-variants/search-by-phrase
     methods: [GET]
     defaults:
         _controller: sylius.controller.product_variant:indexAction
