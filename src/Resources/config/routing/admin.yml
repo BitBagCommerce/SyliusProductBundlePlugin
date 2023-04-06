@@ -2,7 +2,7 @@ bitbag_product_bundle_admin_product_create_bundle:
     path: /products/new/bundle
     methods: [GET, POST]
     defaults:
-        _controller: sylius.controller.product:createAction
+        _controller: sylius.controller.product::createAction
         _sylius:
             section: admin
             permission: true
@@ -26,7 +26,7 @@ bitbag_product_bundle_admin_ajax_product_variants_by_phrase:
     path: /ajax/product-variants/search-by-phrase
     methods: [GET]
     defaults:
-        _controller: sylius.controller.product_variant:indexAction
+        _controller: sylius.controller.product_variant::indexAction
         _format: json
         _sylius:
             serialization_groups: [Autocomplete]
@@ -41,7 +41,7 @@ bitbag_product_bundle_admin_ajax_product_variants_by_codes:
     path: /ajax/product-variants/by-codes
     methods: [GET]
     defaults:
-        _controller: sylius.controller.product_variant:indexAction
+        _controller: sylius.controller.product_variant::indexAction
         _format: json
         _sylius:
             serialization_groups: [Autocomplete]
