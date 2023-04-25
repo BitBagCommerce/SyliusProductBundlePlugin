@@ -3,7 +3,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
-    <entity name="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle" table="bitbag_product_bundle">
+    <mapped-superclass name="BitBag\SyliusProductBundlePlugin\Entity\ProductBundle" table="bitbag_product_bundle">
         <id name="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
@@ -30,6 +30,6 @@
                 <cascade-all />
             </cascade>
         </one-to-many>
-    </entity>
+    </mapped-superclass>
 
 </doctrine-mapping>
