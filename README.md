@@ -92,9 +92,10 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareInterface;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
+    use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
     use Sylius\Component\Core\Model\Product as BaseProduct;
 
-    class Product extends BaseProduct implements ProductBundlesAwareInterface
+    class Product extends BaseProduct implements ProductInterface
     {
         use ProductBundlesAwareTrait;  
     }
@@ -159,7 +160,6 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    
    class OrderItem extends BaseOrderItem implements OrderItemInterface
    {
-   
        use ProductBundleOrderItemsAwareTrait;
    
        public function __construct()
@@ -283,11 +283,23 @@ This **open-source plugin was developed to help the Sylius community**. If you h
                 alias: App
    
     
-    ``` 
-
-10. Finish the installation by updating the database schema and installing assets:
-
     ```
+    
+10. Copy plugin templates into your project `templates/bundles` directory:
+
+    ```bash
+    $ cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
+    ```
+    
+11. Please clear application cache by running command below:
+
+    ```bash
+    $ bin/console cache:clear
+    ```
+
+12. Finish the installation by updating the database schema and installing assets:
+
+    ```bash
     $ bin/console doctrine:migrations:diff
     $ bin/console doctrine:migrations:migrate
     ```
