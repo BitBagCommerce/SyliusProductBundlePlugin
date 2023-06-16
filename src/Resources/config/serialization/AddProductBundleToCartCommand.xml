@@ -11,7 +11,10 @@
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
     <class name="BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand">
-        <attribute name="orderToken">
+        <attribute name="orderId">
+            <group>shop:product_bundle:add_to_cart</group>
+        </attribute>
+        <attribute name="productCode">
             <group>shop:product_bundle:add_to_cart</group>
         </attribute>
         <attribute name="quantity">
