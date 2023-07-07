@@ -25,7 +25,8 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         private OrderRepositoryInterface $orderRepository,
         private ProductRepositoryInterface $productRepository,
         private CartProcessorInterface $cartProcessor
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void
     {

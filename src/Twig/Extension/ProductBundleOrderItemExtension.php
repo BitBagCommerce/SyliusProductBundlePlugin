@@ -22,7 +22,8 @@ final class ProductBundleOrderItemExtension extends AbstractExtension
     public function __construct(
         private RepositoryInterface $productBundleOrderItemRepository,
         private Environment $twig
-    ) {}
+    ) {
+    }
 
     public function getFunctions(): array
     {

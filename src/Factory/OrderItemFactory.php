@@ -20,7 +20,8 @@ final class OrderItemFactory implements OrderItemFactoryInterface
 {
     public function __construct(
         private CartItemFactoryInterface $decoratedFactory
-    ) {}
+    ) {
+    }
 
     public function createNew(): OrderItemInterface
     {

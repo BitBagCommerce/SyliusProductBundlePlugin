@@ -22,7 +22,8 @@ final class AddProductBundleToCartDtoFactory implements AddProductBundleToCartDt
 {
     public function __construct(
         private AddProductBundleItemToCartCommandFactoryInterface $addProductBundleItemToCartCommandFactory
-    ) {}
+    ) {
+    }
 
     public function createNew(
         OrderInterface $order,

@@ -22,7 +22,8 @@ final class HasProductBundleValidator extends ConstraintValidator
 {
     public function __construct(
         private ProductRepositoryInterface $productRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param ProductCodeAwareInterface|mixed $value

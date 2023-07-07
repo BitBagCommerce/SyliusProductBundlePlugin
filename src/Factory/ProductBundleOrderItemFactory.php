@@ -18,7 +18,8 @@ final class ProductBundleOrderItemFactory implements ProductBundleOrderItemFacto
 {
     public function __construct(
         private FactoryInterface $decoratedFactory
-    ) {}
+    ) {
+    }
 
     public function createNew(): ProductBundleOrderItemInterface
     {

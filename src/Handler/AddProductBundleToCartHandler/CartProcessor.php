@@ -26,7 +26,8 @@ final class CartProcessor implements CartProcessorInterface
         private ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
         private OrderModifierInterface $orderModifier,
         private OrderItemFactoryInterface $cartItemFactory
-    ) {}
+    ) {
+    }
 
     public function process(
         OrderInterface $cart,

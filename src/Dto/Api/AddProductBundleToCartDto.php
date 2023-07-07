@@ -18,7 +18,8 @@ final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
         private string $productCode,
         private int $quantity = 1,
         private ?string $orderTokenValue = null
-    ) {}
+    ) {
+    }
 
     public function getOrderTokenValue(): ?string
     {

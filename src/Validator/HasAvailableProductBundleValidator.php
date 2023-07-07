@@ -29,7 +29,8 @@ final class HasAvailableProductBundleValidator extends ConstraintValidator
         private ProductRepositoryInterface $productRepository,
         private OrderRepositoryInterface $orderRepository,
         private AvailabilityCheckerInterface $availabilityChecker
-    ) {}
+    ) {
+    }
 
     /**
      * @param AddProductBundleToCartCommand|mixed $value

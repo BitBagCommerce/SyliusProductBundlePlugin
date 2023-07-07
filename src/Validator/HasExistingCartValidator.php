@@ -21,7 +21,8 @@ final class HasExistingCartValidator extends ConstraintValidator
 {
     public function __construct(
         private OrderRepositoryInterface $orderRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param OrderIdentityAwareInterface|mixed $value

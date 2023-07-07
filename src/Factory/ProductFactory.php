@@ -21,7 +21,8 @@ final class ProductFactory implements ProductFactoryInterface
     public function __construct(
         private DecoratedProductFactoryInterface $decoratedFactory,
         private FactoryInterface $productBundleFactory
-    ) {}
+    ) {
+    }
 
     public function createWithVariantAndBundle(): BaseProductInterface
     {

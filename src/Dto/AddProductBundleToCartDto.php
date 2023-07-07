@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Dto;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Command\ProductCodeAwareInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;

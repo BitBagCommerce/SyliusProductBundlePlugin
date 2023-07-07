@@ -16,7 +16,8 @@ final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface
         private int $orderId,
         private string $productCode,
         private int $quantity = 1
-    ) {}
+    ) {
+    }
 
     public function getOrderId(): int
     {
