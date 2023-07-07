@@ -18,7 +18,8 @@ class ProductBundleContext implements Context
 {
     public function __construct(
         private CreateBundledProductPageInterface $createBundledProductPage,
-    ) {}
+    ) {
+    }
 
     /**
      * @When I want to create a new bundled product
@@ -41,7 +42,7 @@ class ProductBundleContext implements Context
      */
     public function iRenameItToIn(?string $name = null, ?string $language = null): void
     {
-        if ($name !== null && $language !== null) {
+        if (null !== $name && null !== $language) {
             $this->createBundledProductPage->nameItIn($name, $language);
         }
     }

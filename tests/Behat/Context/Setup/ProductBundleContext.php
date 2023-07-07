@@ -40,7 +40,8 @@ final class ProductBundleContext implements Context
         private FactoryInterface $channelPricingFactory,
         private ProductVariantResolverInterface $productVariantResolver,
         private SlugGeneratorInterface $slugGenerator
-    ) {}
+    ) {
+    }
 
     /**
      * @Given /^the store has bundled product "([^"]*)" priced at ("[^"]+") which contains "([^"]*)" and "([^"]*)"$/

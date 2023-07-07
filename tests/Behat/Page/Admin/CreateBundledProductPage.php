@@ -83,15 +83,14 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
             $dropdown->waitFor(5, fn () => $this->hasElement('product_selector_dropdown_item'));
 
             $item = $this->getElement('product_selector_dropdown_item', [
-                '%item%' => $productName
+                '%item%' => $productName,
             ]);
             $item->click();
 
             $this->getElement('product_selector_quantity', ['%productCounter%' => $productCounter])->setValue('1');
 
-            $productCounter++;
+            ++$productCounter;
         }
-
     }
 
     protected function getDefinedElements(): array
@@ -127,5 +126,4 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
 
         return end($items);
     }
-
 }

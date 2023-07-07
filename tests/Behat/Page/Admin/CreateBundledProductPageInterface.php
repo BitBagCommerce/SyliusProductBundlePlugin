@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin;
 
 use Sylius\Behat\Page\Admin\Crud\CreatePageInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Product\Model\ProductInterface;
 
 interface CreateBundledProductPageInterface extends CreatePageInterface
 {
