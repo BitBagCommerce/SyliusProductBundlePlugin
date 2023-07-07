@@ -14,9 +14,9 @@ use Symfony\Component\Validator\Constraints\Composite;
 
 final class Sequentially extends Composite
 {
-    public function __construct(public ?array $constraints = [])
+    public function __construct(public ?array $constraints = null)
     {
-        parent::__construct($constraints);
+        parent::__construct($constraints ?? []);
     }
 
     public function getDefaultOption(): string
