@@ -16,13 +16,9 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ProductBundleOrderItemFactory implements ProductBundleOrderItemFactoryInterface
 {
-    /** @var FactoryInterface */
-    private $decoratedFactory;
-
-    public function __construct(FactoryInterface $decoratedFactory)
-    {
-        $this->decoratedFactory = $decoratedFactory;
-    }
+    public function __construct(
+        private FactoryInterface $decoratedFactory
+    ) {}
 
     public function createNew(): ProductBundleOrderItemInterface
     {

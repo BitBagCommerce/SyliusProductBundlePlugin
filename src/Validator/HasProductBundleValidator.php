@@ -20,13 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class HasProductBundleValidator extends ConstraintValidator
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
+    public function __construct(
+        private ProductRepositoryInterface $productRepository
+    ) {}
 
     /**
      * @param ProductCodeAwareInterface|mixed $value

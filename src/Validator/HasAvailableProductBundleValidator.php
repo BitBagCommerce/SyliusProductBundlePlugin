@@ -25,24 +25,11 @@ use Webmozart\Assert\Assert;
 
 final class HasAvailableProductBundleValidator extends ConstraintValidator
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var OrderRepositoryInterface */
-    private $orderRepository;
-
-    /** @var AvailabilityCheckerInterface */
-    private $availabilityChecker;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        OrderRepositoryInterface $orderRepository,
-        AvailabilityCheckerInterface $availabilityChecker
-    ) {
-        $this->productRepository = $productRepository;
-        $this->orderRepository = $orderRepository;
-        $this->availabilityChecker = $availabilityChecker;
-    }
+        private ProductRepositoryInterface $productRepository,
+        private OrderRepositoryInterface $orderRepository,
+        private AvailabilityCheckerInterface $availabilityChecker
+    ) {}
 
     /**
      * @param AddProductBundleToCartCommand|mixed $value

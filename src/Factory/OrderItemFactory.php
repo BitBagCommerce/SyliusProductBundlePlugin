@@ -18,13 +18,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class OrderItemFactory implements OrderItemFactoryInterface
 {
-    /** @var CartItemFactoryInterface */
-    private $decoratedFactory;
-
-    public function __construct(CartItemFactoryInterface $decoratedFactory)
-    {
-        $this->decoratedFactory = $decoratedFactory;
-    }
+    public function __construct(
+        private CartItemFactoryInterface $decoratedFactory
+    ) {}
 
     public function createNew(): OrderItemInterface
     {

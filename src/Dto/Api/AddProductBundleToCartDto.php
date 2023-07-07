@@ -14,20 +14,11 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 
 final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
 {
-    /** @var string|null */
-    private $orderTokenValue;
-
-    /** @var string */
-    private $productCode;
-
-    /** @var int */
-    private $quantity;
-
-    public function __construct(string $productCode, int $quantity = 1)
-    {
-        $this->productCode = $productCode;
-        $this->quantity = $quantity;
-    }
+    public function __construct(
+        private string $productCode,
+        private int $quantity = 1,
+        private ?string $orderTokenValue = null
+    ) {}
 
     public function getOrderTokenValue(): ?string
     {

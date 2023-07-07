@@ -18,17 +18,10 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ProductFactory implements ProductFactoryInterface
 {
-    /** @var DecoratedProductFactoryInterface */
-    private $decoratedFactory;
-
-    /** @var FactoryInterface */
-    private $productBundleFactory;
-
-    public function __construct(DecoratedProductFactoryInterface $decoratedFactory, FactoryInterface $productBundleFactory)
-    {
-        $this->decoratedFactory = $decoratedFactory;
-        $this->productBundleFactory = $productBundleFactory;
-    }
+    public function __construct(
+        private DecoratedProductFactoryInterface $decoratedFactory,
+        private FactoryInterface $productBundleFactory
+    ) {}
 
     public function createWithVariantAndBundle(): BaseProductInterface
     {
