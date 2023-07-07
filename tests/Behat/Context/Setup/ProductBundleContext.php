@@ -29,59 +29,18 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ProductBundleContext implements Context
 {
-    /** @var SharedStorageInterface */
-    private $sharedStorage;
-
-    /** @var FactoryInterface */
-    private $taxonFactory;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var FactoryInterface */
-    private $productTaxonFactory;
-
-    /** @var EntityManagerInterface */
-    private $productTaxonManager;
-
-    /** @var ProductFactory */
-    private $productFactory;
-
-    /** @var FactoryInterface */
-    private $productBundleItemFactory;
-
-    /** @var FactoryInterface */
-    private $channelPricingFactory;
-
-    /** @var ProductVariantResolverInterface */
-    private $productVariantResolver;
-
-    /** @var SlugGeneratorInterface */
-    private $slugGenerator;
-
     public function __construct(
-        SharedStorageInterface $sharedStorage,
-        FactoryInterface $taxonFactory,
-        ProductRepositoryInterface $productRepository,
-        FactoryInterface $productTaxonFactory,
-        EntityManagerInterface $productTaxonManager,
-        ProductFactory $productFactory,
-        FactoryInterface $productBundleItemFactory,
-        FactoryInterface $channelPricingFactory,
-        ProductVariantResolverInterface $productVariantResolver,
-        SlugGeneratorInterface $slugGenerator
-    ) {
-        $this->sharedStorage = $sharedStorage;
-        $this->taxonFactory = $taxonFactory;
-        $this->productRepository = $productRepository;
-        $this->productTaxonFactory = $productTaxonFactory;
-        $this->productTaxonManager = $productTaxonManager;
-        $this->productFactory = $productFactory;
-        $this->productBundleItemFactory = $productBundleItemFactory;
-        $this->channelPricingFactory = $channelPricingFactory;
-        $this->productVariantResolver = $productVariantResolver;
-        $this->slugGenerator = $slugGenerator;
-    }
+        private SharedStorageInterface $sharedStorage,
+        private FactoryInterface $taxonFactory,
+        private ProductRepositoryInterface $productRepository,
+        private FactoryInterface $productTaxonFactory,
+        private EntityManagerInterface $productTaxonManager,
+        private ProductFactory $productFactory,
+        private FactoryInterface $productBundleItemFactory,
+        private FactoryInterface $channelPricingFactory,
+        private ProductVariantResolverInterface $productVariantResolver,
+        private SlugGeneratorInterface $slugGenerator
+    ) {}
 
     /**
      * @Given /^the store has bundled product "([^"]*)" priced at ("[^"]+") which contains "([^"]*)" and "([^"]*)"$/
