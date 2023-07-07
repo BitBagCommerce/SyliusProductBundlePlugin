@@ -28,9 +28,11 @@ final class SequentiallyValidator extends ConstraintValidator
 
         $originalCount = $validator->getViolations()->count();
 
-        foreach ($constraint->constraints as $c) {
-            if ($originalCount !== $validator->validate($value, $c)->getViolations()->count()) {
-                break;
+        if (is_iterable($constraint->constraints)) {
+            foreach ($constraint->constraints as $c) {
+                if ($originalCount !== $validator->validate($value, $c)->getViolations()->count()) {
+                    break;
+                }
             }
         }
     }
