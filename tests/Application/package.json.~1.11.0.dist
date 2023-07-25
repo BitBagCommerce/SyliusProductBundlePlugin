@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
+    "@babel/polyfill": "^7.0.0",
     "chart.js": "^2.9.3",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jquery.dirtyforms": "^2.0.0",
     "lightbox2": "^2.9.0",
     "semantic-ui-css": "^2.2.0",
@@ -28,7 +28,9 @@
   "scripts": {
     "dev": "yarn encore dev",
     "watch": "yarn encore dev --watch",
-    "prod": "yarn encore prod"
+    "prod": "yarn encore prod",
+    "lint": "yarn lint:js",
+    "lint:js": "eslint gulpfile.babel.js"
   },
   "repository": {
     "type": "git",
