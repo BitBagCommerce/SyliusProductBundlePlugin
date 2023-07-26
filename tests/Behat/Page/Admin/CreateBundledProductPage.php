@@ -13,7 +13,6 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin;
 use Behat\Mink\Element\NodeElement;
 use Sylius\Behat\Page\Admin\Crud\CreatePage;
 use Sylius\Behat\Service\DriverHelper;
-use Sylius\Behat\Service\SlugGenerationHelper;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Webmozart\Assert\Assert;
 
