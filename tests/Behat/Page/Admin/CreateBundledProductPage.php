@@ -112,7 +112,7 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
 
     private function getLastProductAutocomplete(): NodeElement
     {
-        $items = $this->getDocument()->findAll('css', '#add_product_to_bundle_autocomplete_xyz');
+        $items = $this->getDocument()->findAll('css', '#add_product_to_bundle_autocomplete');
 
         Assert::notEmpty($items);
 
