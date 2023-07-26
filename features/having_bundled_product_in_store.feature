@@ -25,8 +25,7 @@ Feature: Having a product in store which is a bundle of other products
       And the store has bundled product "Jim Beam double pack" priced at "$18.00" which contains "Jim Beam" and "Jim Beam Double Oak"
       And all store products appear under a main taxonomy
       Then I added product "Jim Beam double pack" to the cart
-      And I specify product "Jim Beam double pack" quantity to 5
-      And I should be on my cart summary page
+      And I change product "Jim Beam double pack" quantity to 5 in my cart
       And I should see "Jim Beam double pack" with quantity 5 in my cart
 
     @ui
