@@ -29,13 +29,6 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
         $this->clickTabIfItsNotActive('details');
         $this->activateLanguageTab($localeCode);
         $this->getElement('name', ['%locale%' => $localeCode])->setValue($name);
-
-//        if (DriverHelper::isJavascript($this->getDriver())) {
-//            SlugGenerationHelper::waitForSlugGeneration(
-//                $this->getSession(),
-//                $this->getElement('slug', ['%locale%' => $localeCode]),
-//            );
-//        }
     }
 
     public function specifySlugIn(?string $slug, string $locale): void
@@ -78,7 +71,7 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
             $addSelector->click();
             $addSelector->waitFor(5, fn () => $this->hasElement('product_selector_dropdown'));
 
-            $dropdown = $this->getLastImageElement();
+            $dropdown = $this->getLastProductAutocomplete();
             $dropdown->click();
             $dropdown->waitFor(5, fn () => $this->hasElement('product_selector_dropdown_item'));
 
@@ -118,9 +111,9 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
         }
     }
 
-    private function getLastImageElement(): NodeElement
+    private function getLastProductAutocomplete(): NodeElement
     {
-        $items = $this->getDocument()->findAll('css', '#add_product_to_bundle_autocomplete');
+        $items = $this->getDocument()->findAll('css', '#add_product_to_bundle_autocomplete_xyz');
 
         Assert::notEmpty($items);
 
