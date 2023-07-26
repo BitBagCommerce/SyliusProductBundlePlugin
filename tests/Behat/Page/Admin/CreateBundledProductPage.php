@@ -30,12 +30,12 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
         $this->activateLanguageTab($localeCode);
         $this->getElement('name', ['%locale%' => $localeCode])->setValue($name);
 
-        if (DriverHelper::isJavascript($this->getDriver())) {
-            SlugGenerationHelper::waitForSlugGeneration(
-                $this->getSession(),
-                $this->getElement('slug', ['%locale%' => $localeCode]),
-            );
-        }
+//        if (DriverHelper::isJavascript($this->getDriver())) {
+//            SlugGenerationHelper::waitForSlugGeneration(
+//                $this->getSession(),
+//                $this->getElement('slug', ['%locale%' => $localeCode]),
+//            );
+//        }
     }
 
     public function specifySlugIn(?string $slug, string $locale): void
