@@ -19,12 +19,9 @@ use Webmozart\Assert\Assert;
 
 final class HasExistingCartValidator extends ConstraintValidator
 {
-    /** @var OrderRepositoryInterface */
-    private $orderRepository;
-
-    public function __construct(OrderRepositoryInterface $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
+    public function __construct(
+        private OrderRepositoryInterface $orderRepository
+    ) {
     }
 
     /**

@@ -21,23 +21,11 @@ use Webmozart\Assert\Assert;
 
 final class AddProductBundleToCartHandler implements MessageHandlerInterface
 {
-    /** @var OrderRepositoryInterface */
-    private $orderRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var CartProcessorInterface */
-    private $cartProcessor;
-
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
-        ProductRepositoryInterface $productRepository,
-        CartProcessorInterface $cartItemProcessor
+        private OrderRepositoryInterface $orderRepository,
+        private ProductRepositoryInterface $productRepository,
+        private CartProcessorInterface $cartProcessor
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->productRepository = $productRepository;
-        $this->cartProcessor = $cartItemProcessor;
     }
 
     public function __invoke(AddProductBundleToCartCommand $addProductBundleToCartCommand): void

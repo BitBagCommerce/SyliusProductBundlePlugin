@@ -36,7 +36,7 @@
             </table>
 
             {% if prototype is defined and allow_add %}
-                <a href="#" class="ui labeled icon button" data-form-collection="add">
+                <a href="#" class="ui labeled icon button" data-form-collection="add" id="bitbag_add_product_to_bundle_button">
                     <i class="plus square outline icon"></i>
                     {{ button_add_label|trans }}
                 </a>
@@ -49,7 +49,7 @@
     {% apply spaceless %}
         <tr data-form-collection="item" data-form-collection-index="{{ index }}">
             <td>
-                {{ form_row(form.productVariant, {'remote_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_phrase'), 'remote_criteria_type': 'contains', 'remote_criteria_name': 'phrase', 'load_edit_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_codes')}) }}
+                <div id="add_product_to_bundle_autocomplete"> {{ form_row(form.productVariant, {'remote_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_phrase'), 'remote_criteria_type': 'contains', 'remote_criteria_name': 'phrase', 'load_edit_url': path('bitbag_product_bundle_admin_ajax_product_variants_by_codes')}) }} </div>
             </td>
             <td>
                 {{ form_row(form.quantity) }}

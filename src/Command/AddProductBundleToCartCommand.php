@@ -12,23 +12,11 @@ namespace BitBag\SyliusProductBundlePlugin\Command;
 
 final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface, ProductCodeAwareInterface
 {
-    /** @var int */
-    private $orderId;
-
-    /** @var string */
-    private $productCode;
-
-    /** @var int */
-    private $quantity;
-
     public function __construct(
-        int $orderId,
-        string $productCode,
-        int $quantity = 1
+        private int $orderId,
+        private string $productCode,
+        private int $quantity = 1
     ) {
-        $this->orderId = $orderId;
-        $this->productCode = $productCode;
-        $this->quantity = $quantity;
     }
 
     public function getOrderId(): int

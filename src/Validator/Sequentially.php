@@ -14,10 +14,7 @@ use Symfony\Component\Validator\Constraints\Composite;
 
 final class Sequentially extends Composite
 {
-    /** @var array */
-    public $constraints = [];
-
-    public function __construct(?array $constraints = null)
+    public function __construct(public ?array $constraints = null)
     {
         parent::__construct($constraints ?? []);
     }

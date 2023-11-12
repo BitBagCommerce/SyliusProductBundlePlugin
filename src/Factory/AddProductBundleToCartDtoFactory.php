@@ -20,12 +20,9 @@ use Sylius\Component\Order\Model\OrderInterface;
 
 final class AddProductBundleToCartDtoFactory implements AddProductBundleToCartDtoFactoryInterface
 {
-    /** @var AddProductBundleItemToCartCommandFactoryInterface */
-    private $addProductBundleItemToCartCommandFactory;
-
-    public function __construct(AddProductBundleItemToCartCommandFactoryInterface $addProductBundleItemToCartCommandFactory)
-    {
-        $this->addProductBundleItemToCartCommandFactory = $addProductBundleItemToCartCommandFactory;
+    public function __construct(
+        private AddProductBundleItemToCartCommandFactoryInterface $addProductBundleItemToCartCommandFactory
+    ) {
     }
 
     public function createNew(

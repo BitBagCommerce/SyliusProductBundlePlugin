@@ -21,28 +21,12 @@ use Webmozart\Assert\Assert;
 
 final class CartProcessor implements CartProcessorInterface
 {
-    /** @var OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
-
-    /** @var ProductBundleOrderItemFactoryInterface */
-    private $productBundleOrderItemFactory;
-
-    /** @var OrderModifierInterface */
-    private $orderModifier;
-
-    /** @var OrderItemFactoryInterface */
-    private $cartItemFactory;
-
     public function __construct(
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
-        OrderModifierInterface $orderModifier,
-        OrderItemFactoryInterface $cartItemFactory
+        private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        private ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
+        private OrderModifierInterface $orderModifier,
+        private OrderItemFactoryInterface $cartItemFactory
     ) {
-        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
-        $this->productBundleOrderItemFactory = $productBundleOrderItemFactory;
-        $this->orderModifier = $orderModifier;
-        $this->cartItemFactory = $cartItemFactory;
     }
 
     public function process(

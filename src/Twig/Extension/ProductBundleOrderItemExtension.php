@@ -19,16 +19,10 @@ use Twig\TwigFunction;
 
 final class ProductBundleOrderItemExtension extends AbstractExtension
 {
-    /** @var RepositoryInterface */
-    private $productBundleOrderItemRepository;
-
-    /** @var Environment */
-    private $twig;
-
-    public function __construct(RepositoryInterface $productBundleOrderItemRepository, Environment $twig)
-    {
-        $this->productBundleOrderItemRepository = $productBundleOrderItemRepository;
-        $this->twig = $twig;
+    public function __construct(
+        private RepositoryInterface $productBundleOrderItemRepository,
+        private Environment $twig
+    ) {
     }
 
     public function getFunctions(): array

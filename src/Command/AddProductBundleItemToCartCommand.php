@@ -15,18 +15,11 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class AddProductBundleItemToCartCommand
 {
-    /** @var ProductBundleItemInterface */
-    private $productBundleItem;
-
-    /** @var ProductVariantInterface|null */
-    private $productVariant;
-
-    /** @var int|null */
-    private $quantity;
-
-    public function __construct(ProductBundleItemInterface $productBundleItem)
-    {
-        $this->productBundleItem = $productBundleItem;
+    public function __construct(
+        private ProductBundleItemInterface $productBundleItem,
+        private ?ProductVariantInterface $productVariant = null,
+        private ?int $quantity = null
+    ) {
         $this->productVariant = $productBundleItem->getProductVariant();
         $this->quantity = $productBundleItem->getQuantity();
     }

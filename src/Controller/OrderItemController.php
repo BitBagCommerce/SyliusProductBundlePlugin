@@ -32,18 +32,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class OrderItemController extends BaseOrderItemController
 {
-    /** @var MessageBusInterface */
-    protected $messageBus;
-
-    /** @var OrderRepositoryInterface */
-    protected $orderRepository;
-
-    /** @var AddProductBundleToCartDtoFactoryInterface */
-    private $addProductBundleToCartDtoFactory;
-
-    /** @var AddProductBundleToCartCommandFactoryInterface */
-    private $addProductBundleToCartCommandFactory;
-
     public function __construct(
         MetadataInterface $metadata,
         Controller\RequestConfigurationFactoryInterface $requestConfigurationFactory,
@@ -62,10 +50,10 @@ class OrderItemController extends BaseOrderItemController
         Controller\StateMachineInterface $stateMachine,
         Controller\ResourceUpdateHandlerInterface $resourceUpdateHandler,
         Controller\ResourceDeleteHandlerInterface $resourceDeleteHandler,
-        MessageBusInterface $messageBus,
-        OrderRepositoryInterface $orderRepository,
-        AddProductBundleToCartDtoFactoryInterface $addProductBundleToCartDtoFactory,
-        AddProductBundleToCartCommandFactoryInterface $addProductBundleToCartCommandFactory
+        private MessageBusInterface $messageBus,
+        private OrderRepositoryInterface $orderRepository,
+        private AddProductBundleToCartDtoFactoryInterface $addProductBundleToCartDtoFactory,
+        private AddProductBundleToCartCommandFactoryInterface $addProductBundleToCartCommandFactory
     ) {
         parent::__construct(
             $metadata,
@@ -86,11 +74,6 @@ class OrderItemController extends BaseOrderItemController
             $resourceUpdateHandler,
             $resourceDeleteHandler
         );
-
-        $this->messageBus = $messageBus;
-        $this->orderRepository = $orderRepository;
-        $this->addProductBundleToCartDtoFactory = $addProductBundleToCartDtoFactory;
-        $this->addProductBundleToCartCommandFactory = $addProductBundleToCartCommandFactory;
     }
 
     public function addProductBundleAction(Request $request): ?Response
