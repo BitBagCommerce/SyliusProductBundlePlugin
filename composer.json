@@ -61,7 +61,8 @@
             "Tests\\BitBag\\SyliusProductBundlePlugin\\": [
                 "tests/",
                 "tests/Application/src"
-            ]
+            ],
+            "spec\\BitBag\\SyliusProductBundlePlugin\\": "spec/"
         },
         "classmap": ["tests/Application/Kernel.php"]
     },

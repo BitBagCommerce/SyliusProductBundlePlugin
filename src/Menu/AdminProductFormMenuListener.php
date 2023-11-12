@@ -10,20 +10,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Menu;
 
-use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\AdminBundle\Event\ProductMenuBuilderEvent;
 
 final class AdminProductFormMenuListener
 {
     public function addItems(ProductMenuBuilderEvent $event): void
     {
-        /** @var ProductInterface $product */
-        $product = $event->getProduct();
-
-        if (!$product->isBundle()) {
-            return;
-        }
-
         $menu = $event->getMenu();
 
         $menu
