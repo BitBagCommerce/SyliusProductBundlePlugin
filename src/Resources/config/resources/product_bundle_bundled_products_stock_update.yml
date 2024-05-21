@@ -1,0 +1,2 @@
+parameters:
+  update_bundled_products_stock: '%env(APP_UPDATE_BUNDLED_PRODUCTS_STOCK)%'

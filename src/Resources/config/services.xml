@@ -6,6 +6,7 @@
         <import resource="services/menu.xml"/>
         <import resource="services/factory.xml"/>
         <import resource="services/controller.xml"/>
+        <import resource="services/decorator.xml"/>
         <import resource="services/handler.xml"/>
         <import resource="services/processor.xml"/>
         <import resource="services/transformer.xml"/>

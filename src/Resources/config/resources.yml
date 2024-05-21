@@ -1,4 +1,5 @@
 imports:
     - { resource: resources/product_bundle.yml }
     - { resource: resources/product_bundle_item.yml }
+    - { resource: resources/product_bundle_bundled_products_stock_update.yml }
     - { resource: resources/product_bundle_order_item.yml }
