@@ -53,6 +53,7 @@ class OrderInventoryOperator implements OrderInventoryOperatorInterface
 
         if (true === $this->updateBundledProductsStock) {
             $productBundles = $this->getProductBundlesFromOrderItems($order->getItems());
+
             /** @var OrderItemInterface $productBundle */
             foreach ($productBundles as $productBundle) {
                 $this->updateBundledProductsStock($productBundle->getProductBundleOrderItems(), 'hold');
@@ -63,6 +64,7 @@ class OrderInventoryOperator implements OrderInventoryOperatorInterface
     public function sell(OrderInterface $order): void
     {
         $this->decorated->sell($order);
+
         if (true === $this->updateBundledProductsStock) {
             $productBundles = $this->getProductBundlesFromOrderItems($order->getItems());
 

@@ -12,7 +12,7 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Decorator;
 
 use BitBag\SyliusProductBundlePlugin\Doctrine\ORM\Inventory\Operator\OrderInventoryOperator as OrderInventoryOperatorDecorator;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,18 +23,17 @@ use Sylius\Component\Core\OrderPaymentStates;
 
 class OrderInventoryOperatorTest extends TestCase
 {
+    private const FIRST_BUNDLED_PRODUCT_VARIANT_NAME = 'First Bundled Product Variant';
+
     private MockObject|OrderInterface $order;
-    private MockObject|OrderItemInterface $productBundle;
     private MockObject|ProductVariantInterface $productBundleVariant;
-    private MockObject|OrderItemInterface $product;
     private MockObject|ProductVariantInterface $productVariant;
-    private MockObject|ProductBundleItemInterface $firstProductBundleItem;
-    private MockObject|ProductBundleItemInterface $secondProductBundleItem;
+    private MockObject|ProductBundleOrderItemInterface $firstProductBundleOrderItem;
+    private MockObject|ProductBundleOrderItemInterface $secondProductBundleOrderItem;
     private MockObject|ProductVariantInterface $firstProductBundleItemVariant;
-
     private MockObject|ProductVariantInterface $secondProductBundleItemVariant;
-    private OrderInventoryOperator $decorated;
 
+    private OrderInventoryOperator $decorated;
     private OrderInventoryOperatorDecorator $orderInventoryOperator;
 
     public function OrderPaymentStatesProvider(): array
@@ -48,40 +47,41 @@ class OrderInventoryOperatorTest extends TestCase
     protected function setUp(): void
     {
         $this->order = $this->createMock(OrderInterface::class);
-        $this->productBundle = $this->createMock(OrderItemInterface::class);
-        $this->product = $this->createMock(OrderItemInterface::class);
         $this->productBundleVariant = $this->createMock(ProductVariantInterface::class);
         $this->productVariant = $this->createMock(ProductVariantInterface::class);
-        $this->firstProductBundleItem = $this->createMock(ProductBundleItemInterface::class);
-        $this->secondProductBundleItem = $this->createMock(ProductBundleItemInterface::class);
+        $this->firstProductBundleOrderItem = $this->createMock(ProductBundleOrderItemInterface::class);
+        $this->secondProductBundleOrderItem = $this->createMock(ProductBundleOrderItemInterface::class);
         $this->firstProductBundleItemVariant = $this->createMock(ProductVariantInterface::class);
         $this->secondProductBundleItemVariant = $this->createMock(ProductVariantInterface::class);
 
+        $productBundle = $this->createMock(OrderItemInterface::class);
+        $product = $this->createMock(OrderItemInterface::class);
+
         $this->order
             ->method('getItems')
-            ->willReturn(new ArrayCollection([$this->productBundle, $this->product]));
+            ->willReturn(new ArrayCollection([$productBundle, $product]));
 
-        $this->productBundle
+        $productBundle
             ->method('getQuantity')
             ->willReturn(1);
 
-        $this->productBundle
+        $productBundle
             ->method('getVariant')
             ->willReturn($this->productBundleVariant);
 
-        $this->productBundle
+        $productBundle
             ->method('getProductBundleOrderItems')
-            ->willReturn(new ArrayCollection([$this->firstProductBundleItem, $this->secondProductBundleItem]));
+            ->willReturn(new ArrayCollection([$this->firstProductBundleOrderItem, $this->secondProductBundleOrderItem]));
 
-        $this->product
+        $product
             ->method('getQuantity')
             ->willReturn(1);
 
-        $this->product
+        $product
             ->method('getVariant')
             ->willReturn($this->productVariant);
 
-        $this->product
+        $product
             ->method('getProductBundleOrderItems')
             ->willReturn(new ArrayCollection([]));
 
@@ -90,70 +90,46 @@ class OrderInventoryOperatorTest extends TestCase
             ->willReturn(true);
 
         $this->productBundleVariant
-            ->method('getOnHold') // reserved
+            ->method('getOnHold')
             ->willReturn(1);
 
         $this->productBundleVariant
-            ->method('getOnHand') // available
-            ->willReturn(10);
-
-        $this->productVariant
-            ->method('isTracked')
-            ->willReturn(true);
-
-        $this->productVariant
-            ->method('getOnHold') // reserved
-            ->willReturn(1);
-
-        $this->productVariant
-            ->method('getOnHand') // available
-            ->willReturn(10);
-
-        $this->firstProductBundleItemVariant
-            ->method('isTracked')
-            ->willReturn(true);
-
-        $this->firstProductBundleItemVariant
-            ->method('getOnHold')
-            ->willReturn(1);
-
-        $this->firstProductBundleItemVariant
             ->method('getOnHand')
             ->willReturn(10);
 
-        $this->firstProductBundleItem
+        $this->productVariant
+            ->method('isTracked')
+            ->willReturn(true);
+
+        $this->productVariant
+            ->method('getOnHold')
+            ->willReturn(1);
+
+        $this->productVariant
+            ->method('getOnHand')
+            ->willReturn(10);
+
+        $this->firstProductBundleItemVariant
+            ->method('isTracked')
+            ->willReturn(true);
+
+        $this->firstProductBundleOrderItem
             ->method('getProductVariant')
             ->willReturn($this->firstProductBundleItemVariant);
 
-        $this->firstProductBundleItem
-            ->method('getQuantity')
-            ->willReturn(1);
-
         $this->secondProductBundleItemVariant
             ->method('isTracked')
             ->willReturn(true);
 
-        $this->secondProductBundleItemVariant
-            ->method('getOnHold')
-            ->willReturn(2);
-
-        $this->secondProductBundleItemVariant
-            ->method('getOnHand')
-            ->willReturn(10);
-
-        $this->secondProductBundleItem
+        $this->secondProductBundleOrderItem
             ->method('getProductVariant')
             ->willReturn($this->secondProductBundleItemVariant);
-
-        $this->secondProductBundleItem
-            ->method('getQuantity')
-            ->willReturn(2);
 
         $this->decorated = new OrderInventoryOperator();
     }
 
     /** @dataProvider OrderPaymentStatesProvider */
-    public function testDoesNotUpdateBundledProductsStockOnCancelIfEnvVariableIsSetToFalse(string $orderPaymentState): void
+    public function testDoesNotUpdateBundledProductsStockOnCancelIfEnvVariableIsFalse(string $orderPaymentState): void
     {
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, false);
         $this->order
@@ -162,6 +138,7 @@ class OrderInventoryOperatorTest extends TestCase
 
         $this->productBundleVariant->expects($this->never())->method('setOnHold');
         $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(11));
+
         $this->productVariant->expects($this->never())->method('setOnHold');
         $this->productVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(11));
 
@@ -174,7 +151,7 @@ class OrderInventoryOperatorTest extends TestCase
         $this->orderInventoryOperator->cancel($this->order);
     }
 
-    public function testDoesNotUpdateBundledProductsStockOnCancelNotPaidNotRefundedOrderIfEnvVariableIsSetToFalse(): void
+    public function testDoesNotUpdateBundledProductsStockOnCancelNotPaidNotRefundedOrderIfEnvVariableIsFalse(): void
     {
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, false);
         $this->order
@@ -183,6 +160,7 @@ class OrderInventoryOperatorTest extends TestCase
 
         $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productBundleVariant->expects($this->never())->method('setOnHand');
+
         $this->productVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productVariant->expects($this->never())->method('setOnHand');
 
@@ -195,12 +173,13 @@ class OrderInventoryOperatorTest extends TestCase
         $this->orderInventoryOperator->cancel($this->order);
     }
 
-    public function testDoesNotUpdateBundledProductsStockOnHoldIfEnvVariableIsSetToFalse(): void
+    public function testDoesNotUpdateBundledProductsStockOnHoldIfEnvVariableIsFalse(): void
     {
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, false);
 
         $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(2));
         $this->productBundleVariant->expects($this->never())->method('setOnHand');
+
         $this->productVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(2));
         $this->productVariant->expects($this->never())->method('setOnHand');
 
@@ -213,12 +192,13 @@ class OrderInventoryOperatorTest extends TestCase
         $this->orderInventoryOperator->hold($this->order);
     }
 
-    public function testDoesNotUpdateBundledProductsStockOnSellIfEnvVariableIsSetToFalse(): void
+    public function testDoesNotUpdateBundledProductsStockOnSellIfEnvVariableIsFalse(): void
     {
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, false);
 
         $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
+
         $this->productVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
 
@@ -232,8 +212,15 @@ class OrderInventoryOperatorTest extends TestCase
     }
 
     /** @dataProvider OrderPaymentStatesProvider */
-    public function testUpdatesBundledProductsStockOnCancelIfEnvVariableIsSetToTrue(string $orderPaymentState): void
+    public function testUpdatesBundledProductsStockOnCancelIfEnvVariableIsTrue(string $orderPaymentState): void
     {
+        $this->setMocks(
+            firstProductBundleItemVariant: ['onHold' => 1, 'onHand' => 10],
+            secondProductBundleItemVariant: ['onHold' => 2, 'onHand' => 10],
+            firstProductBundleOrderItem: ['quantity' => 1],
+            secondProductBundleOrderItem: ['quantity' => 2],
+        );
+
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, true);
         $this->order
             ->method('getPaymentState')
@@ -241,6 +228,7 @@ class OrderInventoryOperatorTest extends TestCase
 
         $this->productBundleVariant->expects($this->never())->method('setOnHold');
         $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(11));
+
         $this->productVariant->expects($this->never())->method('setOnHold');
         $this->productVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(11));
 
@@ -253,12 +241,20 @@ class OrderInventoryOperatorTest extends TestCase
         $this->orderInventoryOperator->cancel($this->order);
     }
 
-    public function testUpdatesBundledProductsStockOnSellIfEnvVariableIsSetToTrue(): void
+    public function testUpdatesBundledProductsStockOnSellIfEnvVariableIsTrue(): void
     {
+        $this->setMocks(
+            firstProductBundleItemVariant: ['onHold' => 1, 'onHand' => 10],
+            secondProductBundleItemVariant: ['onHold' => 2, 'onHand' => 10],
+            firstProductBundleOrderItem: ['quantity' => 1],
+            secondProductBundleOrderItem: ['quantity' => 2],
+        );
+
         $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, true);
 
         $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
+
         $this->productVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
         $this->productVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
 
@@ -269,5 +265,143 @@ class OrderInventoryOperatorTest extends TestCase
         $this->secondProductBundleItemVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(8));
 
         $this->orderInventoryOperator->sell($this->order);
+    }
+
+    public function testThrowsErrorOnCancelNotPaidNotRefundedOrderIfBundledProductsOnHoldTriesToGoBelowZero(): void
+    {
+        $this->setMocks(
+            firstProductBundleItemVariant: ['onHold' => 1, 'onHand' => 10],
+            secondProductBundleItemVariant: ['onHold' => 2, 'onHand' => 10],
+            firstProductBundleOrderItem: ['quantity' => 2],
+            secondProductBundleOrderItem: ['quantity' => 3],
+        );
+
+        $this->firstProductBundleItemVariant
+            ->method('getName')
+            ->willReturn(self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME);
+
+        $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, true);
+        $this->order
+            ->method('getPaymentState')
+            ->willReturn(OrderPaymentStates::STATE_AWAITING_PAYMENT);
+
+        $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
+        $this->productBundleVariant->expects($this->never())->method('setOnHand');
+
+        $this->expectExceptionMessage(sprintf(
+            'Not enough units to decrease on hold quantity from the inventory of a variant "%s".',
+            self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME,
+        ));
+
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->orderInventoryOperator->cancel($this->order);
+    }
+
+    public function testThrowsErrorOnSellIfBundledProductOnHoldTriesToGoBelowZero(): void
+    {
+        $this->setMocks(
+            firstProductBundleItemVariant: ['onHold' => 1, 'onHand' => 10],
+            secondProductBundleItemVariant: ['onHold' => 2, 'onHand' => 10],
+            firstProductBundleOrderItem: ['quantity' => 2],
+            secondProductBundleOrderItem: ['quantity' => 3],
+        );
+
+        $this->firstProductBundleItemVariant
+            ->method('getName')
+            ->willReturn(self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME);
+
+        $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, true);
+
+        $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
+        $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
+
+        $this->expectExceptionMessage(sprintf(
+            'Not enough units to decrease on hold quantity from the inventory of a variant "%s".',
+            self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME,
+        ));
+
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->orderInventoryOperator->sell($this->order);
+    }
+
+    public function testThrowsErrorOnSellIfBundledProductOnHandTriesToGoBelowZero(): void
+    {
+        $this->setMocks(
+            firstProductBundleItemVariant: ['onHold' => 10, 'onHand' => 0],
+            secondProductBundleItemVariant: ['onHold' => 2, 'onHand' => 10],
+            firstProductBundleOrderItem: ['quantity' => 1],
+            secondProductBundleOrderItem: ['quantity' => 3],
+        );
+
+        $this->firstProductBundleItemVariant
+            ->method('getName')
+            ->willReturn(self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME);
+
+        $this->orderInventoryOperator = new OrderInventoryOperatorDecorator($this->decorated, true);
+
+        $this->productBundleVariant->expects($this->once())->method('setOnHold')->with($this->identicalTo(0));
+        $this->productBundleVariant->expects($this->once())->method('setOnHand')->with($this->identicalTo(9));
+
+        $this->expectExceptionMessage(sprintf(
+            'Not enough units to decrease on hand quantity from the inventory of a variant "%s".',
+            self::FIRST_BUNDLED_PRODUCT_VARIANT_NAME,
+        ));
+
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->firstProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHold');
+        $this->secondProductBundleItemVariant->expects($this->never())->method('setOnHand');
+
+        $this->orderInventoryOperator->sell($this->order);
+    }
+
+    private function setMocks(
+        array $firstProductBundleItemVariant = [],
+        array $secondProductBundleItemVariant = [],
+        array $firstProductBundleOrderItem = [],
+        array $secondProductBundleOrderItem = []
+    ): void {
+        if ([] !== $firstProductBundleItemVariant) {
+            $this->firstProductBundleItemVariant
+                ->method('getOnHold')
+                ->willReturn($firstProductBundleItemVariant['onHold']);
+
+            $this->firstProductBundleItemVariant
+                ->method('getOnHand')
+                ->willReturn($firstProductBundleItemVariant['onHand']);
+        }
+
+        if ([] !== $secondProductBundleItemVariant) {
+            $this->secondProductBundleItemVariant
+                ->method('getOnHold')
+                ->willReturn($secondProductBundleItemVariant['onHold']);
+
+            $this->secondProductBundleItemVariant
+                ->method('getOnHand')
+                ->willReturn($secondProductBundleItemVariant['onHand']);
+        }
+
+        if ([] !== $firstProductBundleOrderItem) {
+            $this->firstProductBundleOrderItem
+                ->method('getQuantity')
+                ->willReturn($firstProductBundleOrderItem['quantity']);
+        }
+
+        if ([] !== $secondProductBundleOrderItem) {
+            $this->secondProductBundleOrderItem
+                ->method('getQuantity')
+                ->willReturn($secondProductBundleOrderItem['quantity']);
+        }
     }
 }
