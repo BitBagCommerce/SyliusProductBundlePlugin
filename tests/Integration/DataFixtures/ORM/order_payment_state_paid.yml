@@ -1,0 +1,12 @@
+Sylius\Component\Core\Model\Order:
+  order_product_bundle:
+    state: 'new'
+    items:
+      - '@order_item_product_bundle'
+    currencyCode: 'EUR'
+    localeCode: 'en_US'
+    checkoutState: 'completed'
+    paymentState: 'paid'
+    shippingState: 'ready'
+    tokenValue: 'zszRdAaZIx'
+    number: "000000001"

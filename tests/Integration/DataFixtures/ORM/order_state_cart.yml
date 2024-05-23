@@ -1,0 +1,28 @@
+Sylius\Component\Core\Model\Order:
+  order_product_bundle:
+    shippingAddress: '@address_kurt_wagner'
+    billingAddress: '@address_kurt_wagner'
+    customer: '@customer_kurt_wagner'
+    state: 'cart'
+    items:
+      - '@order_item_product_bundle'
+    currencyCode: 'EUR'
+    localeCode: 'en_US'
+    paymentState: 'awaiting_payment'
+    shippingState: 'ready'
+    tokenValue: 'zszRdAaZIx'
+    number: "000000001"
+
+Sylius\Component\Core\Model\Address:
+  address_kurt_wagner:
+    firstName: Kurt
+    lastName: Wagner
+    street: 'Pojezierska'
+    city: 'Łódź'
+    postcode: '91-045'
+    countryCode: 'PL'
+
+Sylius\Component\Core\Model\Customer:
+  customer_kurt_wagner:
+    email: k.wagner@localhost
+    emailCanonical: k.wagner@localhost

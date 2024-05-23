@@ -1,40 +1,55 @@
 Tests\BitBag\SyliusProductBundlePlugin\Entity\Product:
   product_product_bundle:
-    code: 'BUNDLE'
-    createdAt: '<dateTimeBetween("-200 days", "now")>'
+    currentLocale: "en_US"
+    code: "BUNDLE"
     enabled: 1
-    variantSelectionMethod: 'match'
+    variantSelectionMethod: "match"
     averageRating: 0
   product_first_bundled_product:
-    code: 'FIRST_BUNDLED_PRODUCT'
+    currentLocale: "en_US"
+    code: "FIRST_BUNDLED_PRODUCT"
     enabled: 1
-    variantSelectionMethod: 'match'
+    variantSelectionMethod: "match"
     averageRating: 0
   product_second_bundled_product:
-    code: 'SECOND_BUNDLED_PRODUCT'
+    currentLocale: "en_US"
+    code: "SECOND_BUNDLED_PRODUCT"
     enabled: 1
-    variantSelectionMethod: 'match'
+    variantSelectionMethod: "match"
     averageRating: 0
 Sylius\Component\Core\Model\ProductTranslation:
   product_translation_product_bundle_translation:
     locale: "en_US"
-    name: 'Test Product Bundle'
-    slug: 'test-product-bundle'
+    name: 'Product Bundle'
+    slug: 'product-bundle'
     translatable: "@product_product_bundle"
+  product_translation_first_bundled_product_translation:
+    locale: "en_US"
+    name: 'First Bundled Product'
+    slug: 'first-bundled-product'
+    translatable: "@product_first_bundled_product"
+  product_translation_second_bundled_product_translation:
+    locale: "en_US"
+    name: 'Second Bundled Product'
+    slug: 'Second-bundled-product'
+    translatable: "@product_second_bundled_product"
 Sylius\Component\Core\Model\ProductVariant:
   product_variant_product_bundle_variant:
+    currentLocale: "en_US"
     product: '@product_product_bundle'
     code: 'BUNDLE_VARIANT'
     on_hand: 10
     on_hold: 1
     tracked: 1
   product_variant_first_bundled_product_variant:
+    currentLocale: "en_US"
     product: '@product_first_bundled_product'
     code: 'FIRST_BUNDLED_VARIANT'
     on_hand: 10
     on_hold: 1
     tracked: 1
   product_variant_second_bundled_product_variant:
+    currentLocale: "en_US"
     product: '@product_second_bundled_product'
     code: 'SECOND_BUNDLED_VARIANT'
     on_hand: 10
@@ -69,24 +84,6 @@ BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem:
 Sylius\Component\Core\Model\OrderItemUnit:
   bundle_unit:
     __construct: ['@order_item_product_bundle']
-
-Sylius\Component\Core\Model\Order:
-  order_product_bundle:
-#    shippingAddress: '@address_joe_doe'
-#    billingAddress: '@address_joe_doe'
-#    channel: '@channel_web'
-#    customer: '@customer_joe_doe'
-    state: 'fulfilled'
-    items:
-      - '@order_item_product_bundle'
-    currencyCode: 'EUR'
-    localeCode: 'en_US'
-    checkoutState: 'completed'
-    paymentState: 'awaiting_payment'
-    shippingState: 'ready'
-    tokenValue: 'zszRdAaZIx'
-    number: "000000001"
-
 Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem:
   order_item_product_bundle:
     order: '@order_product_bundle'
@@ -94,3 +91,16 @@ Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem:
     variant: '@product_variant_product_bundle_variant'
     productName: 'Test Bundle'
     variantName: 'Test Bundle'
+Sylius\Component\Product\Model\ProductVariantTranslation:
+  product_bundle_variant_translation:
+    locale: 'en_US'
+    translatable: "@product_variant_product_bundle_variant"
+    name: "Product Bundle"
+  first_bundled_product_variant_translation:
+    locale: "en_US"
+    translatable: "@product_variant_first_bundled_product_variant"
+    name: "First Bundled Product"
+  second_bundled_product_variant_translation:
+    locale: "en_US"
+    translatable: "@product_variant_second_bundled_product_variant"
+    name: "Second Bundled Product"
