@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "chart.js": "^3.7.1",
-    "jquery": "^3.5.0",
+    "babel-polyfill": "^6.26.0",
+    "jquery": "^3.4.0",
     "jquery.dirtyforms": "^2.0.0",
     "lightbox2": "^2.9.0",
     "semantic-ui-css": "^2.2.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "chart.js": "^3.7.1"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^1.6.1",
@@ -21,14 +21,17 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.11.0",
+    "fast-async": "^6.3.7",
     "merge-stream": "^1.0.0",
-    "sass": "^1.39.2",
-    "sass-loader": "^12.1.0"
+    "sass": "^1.50.0",
+    "sass-loader": "^7.0.1",
+    "upath": "^1.1.0",
+    "webpack": "^5.76.1",
+    "yargs": "^6.4.0"
   },
   "scripts": {
-    "dev": "yarn encore dev",
-    "watch": "yarn encore dev --watch",
-    "prod": "yarn encore prod",
+    "build": "encore production",
+    "dev": "encore dev",
     "lint": "yarn lint:js",
     "lint:js": "eslint gulpfile.babel.js"
   },
