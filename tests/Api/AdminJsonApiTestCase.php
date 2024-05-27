@@ -17,7 +17,7 @@ abstract class AdminJsonApiTestCase extends JsonApiTestCase
     {
         $this->client->request(
             'POST',
-            '/api/v2/admin/authentication-token',
+            '/api/v2/admin/administrators/token',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'],
