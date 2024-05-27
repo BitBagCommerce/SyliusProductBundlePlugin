@@ -31,7 +31,7 @@ abstract class AdminJsonApiTestCase extends JsonApiTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'],
-            json_encode(['email' => $email, 'password' => $password])
+            json_encode(['email' => $email, 'password' => $password]),
         );
 
         return json_decode($this->client->getResponse()->getContent(), true)['token'];
