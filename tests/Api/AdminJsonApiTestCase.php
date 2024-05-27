@@ -11,17 +11,27 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api;
 
+use Composer\InstalledVersions;
+
 abstract class AdminJsonApiTestCase extends JsonApiTestCase
 {
     public function getAuthToken(string $email, string $password): string
     {
+        $syliusVersion = InstalledVersions::getVersion('sylius/sylius');
+
+        if (version_compare($syliusVersion, '1.13.0', '>=')) {
+            $endpoint = '/api/v2/admin/administrators/token';
+        } else {
+            $endpoint = '/api/v2/admin/authentication-token';
+        }
+
         $this->client->request(
             'POST',
-            '/api/v2/admin/administrators/token',
+            $endpoint,
             [],
             [],
             ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'],
-            json_encode(['email' => $email, 'password' => $password]),
+            json_encode(['email' => $email, 'password' => $password])
         );
 
         return json_decode($this->client->getResponse()->getContent(), true)['token'];
