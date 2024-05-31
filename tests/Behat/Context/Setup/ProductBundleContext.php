@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -147,5 +148,13 @@ final class ProductBundleContext implements Context
         $productVariant->setName($product->getName());
 
         return $product;
+    }
+
+    /**
+     * @Given update bundled products stock environmental variable is set to :value
+     */
+    public function updateBundledProductsStockEnvironmentalVariableIsSetTo(string $envValue)
+    {
+        $_ENV['APP_UPDATE_BUNDLED_PRODUCTS_STOCK'] = (int) $envValue;
     }
 }

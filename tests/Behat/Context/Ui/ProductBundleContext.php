@@ -12,12 +12,18 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin\CreateBundledProductPageInterface;
+use Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin\ProductVariants\IndexPageInterface;
+use Webmozart\Assert\Assert;
 
-class ProductBundleContext implements Context
+final class ProductBundleContext implements Context
 {
     public function __construct(
         private CreateBundledProductPageInterface $createBundledProductPage,
+        private IndexPageInterface $indexPage,
+        private ProductVariantResolverInterface $productVariantResolver,
     ) {
     }
 
@@ -88,5 +94,55 @@ class ProductBundleContext implements Context
     public function iAddProductsToBundledProduct(...$productsNames)
     {
         $this->createBundledProductPage->addProductsToBundle($productsNames);
+    }
+
+    /**
+     * @Then /^(\d+) units of the (product "[^"]+") should be on hold$/
+     */
+    public function unitsOfProductShouldBeOnHold(string $units, ProductInterface $product)
+    {
+        $this->assertOnHoldQuantityOfProduct($units, $product);
+    }
+
+    /**
+     * @Then /^(\d+) units of the (product "[^"]+") should be on hand$/
+     */
+    public function unitsOfProductShouldBeOnHand(string $units, ProductInterface $product)
+    {
+        $this->assertOnHandQuantityOfProduct($units, $product);
+    }
+
+    private function assertOnHoldQuantityOfProduct(string $expectedAmount, ProductInterface $product): void
+    {
+        $productVariant = $this->productVariantResolver->getVariant($product);
+        $actualAmount = $this->indexPage->getOnHoldQuantityFor($productVariant);
+
+        Assert::same(
+            $actualAmount,
+            (int) $expectedAmount,
+            sprintf(
+                'Unexpected on hold quantity for "%s" variant. It should be "%s" but is "%s"',
+                $product->getName(),
+                $expectedAmount,
+                $actualAmount,
+            ),
+        );
+    }
+
+    private function assertOnHandQuantityOfProduct(string $expectedAmount, ProductInterface $product): void
+    {
+        $productVariant = $this->productVariantResolver->getVariant($product);
+        $actualAmount = $this->indexPage->getOnHandQuantityFor($productVariant);
+
+        Assert::same(
+            $actualAmount,
+            (int) $expectedAmount,
+            sprintf(
+                'Unexpected on hand quantity for "%s" variant. It should be "%s" but is "%s"',
+                $product->getName(),
+                $expectedAmount,
+                $actualAmount,
+            ),
+        );
     }
 }

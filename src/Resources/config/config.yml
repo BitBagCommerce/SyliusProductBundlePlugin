@@ -6,3 +6,5 @@ framework:
     messenger:
         buses:
             bitbag_sylius_product_bundle.command_bus: ~
+    mailer:
+        dsn: '%env(MAILER_DSN)%'

@@ -22,7 +22,22 @@ services:
     arguments:
       - 'bitbag_product_bundle_admin_product_create_bundle'
 
+  bitbag_sylius_product_bundle_plugin.behat.page.admin.product_variants_index_page:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin\ProductVariants\IndexPage
+    parent: sylius.behat.page.admin.crud.index
+    public: false
+    arguments:
+      - 'sylius_admin_product_index'
+
   bitbag_sylius_product_bundle_plugin.behat.context.ui.product_bundle:
     class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Ui\ProductBundleContext
     arguments:
       - '@bitbag_sylius_product_bundle_plugin.behat.page.create_bundled_product_page'
+      - '@bitbag_sylius_product_bundle_plugin.behat.page.admin.product_variants_index_page'
+      - '@sylius.product_variant_resolver.default'
+
+  bitbag_sylius_product_bundle_plugin.behat.context.setup.order:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup\OrderContext
+    arguments:
+      - '@sylius.behat.shared_storage'
+      -

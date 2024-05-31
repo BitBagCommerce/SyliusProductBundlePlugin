@@ -17,7 +17,7 @@ class ProductVariantRepository extends BaseProductVariantRepository implements P
     public function findByPhrase(
         string $phrase,
         string $locale,
-        ?int $limit = null
+        ?int $limit = null,
     ): array {
         $expr = $this->getEntityManager()->getExpressionBuilder();
 

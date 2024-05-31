@@ -54,6 +54,8 @@ class OrderInventoryOperator implements OrderInventoryOperatorInterface
         if (true === $this->updateBundledProductsStock) {
             $productBundles = $this->getProductBundlesFromOrderItems($order->getItems());
 
+            dump($productBundles);
+
             /** @var OrderItemInterface $productBundle */
             foreach ($productBundles as $productBundle) {
                 $this->updateBundledProductsStock($productBundle->getProductBundleOrderItems(), 'hold');
