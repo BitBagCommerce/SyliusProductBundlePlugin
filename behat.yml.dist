@@ -7,9 +7,9 @@ default:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
 
         FriendsOfBehat\MinkDebugExtension:
-                    directory: etc/build
-                    clean_start: false
-                    screenshot: true
+            directory: etc/build
+            clean_start: false
+            screenshot: true
 
         Behat\MinkExtension:
             files_path: "%paths.base%/vendor/sylius/sylius/src/Sylius/Behat/Resources/fixtures/"
@@ -42,6 +42,7 @@ default:
                     selenium2:
                         browser: firefox
             show_auto: false
+
 
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/Application/config/bootstrap.php

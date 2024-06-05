@@ -9,9 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusProductBundlePlugin\Command;
-
-interface ProductCodeAwareInterface
-{
-    public function getProductCode(): string;
-}
+return [
+    League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
+    Sylius\Abstraction\StateMachine\SyliusStateMachineAbstractionBundle::class => ['all' => true],
+];
