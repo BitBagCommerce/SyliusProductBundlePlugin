@@ -46,7 +46,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
 1. Require plugin with composer:
 
     ```bash
-    composer require bitbag/product-bundle-plugin
+    composer require bitbag/product-bundle-plugin --no-scripts
     ```
 
 2. Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
@@ -101,7 +101,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     }
     ```
 
-   Mapping (Annotations) - Override bundle trait, by create new one and use it in Entity/Product/Product .
+   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
 
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
@@ -112,14 +112,15 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    {
        use ProductBundlesAwareTrait;
    
-       /**
-        * @var ProductBundleInterface
-        * @ORM\OneToOne(
-        *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
-        *     mappedBy="product",
-        *     cascade={"all"},)
-        */
-       protected $productBundle;
+    /**
+     * @var ProductBundleInterface
+     */
+    #[ORM\OneToOne(
+        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
+        mappedBy: "product",
+        cascade: ["all"]
+    )]
+    protected $productBundle;
    
    }
    ```
@@ -170,7 +171,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    
    }
     ```
-   Mapping (Annotations) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
+   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
 
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
@@ -182,14 +183,15 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    {
    use ProductBundleOrderItemsAwareTrait;
    
-       /**
-        * @var ArrayCollection|ProductBundleOrderItemInterface[]
-        * @ORM\OneToMany(
-        *     targetEntity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
-        *     mappedBy="orderItem",
-        *     cascade={"all"},)
-        */
-       protected $productBundleOrderItems;
+    /**
+     * @var ArrayCollection|ProductBundleOrderItemInterface[]
+     */
+    #[ORM\OneToMany(
+        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
+        mappedBy: "orderItem",
+        cascade: ["all"]
+    )]
+    protected $productBundleOrderItems;
    
    }
    ```
