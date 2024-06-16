@@ -101,6 +101,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     ```
 
    Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
+   
    **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
 
    ```php
@@ -172,6 +173,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    }
     ```
    Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
+   
    **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
 
    ```php
