@@ -90,7 +90,6 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     namespace App\Entity\Product;
     
-    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareInterface;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
     use Sylius\Component\Core\Model\Product as BaseProduct;
@@ -102,6 +101,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     ```
 
    Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
+   **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
 
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
@@ -146,7 +146,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-6. Extend `OrderItem` (including Doctrine mapping):
+7. Extend `OrderItem` (including Doctrine mapping):
 
     ```php
    <?php
@@ -172,6 +172,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    }
     ```
    Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
+   **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
 
    ```php
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
@@ -216,7 +217,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-7. Add configuration for extended product, order item and product variant repository:
+9. Add configuration for extended product, order item and product variant repository:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -237,7 +238,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
 
-8. Add 'Create/Bundle' to product grid configuration:
+10. Add 'Create/Bundle' to product grid configuration:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -271,7 +272,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
                                        route: bitbag_product_bundle_admin_product_create_bundle
        
     ```
-9. If you have full configuration in xml override doctrine config :
+11. If you have full configuration in xml override doctrine config :
 
     ```yaml
     # config/packages/doctrine.yaml   
@@ -287,19 +288,19 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
     
-10. Copy plugin templates into your project `templates/bundles` directory:
+12. Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
     $ cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
     ```
     
-11. Please clear application cache by running command below:
+13. Please clear application cache by running command below:
 
     ```bash
     $ bin/console cache:clear
     ```
 
-12. Finish the installation by updating the database schema and installing assets:
+14. Finish the installation by updating the database schema and installing assets:
 
     ```bash
     $ bin/console doctrine:migrations:diff
