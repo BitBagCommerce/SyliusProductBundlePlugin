@@ -308,6 +308,8 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     $ bin/console doctrine:migrations:diff
     $ bin/console doctrine:migrations:migrate
     ```
+15. Add plugin assets to your project:
+[Import webpack config](./README_webpack-config.md)*
 
 ## Testing
 
