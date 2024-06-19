@@ -27,6 +27,11 @@
                     <value>bitbag_sylius_product_bundle</value>
                 </option>
             </constraint>
+            <constraint name="Positive">
+                <option name="groups">
+                    <value>bitbag_sylius_product_bundle</value>
+                </option>
+            </constraint>
         </property>
     </class>
 </constraint-mapping>
