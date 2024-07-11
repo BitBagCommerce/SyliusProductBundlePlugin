@@ -327,6 +327,10 @@ $ open http://localhost:8080
 $ vendor/bin/behat
 ```
 
+## Functionalities 
+
+
+All main functionalities of the plugin are described [here.](https://github.com/BitBagCommerce/SyliusProductBundlePlugin/blob/master/doc/functionalities.md)
 
 
 # About us
