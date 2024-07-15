@@ -30,6 +30,9 @@ jobs:
         exclude:
           - sylius: ^1.13
             php: 8.0
+          - sylius: ^1.12
+            php: 8.0
+            symfony: ^6.4
 
     env:
       APP_ENV: test

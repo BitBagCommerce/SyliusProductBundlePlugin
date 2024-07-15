@@ -26,6 +26,9 @@ jobs:
                 exclude:
                   - sylius: ^1.13
                     php: 8.0
+                  - sylius: ^1.12
+                    php: 8.0
+                    symfony: ^6.4
 
         steps:
             - uses: actions/checkout@v3
