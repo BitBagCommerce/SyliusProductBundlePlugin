@@ -49,7 +49,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     composer require bitbag/product-bundle-plugin --no-scripts
     ```
 
-2. Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
+2. (optional) Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
 
     ```php
         return [
@@ -59,7 +59,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
         ];
     ```
 
-3. Import required config in your `config/packages/_sylius.yaml` file:
+3. (optional) Import required config in your `config/packages/_sylius.yaml` file:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -70,7 +70,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
         - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
     ```    
 
-4. Import routing in your `config/routes.yaml` file:
+4. (optional) Import routing in your `config/routes.yaml` file:
 
     ```yaml
     
@@ -105,6 +105,10 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
 
    ```php
+   <?php 
+   
+   declare(strict_types=1);
+   
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
    use Doctrine\ORM\Mapping as ORM;
@@ -126,11 +130,9 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    }
    ```
 
-   Mapping (XML):
+   Mapping (XML) (Resources/config/doctrine/Product.Product.orm.xml):
 
-   ```xml
-   # Resources/config/doctrine/Product.Product.orm.xml
-   
+   ```xml 
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -177,6 +179,10 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
 
    ```php
+   <?php 
+   
+   declare(strict_types=1);
+   
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
    use Doctrine\Common\Collections\ArrayCollection;
@@ -198,11 +204,9 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    
    }
    ```
-   Mapping (XML):
-
+   Mapping (XML) (Resources/config/doctrine/Order.OrderItem.orm.xml):
+   
    ```xml
-   # Resources/config/doctrine/Order.OrderItem.orm.xml
-
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -276,37 +280,39 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     ```
 11. If you have full configuration in xml override doctrine config :
 
-    ```yaml
-    # config/packages/doctrine.yaml   
-    
-    mappings:
-            App:
-                is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/src/Resources/config/doctrine'
-                prefix: 'App\Entity'
-                alias: App
-   
-    
-    ```
+```yaml
+# config/packages/doctrine.yaml   
+doctrine:
+    orm:
+        entity_managers:
+        default:
+            mappings:
+                App:
+                    is_bundle: false
+                    type: xml
+                    dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+                    prefix: 'App\Entity'
+                    alias: App
+
+```
     
 12. Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
-    $ cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
+    cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
     ```
     
 13. Please clear application cache by running command below:
 
     ```bash
-    $ bin/console cache:clear
+    bin/console cache:clear
     ```
 
 14. Finish the installation by updating the database schema and installing assets:
 
     ```bash
-    $ bin/console doctrine:migrations:diff
-    $ bin/console doctrine:migrations:migrate
+    bin/console doctrine:migrations:diff
+    bin/console doctrine:migrations:migrate
     ```
 15. Add plugin assets to your project:
 [Import webpack config](./README_webpack-config.md)*
@@ -316,15 +322,15 @@ This **open-source plugin was developed to help the Sylius community**. If you h
 ----
 
 ```bash
-$ composer install
-$ cd tests/Application
-$ yarn install
-$ yarn build
-$ bin/console assets:install public -e test
-$ bin/console doctrine:schema:create -e test
-$ bin/console server:run 127.0.0.1:8080 -d public -e test
-$ open http://localhost:8080
-$ vendor/bin/behat
+composer install
+cd tests/Application
+yarn install
+yarn build
+bin/console assets:install public -e test
+bin/console doctrine:schema:create -e test
+bin/console server:run 127.0.0.1:8080 -d public -e test
+open http://localhost:8080
+vendor/bin/behat
 ```
 
 ## Functionalities 
