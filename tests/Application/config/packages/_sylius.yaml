@@ -18,9 +18,6 @@ sylius_product:
         product:
             classes:
                 model: Tests\BitBag\SyliusProductBundlePlugin\Entity\Product
-        product_variant:
-            classes:
-                repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
 
 sylius_order:
     resources:

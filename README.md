@@ -223,7 +223,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-9. Add configuration for extended product, order item and product variant repository:
+9. Add configuration for extended product and order item:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -233,9 +233,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
             product:
                 classes:
                     model: App\Entity\Product\Product
-            product_variant:
-                classes:
-                    repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
+
    sylius_order:
        resources:
            order_item:
