@@ -275,7 +275,6 @@ doctrine:
 13. Finish the installation by updating the database schema and installing assets:
 
     ```bash
-    bin/console doctrine:migrations:diff
     bin/console doctrine:migrations:migrate
     ```
 14. Add plugin assets to your project:
