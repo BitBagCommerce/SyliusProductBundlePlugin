@@ -242,41 +242,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
 
-10. Add 'Create/Bundle' to product grid configuration:
-
-    ```yaml
-    # config/packages/_sylius.yaml
-    
-    sylius_grid:
-       grids:
-           sylius_admin_product:
-               actions:
-                   main:
-                       create:
-                           type: links
-                           label: sylius.ui.create
-                           options:
-                               class: primary
-                               icon: plus
-                               header:
-                                   icon: cube
-                                   label: sylius.ui.type
-                               links:
-                                   simple:
-                                       label: sylius.ui.simple_product
-                                       icon: plus
-                                       route: sylius_admin_product_create_simple
-                                   configurable:
-                                       label: sylius.ui.configurable_product
-                                       icon: plus
-                                       route: sylius_admin_product_create
-                                   bundle:
-                                       label: bitbag_sylius_product_bundle.ui.bundle
-                                       icon: plus
-                                       route: bitbag_product_bundle_admin_product_create_bundle
-       
-    ```
-11. If you have full configuration in xml override doctrine config :
+10. If you have full configuration in xml override doctrine config :
 
 ```yaml
 # config/packages/doctrine.yaml   
@@ -293,26 +259,26 @@ doctrine:
                     alias: App
 
 ```
-    
-12. Copy plugin templates into your project `templates/bundles` directory:
+
+11. Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
     cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
     ```
     
-13. Please clear application cache by running command below:
+12. Please clear application cache by running command below:
 
     ```bash
     bin/console cache:clear
     ```
 
-14. Finish the installation by updating the database schema and installing assets:
+13. Finish the installation by updating the database schema and installing assets:
 
     ```bash
     bin/console doctrine:migrations:diff
     bin/console doctrine:migrations:migrate
     ```
-15. Add plugin assets to your project:
+14. Add plugin assets to your project:
 [Import webpack config](./README_webpack-config.md)*
 
 ## Testing
