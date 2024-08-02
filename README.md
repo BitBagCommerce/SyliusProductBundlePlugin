@@ -260,10 +260,43 @@ doctrine:
 
 ```
 
-11. Copy plugin templates into your project `templates/bundles` directory:
+11. Add plugin templates:
+- Inject blocks:
+
+```yaml
+sylius_ui:
+  events:
+    sylius.shop.product.show.right_sidebar:
+      blocks:
+        variant_selection:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/Product/_variantSelection.html.twig"
+          priority: 10
+    sylius.shop.layout.javascripts:
+      blocks:
+        plugin_scripts:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/_scripts.html.twig"
+          priority: 20
+    sylius.shop.layout.stylesheets:
+      blocks:
+        plugin_stylesheets:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/_styles.html.twig"
+          priority: 20
+    sylius.admin.layout.javascripts:
+      blocks:
+        plugin_scripts:
+          template: "@BitBagSyliusProductBundlePlugin/Admin/_scripts.html.twig"
+          priority: 20
+    sylius.admin.layout.stylesheets:
+      blocks:
+        plugin_stylesheets:
+          template: "@BitBagSyliusProductBundlePlugin/Admin/_styles.html.twig"
+          priority: 20
+
+```
+- Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
-    cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
+    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Order/Show/Summary/_item.html.twig templates/bundles/SyliusAdminBundle/Order/Show/Summary
     ```
     
 12. Please clear application cache by running command below:

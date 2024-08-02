@@ -43,20 +43,4 @@ webpack_encore:
         product_bundle_admin: '%kernel.project_dir%/public/build/bitbag/productBundle/admin'
 ```
 
-4. Add encore functions to your templates
-
-```twig
-{# @SyliusShopBundle/_scripts.html.twig #}
-{{ encore_entry_script_tags('bitbag-productBundle-shop', null, 'product_bundle_shop') }}
-
-{# @SyliusShopBundle/_styles.html.twig #}
-{{ encore_entry_link_tags('bitbag-productBundle-shop', null, 'product_bundle_shop') }}
-
-{# @SyliusAdminBundle/_scripts.html.twig #}
-{{ encore_entry_script_tags('bitbag-productBundle-admin', null, 'product_bundle_admin') }}
-
-{# @SyliusAdminBundle/_styles.html.twig #}
-{{ encore_entry_link_tags('bitbag-productBundle-admin', null, 'product_bundle_admin') }}
-```
-
-5. Run `yarn encore dev` or `yarn encore production`
+4. Run `yarn encore dev` or `yarn encore production`
