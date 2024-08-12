@@ -1,6 +1,23 @@
 sylius_grid:
   grids:
     sylius_admin_product:
+      driver:
+        name: doctrine/orm
+        options:
+          class: "%sylius.model.product.class%"
+          repository:
+            method: createSearchListQueryBuilder
+            arguments: [ "expr:service('sylius.context.locale').getLocaleCode()", $taxonId ]
+      fields:
+        bundle:
+          type: twig
+          label: bitbag_sylius_product_bundle.ui.is_bundle
+          options:
+            template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+      filters:
+        bundle:
+          type: is_bundle
+          label: bitbag_sylius_product_bundle.ui.is_bundle
       actions:
         main:
           create:
@@ -25,3 +42,6 @@ sylius_grid:
                   label: bitbag_sylius_product_bundle.ui.bundle
                   icon: plus
                   route: bitbag_product_bundle_admin_product_create_bundle
+  templates:
+    filter:
+      is_bundle: "@SyliusUi/Grid/Filter/boolean.html.twig"
