@@ -3,12 +3,14 @@ services:
         container_name: app
         build:
             context: .
+            dockerfile: .docker/Dockerfile
+#            dockerfile: .docker/Dockerfile-xdebug
         environment:
             APP_ENV: "dev"
             DATABASE_URL: "mysql://root:mysql@mysql/sylius_%kernel.environment%?charset=utf8mb4"
 #            DATABASE_URL: "pgsql://root:postgres@postgres/sylius_%kernel.environment%?charset=utf8" # When using postgres
             PHP_DATE_TIMEZONE: "Europe/Warsaw"
-#            PHP_IDE_CONFIG: serverName=wishlist
+            PHP_IDE_CONFIG: serverName=PHPSTORM
         volumes:
             - ./:/app:delegated
             - ./.docker/php.ini:/etc/php8/php.ini:delegated
@@ -24,6 +26,8 @@ services:
         container_name: mysql
         image: mysql:8.0
         platform: linux/amd64
+        volumes:
+            - mysql-data:/var/lib/mysql:rw
         environment:
             MYSQL_ROOT_PASSWORD: mysql
         ports:
@@ -44,3 +48,6 @@ services:
 networks:
     sylius:
         driver: bridge
+
+volumes:
+    mysql-data:
