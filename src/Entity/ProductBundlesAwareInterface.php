@@ -18,4 +18,6 @@ interface ProductBundlesAwareInterface
     public function setProductBundle(?ProductBundleInterface $productBundle): void;
 
     public function isBundle(): bool;
+
+    public function hasProductBundleItems(): bool;
 }

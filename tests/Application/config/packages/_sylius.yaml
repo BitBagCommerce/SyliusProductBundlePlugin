@@ -18,7 +18,6 @@ sylius_product:
         product:
             classes:
                 model: Tests\BitBag\SyliusProductBundlePlugin\Entity\Product
-                repository: Tests\BitBag\SyliusProductBundlePlugin\Application\src\Repository\ProductRepository
 
 sylius_order:
     resources:

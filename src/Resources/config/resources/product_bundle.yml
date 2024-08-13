@@ -6,3 +6,4 @@ sylius_resource:
                 model: BitBag\SyliusProductBundlePlugin\Entity\ProductBundle
                 interface: BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface
                 form: BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleType
+                repository: BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepository

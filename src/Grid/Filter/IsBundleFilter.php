@@ -11,22 +11,28 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Grid\Filter;
 
+use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepositoryInterface;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Filter\BooleanFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
 final class IsBundleFilter implements FilterInterface
 {
-    //TODO fix handling bundles with no products added
+    public function __construct(private ProductBundleRepositoryInterface $productBundleRepository)
+    {
+    }
+
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
+        $productBundleIds = $this->productBundleRepository->getProductIds();
+
         switch ($data) {
             case BooleanFilter::TRUE:
-                $dataSource->restrict('productBundleItems IS NOT NULL');
+                $dataSource->restrict($dataSource->getExpressionBuilder()->in('id', $productBundleIds));
 
                 break;
             case BooleanFilter::FALSE:
-                $dataSource->restrict('productBundleItems IS NULL');
+                $dataSource->restrict($dataSource->getExpressionBuilder()->notIn('id', $productBundleIds));
 
                 break;
         }

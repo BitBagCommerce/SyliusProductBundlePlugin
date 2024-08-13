@@ -1,15 +1,8 @@
 sylius_grid:
   grids:
     sylius_admin_product:
-      driver:
-        name: doctrine/orm
-        options:
-          class: "%sylius.model.product.class%"
-          repository:
-            method: createSearchListQueryBuilder
-            arguments: [ "expr:service('sylius.context.locale').getLocaleCode()", $taxonId ]
       fields:
-        bundle:
+        productBundleItems:
           type: twig
           label: bitbag_sylius_product_bundle.ui.is_bundle
           options:
