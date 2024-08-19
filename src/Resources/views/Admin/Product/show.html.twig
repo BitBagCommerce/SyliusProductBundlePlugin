@@ -1,0 +1,26 @@
+{% extends '@SyliusAdmin/layout.html.twig' %}
+
+{% block title %}{{ 'sylius.ui.show_product'|trans }} | {{ product.name }}{% endblock %}
+
+{% block content %}
+    {% if product.variants|length == 1 %}
+        {% include "@SyliusAdmin/Product/Show/_simpleProduct.html.twig" %}
+    {% else %}
+        {% include "@SyliusAdmin/Product/Show/_configurableProduct.html.twig" %}
+    {% endif %}
+
+    {% set bundles = bitbag_get_bundles_containing_product(product) %}
+    {% if bundles|length > 0 %}
+        <div class="ui hidden divider"></div>
+        <div>
+            <h4 class="ui top attached large header">{{ 'bitbag_sylius_product_bundle.ui.bundles'|trans }}</h4>
+            {% for bundle in bundles %}
+                <div class="ui attached segment text-break">
+                    <a href="{{ path('sylius_admin_product_update', {id: bundle.product.id}) }}">
+                        {{ bundle.product.name }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

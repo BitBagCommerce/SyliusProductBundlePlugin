@@ -3,9 +3,11 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bitbag_sylius_product_bundle.grid.filter.is_bundle" class="BitBag\SyliusProductBundlePlugin\Grid\Filter\IsBundleFilter">
+        <service id="bitbag_sylius_product_bundle.grid.filter.is_bundle"
+                 class="BitBag\SyliusProductBundlePlugin\Grid\Filter\IsBundleFilter">
             <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle"/>
-            <tag name="sylius.grid_filter" type="is_bundle" form_type="Sylius\Bundle\GridBundle\Form\Type\Filter\BooleanFilterType" />
+            <tag name="sylius.grid_filter" type="is_bundle"
+                 form_type="Sylius\Bundle\GridBundle\Form\Type\Filter\BooleanFilterType"/>
         </service>
     </services>
 </container>
