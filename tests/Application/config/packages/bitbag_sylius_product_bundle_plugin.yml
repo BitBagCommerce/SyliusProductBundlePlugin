@@ -1,2 +1,46 @@
 imports:
-    - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
+  - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
+
+sylius_fixtures:
+  suites:
+    default:
+      fixtures:
+        tshirt_bundle_products:
+          name: product
+          options:
+            custom:
+              - name: 'Packed T-Shirt bundle'
+                tax_category: 'clothing'
+                channels:
+                  - 'FASHION_WEB'
+                main_taxon: 'mens_t_shirts'
+                taxons:
+                  - 't_shirts'
+                  - 'mens_t_shirts'
+
+              - name: 'Not packed T-Shirt bundle'
+                tax_category: 'clothing'
+                channels:
+                  - 'FASHION_WEB'
+                main_taxon: 'womens_t_shirts'
+                taxons:
+                  - 't_shirts'
+                  - 'womens_t_shirts'
+
+        tshirt_bundles:
+          name: product_bundle
+          options:
+            custom:
+              - bundle: 'Packed_T_Shirt_bundle'
+                items:
+                  - 'Sport_basic_white_T_Shirt-variant-0'
+                  - 'Raglan_grey_&_black_Tee-variant-0'
+                  - 'Oversize_white_cotton_T_Shirt-variant-0'
+                is_packed: true
+
+              - bundle: 'Not_packed_T_Shirt_bundle'
+                items:
+                  - 'Everyday_white_basic_T_Shirt-variant-0'
+                  - 'Loose_white_designer_T_Shirt-variant-0'
+                  - 'Ribbed_copper_slim_fit_Tee-variant-0'
+                is_packed: false
