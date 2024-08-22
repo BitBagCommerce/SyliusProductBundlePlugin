@@ -2,7 +2,7 @@ sylius_grid:
   grids:
     sylius_admin_product:
       fields:
-        productBundleItems:
+        bundle:
           type: twig
           label: bitbag_sylius_product_bundle.ui.is_bundle
           options:

@@ -25,6 +25,7 @@ final class ProductTypeExtension extends AbstractTypeExtension
             ->add('productBundle', ProductBundleType::class, [
                 'label' => false,
                 'constraints' => [new Valid()],
+                'required' => false,
             ])
         ;
     }

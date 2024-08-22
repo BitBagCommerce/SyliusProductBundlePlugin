@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 trait ProductBundlesAwareTrait
@@ -22,13 +21,15 @@ trait ProductBundlesAwareTrait
      * @ORM\OneToOne(
      *     targetEntity=ProductBundleInterface::class,
      *     mappedBy="product",
-     *     cascade={"all"}
+     *     cascade={"all"},
+     *     orphanRemoval=true,
      * )
      */
     #[ORM\OneToOne(
         targetEntity: ProductBundleInterface::class,
         mappedBy: 'product',
         cascade: ['all'],
+        orphanRemoval: true,
     )]
     protected $productBundle;
 
@@ -45,15 +46,5 @@ trait ProductBundlesAwareTrait
     public function isBundle(): bool
     {
         return null !== $this->getProductBundle();
-    }
-
-    public function hasProductBundleItems(): bool
-    {
-        $items = $this->getProductBundle()?->getProductBundleItems();
-        if (!$items instanceof Collection) {
-            return false;
-        }
-
-        return 0 < $items->count();
     }
 }

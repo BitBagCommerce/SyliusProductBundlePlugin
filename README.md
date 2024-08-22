@@ -121,9 +121,10 @@ This **open-source plugin was developed to help the Sylius community**. If you h
      * @var ProductBundleInterface
      */
     #[ORM\OneToOne(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
-        mappedBy: "product",
-        cascade: ["all"]
+        targetEntity: 'BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface',
+        mappedBy: 'product',
+        cascade: ['all'],
+        orphanRemoval: true,
     )]
     protected $productBundle;
    
@@ -140,10 +141,11 @@ This **open-source plugin was developed to help the Sylius community**. If you h
                                          http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
    >
        <entity name="App\Entity\Product\Product" table="sylius_product">
-           <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" mapped-by="product">
-               <cascade>
-                   <cascade-all/>
-               </cascade>
+           <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" 
+                       mapped-by="product" orphan-removal="true">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
            </one-to-one>
        </entity>
    </doctrine-mapping>

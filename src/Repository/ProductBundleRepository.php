@@ -22,8 +22,6 @@ class ProductBundleRepository extends EntityRepository implements ProductBundleR
         return $this->createQueryBuilder('pb')
             ->select('product.id')
             ->leftJoin('pb.product', 'product')
-            ->leftJoin('pb.productBundleItems', 'items')
-            ->andWhere('items.id IS NOT NULL')
             ->getQuery()
             ->getSingleColumnResult();
     }
