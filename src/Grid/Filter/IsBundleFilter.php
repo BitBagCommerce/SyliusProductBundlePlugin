@@ -18,7 +18,7 @@ use Sylius\Component\Grid\Filtering\FilterInterface;
 
 final class IsBundleFilter implements FilterInterface
 {
-    public function __construct(private ProductBundleRepositoryInterface $productBundleRepository)
+    public function __construct(private readonly ProductBundleRepositoryInterface $productBundleRepository)
     {
     }
 

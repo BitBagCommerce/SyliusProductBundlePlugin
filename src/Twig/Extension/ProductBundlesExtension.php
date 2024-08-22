@@ -20,7 +20,7 @@ use Twig\TwigFunction;
 final class ProductBundlesExtension extends AbstractExtension
 {
     public function __construct(
-        private ProductBundleRepositoryInterface $productBundleRepository,
+        private readonly ProductBundleRepositoryInterface $productBundleRepository,
     ) {
     }
 

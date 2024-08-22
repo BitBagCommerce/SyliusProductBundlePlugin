@@ -25,10 +25,10 @@ final class ProductBundleFixtureFactory implements ExampleFactoryInterface
     private readonly OptionsResolver $optionsResolver;
 
     public function __construct(
-        private FactoryInterface $productBundleFactory,
-        private FactoryInterface $productBundleItemFactory,
-        private ProductRepositoryInterface $productRepository,
-        private ProductVariantRepositoryInterface $productVariantRepository,
+        private readonly FactoryInterface $productBundleFactory,
+        private readonly FactoryInterface $productBundleItemFactory,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly ProductVariantRepositoryInterface $productVariantRepository,
     ) {
         $this->optionsResolver = new OptionsResolver();
         $this->configureOptions($this->optionsResolver);

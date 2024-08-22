@@ -21,8 +21,8 @@ use Twig\TwigFunction;
 final class ProductBundleOrderItemExtension extends AbstractExtension
 {
     public function __construct(
-        private RepositoryInterface $productBundleOrderItemRepository,
-        private Environment $twig,
+        private readonly RepositoryInterface $productBundleOrderItemRepository,
+        private readonly Environment $twig,
     ) {
     }
 
