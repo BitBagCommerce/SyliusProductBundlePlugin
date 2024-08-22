@@ -1,4 +1,4 @@
 framework:
-    test: ~
-    session:
-        handler_id: ~
+  test: ~
+  session:
+    handler_id: ~

@@ -1,30 +1,30 @@
 imports:
-    - { resource: "@SyliusCoreBundle/Resources/config/app/config.yml" }
+  - { resource: "@SyliusCoreBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@SyliusAdminBundle/Resources/config/app/config.yml" }
+  - { resource: "@SyliusAdminBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
+  - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
 
-    - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
+  - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
 
 sylius_api:
-    enabled: true
+  enabled: true
 
 parameters:
-    sylius_core.public_dir: '%kernel.project_dir%/public'
+  sylius_core.public_dir: '%kernel.project_dir%/public'
 
 sylius_product:
-    resources:
-        product:
-            classes:
-                model: Tests\BitBag\SyliusProductBundlePlugin\Entity\Product
+  resources:
+    product:
+      classes:
+        model: Tests\BitBag\SyliusProductBundlePlugin\Entity\Product
 
 sylius_order:
-    resources:
-        order_item:
-            classes:
-                model: Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem
+  resources:
+    order_item:
+      classes:
+        model: Tests\BitBag\SyliusProductBundlePlugin\Entity\OrderItem
 
 sylius_shop:
-    product_grid:
-        include_all_descendants: true
+  product_grid:
+    include_all_descendants: true

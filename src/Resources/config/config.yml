@@ -1,9 +1,9 @@
 imports:
-    - { resource: resources.yml }
-    - { resource: grids.yml }
-    - { resource: services.xml }
+  - { resource: resources.yml }
+  - { resource: grids.yml }
+  - { resource: services.xml }
 
 framework:
-    messenger:
-        buses:
-            bitbag_sylius_product_bundle.command_bus: ~
+  messenger:
+    buses:
+      bitbag_sylius_product_bundle.command_bus: ~

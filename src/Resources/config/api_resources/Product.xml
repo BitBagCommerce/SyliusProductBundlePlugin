@@ -99,10 +99,10 @@
             </subresourceOperation>
         </subresourceOperations>
 
-        <property name="id" identifier="false" writable="false" />
-        <property name="code" identifier="true" required="true" />
-        <property name="createdAt" writable="false" />
-        <property name="updatedAt" writable="false" />
+        <property name="id" identifier="false" writable="false"/>
+        <property name="code" identifier="true" required="true"/>
+        <property name="createdAt" writable="false"/>
+        <property name="updatedAt" writable="false"/>
         <property name="translations" readable="true" writable="true">
             <attribute name="openapi_context">
                 <attribute name="type">object</attribute>
@@ -115,17 +115,17 @@
                 </attribute>
             </attribute>
         </property>
-        <property name="productTaxons" readable="true" writable="true" />
-        <property name="reviews" required="false" />
-        <property name="options" required="false" />
-        <property name="channels" required="false" />
-        <property name="images" required="false" />
-        <property name="mainTaxon" required="false" />
+        <property name="productTaxons" readable="true" writable="true"/>
+        <property name="reviews" required="false"/>
+        <property name="options" required="false"/>
+        <property name="channels" required="false"/>
+        <property name="images" required="false"/>
+        <property name="mainTaxon" required="false"/>
         <property name="variants" readable="true"/>
-        <property name="averageRating" readable="true" />
+        <property name="averageRating" readable="true"/>
         <property name="productBundle" writable="false">
-            <subresource resourceClass="%bitbag_sylius_product_bundle.model.product_bundle.class%" collection="false" />
+            <subresource resourceClass="%bitbag_sylius_product_bundle.model.product_bundle.class%" collection="false"/>
         </property>
-        <property name="bundle" writable="false" />
+        <property name="bundle" writable="false"/>
     </resource>
 </resources>

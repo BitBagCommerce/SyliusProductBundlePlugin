@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bitbag_sylius_product_bundle.controller.order_item" class="BitBag\SyliusProductBundlePlugin\Controller\OrderItemController" parent="sylius.controller.order_item">
+        <service id="bitbag_sylius_product_bundle.controller.order_item"
+                 class="BitBag\SyliusProductBundlePlugin\Controller\OrderItemController"
+                 parent="sylius.controller.order_item">
             <argument type="service" id="bitbag_sylius_product_bundle.command_bus"/>
-            <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_dto" />
-            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_command" />
+            <argument type="service" id="sylius.repository.order"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_dto"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_command"/>
         </service>
     </services>
 </container>

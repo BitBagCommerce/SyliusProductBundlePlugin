@@ -1,2 +1,2 @@
 sylius_channel:
-    debug: true
+  debug: true

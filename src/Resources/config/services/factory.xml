@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bitbag_sylius_product_bundle.custom_factory.product" class="BitBag\SyliusProductBundlePlugin\Factory\ProductFactory" decorates="sylius.factory.product" public="false">
-            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product.inner" />
-            <argument type="service" id="bitbag_sylius_product_bundle.factory.product_bundle" />
+        <service id="bitbag_sylius_product_bundle.custom_factory.product"
+                 class="BitBag\SyliusProductBundlePlugin\Factory\ProductFactory" decorates="sylius.factory.product"
+                 public="false">
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product.inner"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.product_bundle"/>
         </service>
         <service
                 id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item"
                 class="BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactory"
                 decorates="bitbag_sylius_product_bundle.factory.product_bundle_order_item"
         >
-            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item.inner" />
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item.inner"/>
         </service>
         <service
                 id="bitbag_sylius_product_bundle.custom_factory.order_item"
@@ -19,7 +22,7 @@
                 decorates="sylius.factory.order_item"
                 decoration-priority="128"
         >
-            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.order_item.inner" />
+            <argument type="service" id="bitbag_sylius_product_bundle.custom_factory.order_item.inner"/>
         </service>
         <service
                 id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command"
@@ -33,7 +36,7 @@
                 id="bitbag_sylius_product_bundle.factory.add_product_bundle_to_cart_dto"
                 class="BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory"
         >
-            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command" />
+            <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command"/>
         </service>
 
     </services>

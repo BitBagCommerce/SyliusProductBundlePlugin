@@ -65,9 +65,9 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     # config/packages/_sylius.yaml
     
     imports:
-        ...
+      ...
         
-        - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
+      - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
     ```    
 
 4. (optional) Import routing in your `config/routes.yaml` file:
@@ -78,7 +78,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     ...
     
     bitbag_sylius_product_bundle_plugin:
-        resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
+      resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
     ```
 
 5. Extend `Product`(including Doctrine mapping):
@@ -231,16 +231,16 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     # config/packages/_sylius.yaml
    
     sylius_product:
-        resources:
-            product:
-                classes:
-                    model: App\Entity\Product\Product
+      resources:
+        product:
+          classes:
+            model: App\Entity\Product\Product
 
-   sylius_order:
-       resources:
-           order_item:
-               classes:
-                   model: App\Entity\Order\OrderItem
+    sylius_order:
+      resources:
+        order_item:
+          classes:
+            model: App\Entity\Order\OrderItem
     
     ```
 
@@ -249,16 +249,16 @@ This **open-source plugin was developed to help the Sylius community**. If you h
 ```yaml
 # config/packages/doctrine.yaml   
 doctrine:
-    orm:
-        entity_managers:
-        default:
-            mappings:
-                App:
-                    is_bundle: false
-                    type: xml
-                    dir: '%kernel.project_dir%/src/Resources/config/doctrine'
-                    prefix: 'App\Entity'
-                    alias: App
+  orm:
+    entity_managers:
+    default:
+      mappings:
+        App:
+          is_bundle: false
+          type: xml
+          dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+          prefix: 'App\Entity'
+          alias: App
 
 ```
 
