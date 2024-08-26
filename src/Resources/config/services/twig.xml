@@ -3,7 +3,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="bitbag_sylius_product_bundle.twig.extension.smash_promotion"
+        <service id="bitbag_sylius_product_bundle.twig.extension.admin.order_item_product_bundle"
                  class="BitBag\SyliusProductBundlePlugin\Twig\Extension\ProductBundleOrderItemExtension" public="false">
             <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle_order_item"/>
             <argument type="service" id="twig"/>
