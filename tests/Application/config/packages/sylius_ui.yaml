@@ -5,23 +5,32 @@ sylius_ui:
         variant_selection:
           template: "@BitBagSyliusProductBundlePlugin/Shop/Product/_variantSelection.html.twig"
           priority: 10
+
     sylius.shop.layout.javascripts:
       blocks:
         plugin_scripts:
           template: "@BitBagSyliusProductBundlePlugin/Shop/_scripts.html.twig"
           priority: 20
+
     sylius.shop.layout.stylesheets:
       blocks:
         plugin_stylesheets:
           template: "@BitBagSyliusProductBundlePlugin/Shop/_styles.html.twig"
           priority: 20
+
     sylius.admin.layout.javascripts:
       blocks:
         plugin_scripts:
           template: "@BitBagSyliusProductBundlePlugin/Admin/_scripts.html.twig"
           priority: 20
+
     sylius.admin.layout.stylesheets:
       blocks:
         plugin_stylesheets:
           template: "@BitBagSyliusProductBundlePlugin/Admin/_styles.html.twig"
           priority: 20
+      
+    sylius.shop.cart.items:
+      blocks:
+        content:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/Cart/Summary/_items.html.twig"

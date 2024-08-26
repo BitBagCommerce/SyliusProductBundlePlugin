@@ -38,7 +38,7 @@ final class ProductBundleOrderItemExtension extends AbstractExtension
     {
         $items = $this->getItems($orderItem);
 
-        if ($items === []) {
+        if ([] === $items) {
             return '';
         }
 
@@ -51,7 +51,7 @@ final class ProductBundleOrderItemExtension extends AbstractExtension
     {
         $items = $this->getItems($orderItem);
 
-        if ($items === []) {
+        if ([] === $items) {
             return '';
         }
 
