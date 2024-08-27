@@ -29,8 +29,3 @@ sylius_ui:
         plugin_stylesheets:
           template: "@BitBagSyliusProductBundlePlugin/Admin/_styles.html.twig"
           priority: 20
-      
-    sylius.shop.cart.items:
-      blocks:
-        content:
-          template: "@BitBagSyliusProductBundlePlugin/Shop/Cart/Summary/_items.html.twig"

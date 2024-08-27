@@ -244,7 +244,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
 
-10. If you have full configuration in xml override doctrine config :
+10. If you have full configuration in xml override doctrine config:
 
 ```yaml
 # config/packages/doctrine.yaml   
@@ -273,21 +273,25 @@ sylius_ui:
         variant_selection:
           template: "@BitBagSyliusProductBundlePlugin/Shop/Product/_variantSelection.html.twig"
           priority: 10
+
     sylius.shop.layout.javascripts:
       blocks:
         plugin_scripts:
           template: "@BitBagSyliusProductBundlePlugin/Shop/_scripts.html.twig"
           priority: 20
+
     sylius.shop.layout.stylesheets:
       blocks:
         plugin_stylesheets:
           template: "@BitBagSyliusProductBundlePlugin/Shop/_styles.html.twig"
           priority: 20
+
     sylius.admin.layout.javascripts:
       blocks:
         plugin_scripts:
           template: "@BitBagSyliusProductBundlePlugin/Admin/_scripts.html.twig"
           priority: 20
+
     sylius.admin.layout.stylesheets:
       blocks:
         plugin_stylesheets:
@@ -299,6 +303,9 @@ sylius_ui:
 
     ```bash
     cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Order/Show/Summary/_item.html.twig templates/bundles/SyliusAdminBundle/Order/Show/Summary
+    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Product/show.html.twig templates/bundles/SyliusAdminBundle/Product
+    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Cart/Summary/_item.html.twig templates/bundles/SyliusShopBundle/Cart/Summary
+    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common/Order/Table/_item.html.twig templates/bundles/SyliusShopBundle/Common/Order/Table
     ```
     
 12. Please clear application cache by running command below:
