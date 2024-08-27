@@ -81,12 +81,17 @@ This **open-source plugin was developed to help the Sylius community**. If you h
       resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
     ```
 
-5. Extend `Product`(including Doctrine mapping):
+5. (applied if using Rector) Extend entities by running
+    ```bash
+    vendor/bin/rector process src --config=vendor/bitbag/product-bundle-plugin/rector.php 
+    ```
+
+6. (applied if not using Rector) Extend `Product`(including Doctrine mapping):
 
     ```php
     <?php 
    
-   declare(strict_types=1);
+    declare(strict_types=1);
     
     namespace App\Entity\Product;
     
@@ -100,38 +105,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     }
     ```
 
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
-   
-   **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
-
-   ```php
-   <?php 
-   
-   declare(strict_types=1);
-   
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
-   use Doctrine\ORM\Mapping as ORM;
-   
-   trait ProductTrait
-   {
-       use ProductBundlesAwareTrait;
-   
-    /**
-     * @var ProductBundleInterface
-     */
-    #[ORM\OneToOne(
-        targetEntity: 'BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface',
-        mappedBy: 'product',
-        cascade: ['all'],
-        orphanRemoval: true,
-    )]
-    protected $productBundle;
-   
-   }
-   ```
-
-   Mapping (XML) (Resources/config/doctrine/Product.Product.orm.xml):
+7. (applied if using XML for mapping) Add mapping for Product (Resources/config/doctrine/Product.Product.orm.xml):
 
    ```xml 
    <?xml version="1.0" encoding="UTF-8"?>
@@ -151,7 +125,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-7. Extend `OrderItem` (including Doctrine mapping):
+8. (applied if not using Rector) Extend `OrderItem` (including Doctrine mapping):
 
     ```php
    <?php
@@ -176,37 +150,8 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    
    }
     ```
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
    
-   **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
-
-   ```php
-   <?php 
-   
-   declare(strict_types=1);
-   
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
-   use Doctrine\Common\Collections\ArrayCollection;
-   use Doctrine\ORM\Mapping as ORM;
-   
-   trait OrderItemTrait
-   {
-   use ProductBundleOrderItemsAwareTrait;
-   
-    /**
-     * @var ArrayCollection|ProductBundleOrderItemInterface[]
-     */
-    #[ORM\OneToMany(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
-        mappedBy: "orderItem",
-        cascade: ["all"]
-    )]
-    protected $productBundleOrderItems;
-   
-   }
-   ```
-   Mapping (XML) (Resources/config/doctrine/Order.OrderItem.orm.xml):
+9. (applied if using XML for mapping) Add mapping for OrderItem (Resources/config/doctrine/Order.OrderItem.orm.xml):
    
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
@@ -225,7 +170,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-9. Add configuration for extended product and order item:
+10. Add configuration for extended product and order item:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -244,7 +189,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
 
-10. If you have full configuration in xml override doctrine config:
+11. If you have full configuration in xml override doctrine config:
 
 ```yaml
 # config/packages/doctrine.yaml   
@@ -262,7 +207,7 @@ doctrine:
 
 ```
 
-11. Add plugin templates:
+12. Add plugin templates:
 - Inject blocks:
 
 ```yaml
@@ -308,18 +253,18 @@ sylius_ui:
     cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common/Order/Table/_item.html.twig templates/bundles/SyliusShopBundle/Common/Order/Table
     ```
     
-12. Please clear application cache by running command below:
+13. Please clear application cache by running command below:
 
     ```bash
     bin/console cache:clear
     ```
 
-13. Finish the installation by updating the database schema and installing assets:
+14. Finish the installation by updating the database schema and installing assets:
 
     ```bash
     bin/console doctrine:migrations:migrate
     ```
-14. Add plugin assets to your project:
+15. Add plugin assets to your project:
 [Import webpack config](./README_webpack-config.md)*
 
 ## Testing

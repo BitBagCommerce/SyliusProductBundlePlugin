@@ -43,7 +43,8 @@
         "lchrusciel/api-test-case": "^5.1",
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "php-http/message-factory": "^1.1",
-        "robertfausk/behat-panther-extension": "^1.1"
+        "robertfausk/behat-panther-extension": "^1.1",
+        "sylius/sylius-rector": "^2.0"
     },
     "conflict": {
         "symfony/framework-bundle": "6.2.8",
