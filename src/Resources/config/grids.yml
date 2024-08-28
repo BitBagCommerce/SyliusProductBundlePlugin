@@ -35,6 +35,12 @@ sylius_grid:
                   label: bitbag_sylius_product_bundle.ui.bundle
                   icon: plus
                   route: bitbag_product_bundle_admin_product_create_bundle
+        subitem:
+          variants:
+            type: product_links
+
   templates:
     filter:
       is_bundle: "@SyliusUi/Grid/Filter/boolean.html.twig"
+    action:
+      product_links: "@BitBagSyliusProductBundlePlugin/Admin/Grid/Action/product_links.html.twig"

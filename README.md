@@ -247,10 +247,10 @@ sylius_ui:
 - Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
-    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Order/Show/Summary/_item.html.twig templates/bundles/SyliusAdminBundle/Order/Show/Summary
-    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Product/show.html.twig templates/bundles/SyliusAdminBundle/Product
-    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Cart/Summary/_item.html.twig templates/bundles/SyliusShopBundle/Cart/Summary
-    cp vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common/Order/Table/_item.html.twig templates/bundles/SyliusShopBundle/Common/Order/Table
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Order templates/bundles/SyliusAdminBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Product templates/bundles/SyliusAdminBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Cart templates/bundles/SyliusShopBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common templates/bundles/SyliusShopBundle
     ```
     
 13. Please clear application cache by running command below:
