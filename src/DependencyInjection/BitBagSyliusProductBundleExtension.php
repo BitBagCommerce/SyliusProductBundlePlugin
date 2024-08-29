@@ -12,11 +12,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
+use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
-final class BitBagSyliusProductBundleExtension extends Extension implements PrependExtensionInterface
+final class BitBagSyliusProductBundleExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     use PrependDoctrineMigrationsTrait;
 
@@ -27,6 +28,9 @@ final class BitBagSyliusProductBundleExtension extends Extension implements Prep
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineMigrations($container);
+
+        $config = $this->getCurrentConfiguration($container);
+        $this->registerResources('bitbag_sylius_product_bundle', 'doctrine/orm', $config['resources'], $container);
     }
 
     protected function getMigrationsNamespace(): string
@@ -42,5 +46,15 @@ final class BitBagSyliusProductBundleExtension extends Extension implements Prep
     protected function getNamespacesOfMigrationsExecutedBefore(): array
     {
         return ['Sylius\Bundle\CoreBundle\Migrations'];
+    }
+
+    private function getCurrentConfiguration(ContainerBuilder $container): array
+    {
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->getConfiguration([], $container);
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        return $this->processConfiguration($configuration, $configs);
     }
 }
