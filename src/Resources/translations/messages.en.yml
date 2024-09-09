@@ -8,3 +8,4 @@ bitbag_sylius_product_bundle:
         products_in_bundle: Products in bundle
         is_packed_product: Is packed product
         is_bundle: Is bundle
+        is_packed_help: If the bundle is not marked as packed, customers will be able to select different variants for products in the bundle
