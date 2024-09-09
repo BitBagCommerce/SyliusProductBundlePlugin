@@ -46,7 +46,10 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $quantity = $addProductBundleToCartCommand->getQuantity();
         Assert::greaterThan($quantity, 0);
 
-        $this->cartProcessor->process($cart, $productBundle, $quantity);
+        $items = $addProductBundleToCartCommand->getProductBundleItems();
+        Assert::false($items->isEmpty());
+
+        $this->cartProcessor->process($cart, $productBundle, $quantity, $items);
         $this->orderRepository->add($cart);
     }
 }

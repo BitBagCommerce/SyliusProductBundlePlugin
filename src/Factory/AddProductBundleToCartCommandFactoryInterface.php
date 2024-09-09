@@ -13,13 +13,17 @@ namespace BitBag\SyliusProductBundlePlugin\Factory;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface AddProductBundleToCartCommandFactoryInterface
 {
+    /** @param Collection<int, ProductBundleOrderItemInterface> $productBundleItems */
     public function createNew(
         int $orderId,
         string $productCode,
         int $quantity,
+        Collection $productBundleItems,
     ): AddProductBundleToCartCommand;
 
     public function createFromDto(AddProductBundleToCartDtoInterface $dto): AddProductBundleToCartCommand;

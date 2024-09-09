@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Factory;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -18,4 +19,6 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 interface ProductBundleOrderItemFactoryInterface extends FactoryInterface
 {
     public function createFromProductBundleItem(ProductBundleItemInterface $bundleItem): ProductBundleOrderItemInterface;
+
+    public function createFromAddProductBundleItemToCartCommand(AddProductBundleItemToCartCommand $addItemToCartCommand): ProductBundleOrderItemInterface;
 }

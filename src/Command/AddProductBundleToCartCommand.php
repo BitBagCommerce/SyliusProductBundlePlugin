@@ -11,8 +11,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
+use Doctrine\Common\Collections\Collection;
+
 final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface, ProductCodeAwareInterface
 {
+    /** @var Collection<int, AddProductBundleItemToCartCommand> */
+    private Collection $productBundleItems;
+
     public function __construct(
         private int $orderId,
         private string $productCode,
@@ -33,5 +38,17 @@ final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    /** @return Collection<int, AddProductBundleItemToCartCommand> */
+    public function getProductBundleItems(): Collection
+    {
+        return $this->productBundleItems;
+    }
+
+    /** @param Collection<int, AddProductBundleItemToCartCommand> $productBundleItems */
+    public function setProductBundleItems(Collection $productBundleItems): void
+    {
+        $this->productBundleItems = $productBundleItems;
     }
 }

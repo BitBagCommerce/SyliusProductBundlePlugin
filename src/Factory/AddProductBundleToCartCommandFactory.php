@@ -11,17 +11,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Factory;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
+use Doctrine\Common\Collections\Collection;
 
 final class AddProductBundleToCartCommandFactory implements AddProductBundleToCartCommandFactoryInterface
 {
+    /** @param Collection<int, AddProductBundleItemToCartCommand>  */
     public function createNew(
         int $orderId,
         string $productCode,
         int $quantity,
+        Collection $productBundleItems,
     ): AddProductBundleToCartCommand {
-        return new AddProductBundleToCartCommand($orderId, $productCode, $quantity);
+        $command = new AddProductBundleToCartCommand($orderId, $productCode, $quantity);
+        $command->setProductBundleItems($productBundleItems);
+
+        return $command;
     }
 
     public function createFromDto(AddProductBundleToCartDtoInterface $dto): AddProductBundleToCartCommand
@@ -29,7 +36,8 @@ final class AddProductBundleToCartCommandFactory implements AddProductBundleToCa
         $cartId = $dto->getCart()->getId();
         $productCode = $dto->getProduct()->getCode() ?? '';
         $quantity = $dto->getCartItem()->getQuantity();
+        $productBundleItems = $dto->getProductBundleItems();
 
-        return $this->createNew($cartId, $productCode, $quantity);
+        return $this->createNew($cartId, $productCode, $quantity, $productBundleItems);
     }
 }
