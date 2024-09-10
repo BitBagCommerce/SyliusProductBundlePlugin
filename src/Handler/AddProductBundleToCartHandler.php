@@ -23,9 +23,9 @@ use Webmozart\Assert\Assert;
 final class AddProductBundleToCartHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private OrderRepositoryInterface $orderRepository,
-        private ProductRepositoryInterface $productRepository,
-        private CartProcessorInterface $cartProcessor,
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CartProcessorInterface $cartProcessor,
     ) {
     }
 

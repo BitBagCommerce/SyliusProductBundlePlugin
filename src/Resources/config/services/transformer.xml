@@ -7,6 +7,7 @@
                 id="bitbag_sylius_product_bundle.data_transformer.add_product_bundle_to_cart_dto"
                 class="BitBag\SyliusProductBundlePlugin\DataTransformer\AddProductBundleToCartDtoDataTransformer"
         >
+            <argument type="service" id="bitbag_sylius_product_bundle.provider.add_product_bundle_item_to_cart_command"/>
             <tag name="api_platform.data_transformer"/>
         </service>
     </services>

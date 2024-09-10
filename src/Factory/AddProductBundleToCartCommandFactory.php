@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 
 final class AddProductBundleToCartCommandFactory implements AddProductBundleToCartCommandFactoryInterface
 {
-    /** @param Collection<int, AddProductBundleItemToCartCommand>  */
+    /** @param Collection<int, AddProductBundleItemToCartCommand> $productBundleItems */
     public function createNew(
         int $orderId,
         string $productCode,

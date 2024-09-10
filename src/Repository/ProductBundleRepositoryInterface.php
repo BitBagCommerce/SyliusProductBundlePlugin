@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Repository;
 
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Product\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -21,4 +22,6 @@ interface ProductBundleRepositoryInterface extends RepositoryInterface
 
     /** @param Collection<int, ProductVariantInterface> $variants */
     public function findBundlesByVariants(Collection $variants): array;
+
+    public function findOneByProductCode(string $productCode): ?ProductBundleInterface;
 }

@@ -19,6 +19,7 @@ final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
         private string $productCode,
         private int $quantity = 1,
         private ?string $orderTokenValue = null,
+        private array $overwrittenVariants = [],
     ) {
     }
 
@@ -40,5 +41,10 @@ final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    public function getOverwrittenVariants(): array
+    {
+        return $this->overwrittenVariants;
     }
 }

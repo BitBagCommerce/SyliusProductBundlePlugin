@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface, ProductCodeAwareInterface
@@ -19,10 +20,11 @@ final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface
     private Collection $productBundleItems;
 
     public function __construct(
-        private int $orderId,
-        private string $productCode,
-        private int $quantity = 1,
+        private readonly int $orderId,
+        private readonly string $productCode,
+        private readonly int $quantity = 1,
     ) {
+        $this->productBundleItems = new ArrayCollection();
     }
 
     public function getOrderId(): int

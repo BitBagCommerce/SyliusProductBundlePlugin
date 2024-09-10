@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Repository;
 
+use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Product\Model\ProductVariantInterface;
@@ -36,5 +37,16 @@ class ProductBundleRepository extends EntityRepository implements ProductBundleR
             ->setParameter('variants', $variants)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findOneByProductCode(string $productCode): ?ProductBundleInterface
+    {
+        return $this->createQueryBuilder('pb')
+            ->select('pb')
+            ->leftJoin('pb.product', 'p')
+            ->andWhere('p.code = :productCode')
+            ->setParameter('productCode', $productCode)
+            ->getQuery()
+            ->getSingleResult();
     }
 }

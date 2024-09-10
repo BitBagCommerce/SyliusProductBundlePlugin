@@ -19,6 +19,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleItemType;
 use BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleType;
+use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleItemRepository;
 use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepository;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
@@ -80,7 +81,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ProductBundleItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ProductBundleItemRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(ProductBundleItemType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

@@ -17,5 +17,8 @@
         <attribute name="quantity">
             <group>shop:cart:add_product_bundle</group>
         </attribute>
+        <attribute name="overwrittenVariants">
+            <group>shop:cart:add_product_bundle</group>
+        </attribute>
     </class>
 </serializer>

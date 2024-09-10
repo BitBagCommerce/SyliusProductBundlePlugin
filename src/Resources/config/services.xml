@@ -11,6 +11,7 @@
         <import resource="services/controller.xml"/>
         <import resource="services/handler.xml"/>
         <import resource="services/processor.xml"/>
+        <import resource="services/provider.xml"/>
         <import resource="services/transformer.xml"/>
         <import resource="services/twig.xml"/>
         <import resource="services/validator.xml"/>
