@@ -17,6 +17,10 @@ After choosing the right option, the user is taken to the bundle creation page. 
 
 In there user can add chosen variants of the products to the bundle and decide what should be their quantity per bundle. 
 
+> When the option `is packed product` is `not checked`, the customer, when adding the product bundle to the basket, can change its variants (example in one of the screens below).
+
+> When the `is packed product` option is `checked`, it is not possible for the customiser to change product variants.
+
 After setting all the other required info, taxonomy and enabling the bundle in the chosen channel, the user can buy the bundle in the shop.
 
 <div align="center">
