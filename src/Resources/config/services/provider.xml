@@ -8,7 +8,6 @@
                 class="BitBag\SyliusProductBundlePlugin\Provider\AddProductBundleItemToCartCommandProvider"
         >
             <argument type="service" id="bitbag_sylius_product_bundle.factory.add_product_bundle_item_to_cart_command"/>
-            <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle_item"/>
             <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle"/>
             <argument type="service" id="sylius.repository.product_variant"/>
         </service>

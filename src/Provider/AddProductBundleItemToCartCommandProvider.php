@@ -14,7 +14,6 @@ namespace BitBag\SyliusProductBundlePlugin\Provider;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleItemToCartCommandFactoryInterface;
-use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleItemRepositoryInterface;
 use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,9 +22,12 @@ use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 
 final class AddProductBundleItemToCartCommandProvider implements AddProductBundleItemToCartCommandProviderInterface
 {
+    public const TO = 'to';
+
+    public const FROM = 'from';
+
     public function __construct(
         private readonly AddProductBundleItemToCartCommandFactoryInterface $addProductBundleItemToCartCommandFactory,
-        private readonly ProductBundleItemRepositoryInterface $productBundleItemRepository,
         private readonly ProductBundleRepositoryInterface $productBundleRepository,
         private readonly ProductVariantRepositoryInterface $productVariantRepository,
     ) {
@@ -43,8 +45,7 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
             throw new \Exception('Product bundle not found');
         }
 
-        $bundleItems = $this->productBundleItemRepository->findByBundleCode($bundleCode);
-
+        $bundleItems = $bundle->getProductBundleItems();
         $commands = [];
         foreach ($bundleItems as $bundleItem) {
             $command = $this->addProductBundleItemToCartCommandFactory->createNew($bundleItem);
@@ -63,12 +64,12 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
         array $overwrittenVariants,
     ): void {
         foreach ($overwrittenVariants as $overwrittenVariant) {
-            if (null !== $overwrittenVariant['from'] && null !== $overwrittenVariant['to'] &&
-                $bundleItem->getProductVariant()?->getCode() === $overwrittenVariant['from'] &&
-                $this->shouldOverwriteVariant($overwrittenVariant['from'], $overwrittenVariant['to'])
+            if (null !== $overwrittenVariant[self::FROM] && null !== $overwrittenVariant[self::TO] &&
+                $bundleItem->getProductVariant()?->getCode() === $overwrittenVariant[self::FROM] &&
+                $this->shouldOverwriteVariant($overwrittenVariant[self::FROM], $overwrittenVariant[self::TO])
             ) {
                 /** @var ProductVariantInterface $newVariant */
-                $newVariant = $this->productVariantRepository->findOneBy(['code' => $overwrittenVariant['to']]);
+                $newVariant = $this->productVariantRepository->findOneBy(['code' => $overwrittenVariant[self::TO]]);
                 $command->setProductVariant($newVariant);
             }
         }
@@ -76,12 +77,14 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
 
     private function shouldOverwriteVariant(string $oldVariantCode, string $newVariantCode): bool
     {
+        /** @var ?ProductVariantInterface $oldVariant */
         $oldVariant = $this->productVariantRepository->findOneBy(['code' => $oldVariantCode]);
+        /** @var ?ProductVariantInterface $oldVariant */
         $newVariant = $this->productVariantRepository->findOneBy(['code' => $newVariantCode]);
 
         return
-            $oldVariant instanceof ProductVariantInterface &&
-            $newVariant instanceof ProductVariantInterface &&
+            null !== $oldVariant &&
+            null !== $newVariant &&
             $oldVariant->getProduct() === $newVariant->getProduct();
     }
 }
