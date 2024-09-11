@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Factory;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -43,8 +43,9 @@ final class ProductBundleOrderItemFactory implements ProductBundleOrderItemFacto
         return $productBundleOrderItem;
     }
 
-    public function createFromAddProductBundleItemToCartCommand(AddProductBundleItemToCartCommand $addItemToCartCommand): ProductBundleOrderItemInterface
-    {
+    public function createFromAddProductBundleItemToCartCommand(
+        AddProductBundleItemToCartCommandInterface $addItemToCartCommand,
+    ): ProductBundleOrderItemInterface {
         /** @var ProductBundleOrderItemInterface $productBundleOrderItem */
         $productBundleOrderItem = $this->decoratedFactory->createNew();
 

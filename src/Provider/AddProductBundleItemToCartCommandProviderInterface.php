@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Provider;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface AddProductBundleItemToCartCommandProviderInterface
 {
-    /** @return Collection<int, AddProductBundleItemToCartCommand> */
+    /** @return Collection<int, AddProductBundleItemToCartCommandInterface> */
     public function provide(string $bundleCode, array $overwrittenVariants): Collection;
 }

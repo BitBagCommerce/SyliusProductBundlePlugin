@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 
 final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface, ProductCodeAwareInterface
 {
-    /** @var Collection<int, AddProductBundleItemToCartCommand> */
+    /** @var Collection<int, AddProductBundleItemToCartCommandInterface> */
     private Collection $productBundleItems;
 
     public function __construct(
@@ -42,13 +42,13 @@ final class AddProductBundleToCartCommand implements OrderIdentityAwareInterface
         return $this->quantity;
     }
 
-    /** @return Collection<int, AddProductBundleItemToCartCommand> */
+    /** @return Collection<int, AddProductBundleItemToCartCommandInterface> */
     public function getProductBundleItems(): Collection
     {
         return $this->productBundleItems;
     }
 
-    /** @param Collection<int, AddProductBundleItemToCartCommand> $productBundleItems */
+    /** @param Collection<int, AddProductBundleItemToCartCommandInterface> $productBundleItems */
     public function setProductBundleItems(Collection $productBundleItems): void
     {
         $this->productBundleItems = $productBundleItems;

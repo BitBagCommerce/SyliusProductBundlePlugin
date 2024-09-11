@@ -11,11 +11,10 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Handler\AddProductBundleToCartHandler;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundle;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem;
-use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItem;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
@@ -23,6 +22,7 @@ use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessor;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Model\ProductVariant;
@@ -37,17 +37,15 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class CartProcessorTest extends TestCase
 {
-    /** @var mixed|MockObject|OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
+    private OrderItemQuantityModifierInterface|MockObject $orderItemQuantityModifier;
 
-    /** @var ProductBundleOrderItemFactoryInterface|mixed|MockObject */
-    private $productBundleOrderItemFactory;
+    private ProductBundleOrderItemFactoryInterface|MockObject $productBundleOrderItemFactory;
 
-    /** @var mixed|MockObject|OrderModifierInterface */
-    private $orderModifier;
+    private OrderModifierInterface|MockObject $orderModifier;
 
-    /** @var OrderItemFactoryInterface|mixed|MockObject */
-    private $cartItemFactory;
+    private OrderItemFactoryInterface|MockObject $cartItemFactory;
+
+    private AddProductBundleItemToCartCommandInterface|MockObject $addProductBundleItemToCartCommand;
 
     protected function setUp(): void
     {
@@ -55,6 +53,7 @@ final class CartProcessorTest extends TestCase
         $this->productBundleOrderItemFactory = $this->createMock(ProductBundleOrderItemFactoryInterface::class);
         $this->orderModifier = $this->createMock(OrderModifierInterface::class);
         $this->cartItemFactory = $this->createMock(OrderItemFactoryInterface::class);
+        $this->addProductBundleItemToCartCommand = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
     }
 
     public function testThrowExceptionIfQuantityNotGreaterThanZero(): void
@@ -65,7 +64,7 @@ final class CartProcessorTest extends TestCase
         $productBundle = $this->createProductBundle();
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 0);
+        $processor->process($cart, $productBundle, 0, new ArrayCollection());
     }
 
     public function testThrowExceptionIfProductIsNull(): void
@@ -76,7 +75,7 @@ final class CartProcessorTest extends TestCase
         $productBundle = $this->createProductBundle();
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 1);
+        $processor->process($cart, $productBundle, 1, new ArrayCollection());
     }
 
     public function testThrowExceptionIfProductHasNoVariant(): void
@@ -87,7 +86,7 @@ final class CartProcessorTest extends TestCase
         $productBundle = $this->createProductBundleWithProduct();
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 1);
+        $processor->process($cart, $productBundle, 1, new ArrayCollection());
     }
 
     public function testCreateCartItem(): void
@@ -103,7 +102,7 @@ final class CartProcessorTest extends TestCase
         ;
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 2);
+        $processor->process($cart, $productBundle, 2, new ArrayCollection([$this->addProductBundleItemToCartCommand]));
     }
 
     public function testModifyCartItemQuantity(): void
@@ -124,13 +123,13 @@ final class CartProcessorTest extends TestCase
         ;
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 2);
+        $processor->process($cart, $productBundle, 2, new ArrayCollection([$this->addProductBundleItemToCartCommand]));
     }
 
     public function testCreateBundleOrderItemsFromBundleItems(): void
     {
-        $bundleItem1 = $this->createProductBundleItem();
-        $bundleItem2 = $this->createProductBundleItem();
+        $addBundleItemToCartCommand1 = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
+        $addBundleItemToCartCommand2 = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
 
         $productBundleOrderItem1 = $this->createProductBundleOrderItem();
         $productBundleOrderItem2 = $this->createProductBundleOrderItem();
@@ -138,8 +137,6 @@ final class CartProcessorTest extends TestCase
         $cart = $this->createCart();
         $product = $this->createProductWithVariant();
         $productBundle = $this->createProductBundleWithProduct($product);
-        $productBundle->addProductBundleItem($bundleItem1);
-        $productBundle->addProductBundleItem($bundleItem2);
 
         $cartItem = $this->createMock(OrderItemInterface::class);
         $cartItem->expects(self::exactly(2))
@@ -152,13 +149,13 @@ final class CartProcessorTest extends TestCase
             ->willReturn($cartItem)
         ;
         $this->productBundleOrderItemFactory->expects(self::exactly(2))
-            ->method('createFromProductBundleItem')
-            ->withConsecutive([$bundleItem1], [$bundleItem2])
+            ->method('createFromAddProductBundleItemToCartCommand')
+            ->withConsecutive([$addBundleItemToCartCommand1], [$addBundleItemToCartCommand2])
             ->willReturn($productBundleOrderItem1, $productBundleOrderItem2)
         ;
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 1);
+        $processor->process($cart, $productBundle, 1, new ArrayCollection([$addBundleItemToCartCommand1, $addBundleItemToCartCommand2]));
     }
 
     public function testAddCartItemToOrder(): void
@@ -178,7 +175,7 @@ final class CartProcessorTest extends TestCase
         ;
 
         $processor = $this->createProcessor();
-        $processor->process($cart, $productBundle, 1);
+        $processor->process($cart, $productBundle, 1, new ArrayCollection([$this->addProductBundleItemToCartCommand]));
     }
 
     private function createProcessor(): CartProcessorInterface
@@ -228,11 +225,6 @@ final class CartProcessorTest extends TestCase
         $productBundle->setProduct($product);
 
         return $productBundle;
-    }
-
-    private function createProductBundleItem(): ProductBundleItemInterface
-    {
-        return new ProductBundleItem();
     }
 
     private function createProductBundleOrderItem(): ProductBundleOrderItemInterface

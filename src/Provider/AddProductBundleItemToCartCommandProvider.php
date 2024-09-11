@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Provider;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleItemToCartCommandFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleItemRepositoryInterface;
@@ -32,7 +32,7 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
     }
 
     /**
-     * @return Collection<int, AddProductBundleItemToCartCommand>
+     * @return Collection<int, AddProductBundleItemToCartCommandInterface>
      *
      * @throws \Exception
      */
@@ -58,7 +58,7 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
     }
 
     private function overwriteVariant(
-        AddProductBundleItemToCartCommand $command,
+        AddProductBundleItemToCartCommandInterface $command,
         ProductBundleItemInterface $bundleItem,
         array $overwrittenVariants,
     ): void {

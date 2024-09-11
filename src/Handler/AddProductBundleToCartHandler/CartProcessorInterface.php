@@ -21,6 +21,6 @@ interface CartProcessorInterface
         OrderInterface $cart,
         ProductBundleInterface $productBundle,
         int $quantity,
-        Collection $productBundleOrderItems,
+        Collection $addBundleItemToCartCommands,
     ): void;
 }

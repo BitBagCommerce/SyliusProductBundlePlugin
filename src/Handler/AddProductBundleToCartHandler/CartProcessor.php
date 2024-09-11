@@ -35,7 +35,7 @@ final class CartProcessor implements CartProcessorInterface
         OrderInterface $cart,
         ProductBundleInterface $productBundle,
         int $quantity,
-        Collection $productBundleOrderItems,
+        Collection $addBundleItemToCartCommands,
     ): void {
         Assert::greaterThan($quantity, 0);
 
@@ -49,7 +49,7 @@ final class CartProcessor implements CartProcessorInterface
         $cartItem = $this->cartItemFactory->createWithVariant($productVariant);
         $this->orderItemQuantityModifier->modify($cartItem, $quantity);
 
-        foreach ($productBundleOrderItems as $addBundleItemToCartCommand) {
+        foreach ($addBundleItemToCartCommands as $addBundleItemToCartCommand) {
             $productBundleOrderItem = $this->productBundleOrderItemFactory->createFromAddProductBundleItemToCartCommand($addBundleItemToCartCommand);
             $cartItem->addProductBundleOrderItem($productBundleOrderItem);
         }

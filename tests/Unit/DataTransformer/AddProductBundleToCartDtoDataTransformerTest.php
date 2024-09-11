@@ -17,9 +17,13 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\DataTransformer;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\DataTransformer\AddProductBundleToCartDtoDataTransformer;
 use BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto;
+use BitBag\SyliusProductBundlePlugin\Provider\AddProductBundleItemToCartCommandProviderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\Api\AddProductBundleToCartDtoMother;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\OrderMother;
@@ -28,6 +32,16 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
 {
+    private AddProductBundleItemToCartCommandProviderInterface|MockObject $provider;
+
+    private AddProductBundleItemToCartCommandInterface|MockObject $addProductBundleItemToCartCommand;
+
+    public function setUp(): void
+    {
+        $this->provider = $this->createMock(AddProductBundleItemToCartCommandProviderInterface::class);
+        $this->addProductBundleItemToCartCommand = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
+    }
+
     public function testThrowErrorIfObjectIsNotInstanceOfAddProductBundleToCartDto(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -36,7 +50,8 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
         );
 
         $object = new \stdClass();
-        $dataTransformer = new AddProductBundleToCartDtoDataTransformer();
+        $this->provider->expects(self::never())->method(self::anything());
+        $dataTransformer = new AddProductBundleToCartDtoDataTransformer($this->provider);
 
         $dataTransformer->transform($object, '');
     }
@@ -47,7 +62,8 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
         $this->expectExceptionMessage(TypeExceptionMessage::EXPECTED_VALUE_OTHER_THAN_NULL);
 
         $object = AddProductBundleToCartDtoMother::create('PRODUCT_CODE');
-        $dataTransformer = new AddProductBundleToCartDtoDataTransformer();
+        $this->provider->expects(self::never())->method(self::anything());
+        $dataTransformer = new AddProductBundleToCartDtoDataTransformer($this->provider);
 
         $dataTransformer->transform($object, '');
     }
@@ -58,7 +74,16 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
         $context = [
             AddProductBundleToCartDtoDataTransformer::OBJECT_TO_POPULATE => OrderMother::createWithId(3),
         ];
-        $dataTransformer = new AddProductBundleToCartDtoDataTransformer();
+
+        $addProductBundleItemToCartCommands = new ArrayCollection([$this->addProductBundleItemToCartCommand]);
+
+        $this->provider
+            ->expects(self::once())
+            ->method('provide')
+            ->with('PRODUCT_CODE', [])
+            ->willReturn($addProductBundleItemToCartCommands);
+
+        $dataTransformer = new AddProductBundleToCartDtoDataTransformer($this->provider);
 
         $addProductBundleToCartCommand = $dataTransformer->transform($object, '', $context);
 
@@ -66,5 +91,6 @@ final class AddProductBundleToCartDtoDataTransformerTest extends TestCase
         self::assertSame('PRODUCT_CODE', $addProductBundleToCartCommand->getProductCode());
         self::assertSame(2, $addProductBundleToCartCommand->getQuantity());
         self::assertSame(3, $addProductBundleToCartCommand->getOrderId());
+        self::assertSame($addProductBundleItemToCartCommands, $addProductBundleToCartCommand->getProductBundleItems());
     }
 }
