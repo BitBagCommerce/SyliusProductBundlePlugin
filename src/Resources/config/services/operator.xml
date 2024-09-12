@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="sylius.custom_inventory.order_inventory_operator"
+                 class="BitBag\SyliusProductBundlePlugin\Inventory\Operator\OrderInventoryOperator"
+                 decorates="sylius.inventory.order_inventory_operator">
+            <argument type="service" id="sylius.custom_inventory.order_inventory_operator.inner"/>
+            <argument type="service" id="sylius.manager.product_variant"/>
+            <argument type="service"
+                      id="bitbag_sylius_product_bundle.checker.bundled_product_inventory_management_feature_flag_checker"/>
+            <argument type="service"
+                      id="bitbag_sylius_product_bundle.operator.product_bundle_order_inventory_operator"/>
+        </service>
+        <service id="bitbag_sylius_product_bundle.operator.product_bundle_order_inventory_operator"
+                 class="BitBag\SyliusProductBundlePlugin\Inventory\Operator\ProductBundleOrderInventoryOperator">
+        </service>
+    </services>
+</container>
