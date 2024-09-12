@@ -19,6 +19,7 @@ services:
       - '@bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item'
       - '@sylius.order_modifier'
       - '@bitbag_sylius_product_bundle.custom_factory.order_item'
+      - '@bitbag_sylius_product_bundle.repository.product_bundle'
 
   bitbag_sylius_product_bundle_plugin.behat.page.create_bundled_product_page:
     class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin\CreateBundledProductPage

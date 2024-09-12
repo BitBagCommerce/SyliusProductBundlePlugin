@@ -10,6 +10,7 @@ Feature: Having a product in store which is a bundle of other products
     And the store ships everywhere for Free
     And the store allows paying Offline
     And the store has a product "Jim Beam" priced at "$10.00"
+    And this product has "Jim Beam 1L" variant priced at "$15.00" identified by "JIM_BEAM_1L"
     And the store has a product "Jim Beam Double Oak" priced at "$10.00"
     And the store has a product "Coca-Cola" priced at "$5.00"
     And the store has bundled product "Jim Beam double pack" priced at "$18.00" which contains "Jim Beam" and "Jim Beam Double Oak"
@@ -63,4 +64,32 @@ Feature: Having a product in store which is a bundle of other products
     And I add bundle "Jim Beam&Coke" with quantity 5 to my cart
     Then I should have bundle "Jim Beam&Coke" with quantity 10 in my cart
     And I should have product "Jim Beam" in bundled items
+    And I should have product "Coca-Cola" in bundled items
+
+  @api
+  Scenario: Adding unpacked product bundles to cart and overwriting variants with API
+    When I pick up my cart
+    And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "JIM_BEAM" with "JIM_BEAM_1L"
+    Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
+    And I should have product variant "Jim Beam 1L" in bundled items
+    And I should not have product variant "Jim Beam" in bundled items
+    And I should have product "Coca-Cola" in bundled items
+
+  @api
+  Scenario: Adding unpacked product bundles to cart and overwriting variants with invalid variant with API
+    When I pick up my cart
+    And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "COCA_COLA" with "JIM_BEAM_1L"
+    Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
+    And I should not have product variant "Jim Beam 1L" in bundled items
+    And I should have product variant "Jim Beam" in bundled items
+    And I should have product "Coca-Cola" in bundled items
+
+  @api
+  Scenario: Adding packed product bundles to cart and overwriting varians with API
+    Given product bundle "JIM_BEAM&COKE" is packed
+    When I pick up my cart
+    And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "JIM_BEAM" with "JIM_BEAM_1L"
+    Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
+    And I should not have product variant "Jim Beam 1L" in bundled items
+    And I should have product variant "Jim Beam" in bundled items
     And I should have product "Coca-Cola" in bundled items

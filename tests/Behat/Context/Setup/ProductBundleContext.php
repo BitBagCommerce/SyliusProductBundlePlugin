@@ -17,6 +17,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductFactory;
+use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Formatter\StringInflector;
@@ -51,6 +52,7 @@ final class ProductBundleContext implements Context
         private readonly ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
         private readonly OrderModifierInterface $orderModifier,
         private readonly OrderItemFactoryInterface $cartItemFactory,
+        private readonly ProductBundleRepositoryInterface $productBundleRepository,
     ) {
     }
 
@@ -180,6 +182,16 @@ final class ProductBundleContext implements Context
 
         $this->orderModifier->addToOrder($cart, $cartItem);
 
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given product bundle :productBundleCode is packed
+     */
+    public function productBundleIsPacked(string $productBundleCode): void
+    {
+        $bundle = $this->productBundleRepository->findOneByProductCode($productBundleCode);
+        $bundle->setIsPackedProduct(true);
         $this->objectManager->flush();
     }
 }
