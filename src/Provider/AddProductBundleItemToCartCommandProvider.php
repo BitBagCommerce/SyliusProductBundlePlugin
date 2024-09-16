@@ -77,14 +77,12 @@ final class AddProductBundleItemToCartCommandProvider implements AddProductBundl
 
     private function shouldOverwriteVariant(string $oldVariantCode, string $newVariantCode): bool
     {
-        /** @var ?ProductVariantInterface $oldVariant */
         $oldVariant = $this->productVariantRepository->findOneBy(['code' => $oldVariantCode]);
-        /** @var ?ProductVariantInterface $oldVariant */
         $newVariant = $this->productVariantRepository->findOneBy(['code' => $newVariantCode]);
 
         return
-            null !== $oldVariant &&
-            null !== $newVariant &&
+            $oldVariant instanceof ProductVariantInterface &&
+            $newVariant instanceof ProductVariantInterface &&
             $oldVariant->getProduct() === $newVariant->getProduct();
     }
 }

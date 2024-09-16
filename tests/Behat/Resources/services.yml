@@ -53,3 +53,4 @@ services:
       - '@sylius.behat.api_platform_client.shop'
       - '@sylius.behat.request_factory'
       - '@Sylius\Behat\Client\ResponseCheckerInterface'
+      - '@sylius.repository.product_variant'

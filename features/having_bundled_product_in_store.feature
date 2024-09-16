@@ -71,8 +71,8 @@ Feature: Having a product in store which is a bundle of other products
     When I pick up my cart
     And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "JIM_BEAM" with "JIM_BEAM_1L"
     Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
-    And I should have product variant "Jim Beam 1L" in bundled items
-    And I should not have product variant "Jim Beam" in bundled items
+    And I should have product variant "JIM_BEAM_1L" in bundled items
+    And I should not have product variant "JIM_BEAM" in bundled items
     And I should have product "Coca-Cola" in bundled items
 
   @api
@@ -80,8 +80,8 @@ Feature: Having a product in store which is a bundle of other products
     When I pick up my cart
     And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "COCA_COLA" with "JIM_BEAM_1L"
     Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
-    And I should not have product variant "Jim Beam 1L" in bundled items
-    And I should have product variant "Jim Beam" in bundled items
+    And I should not have product variant "JIM_BEAM_1L" in bundled items
+    And I should have product variant "JIM_BEAM" in bundled items
     And I should have product "Coca-Cola" in bundled items
 
   @api
@@ -90,6 +90,6 @@ Feature: Having a product in store which is a bundle of other products
     When I pick up my cart
     And I add bundle "Jim Beam&Coke" with quantity 5 to my cart and overwrite "JIM_BEAM" with "JIM_BEAM_1L"
     Then I should have bundle "Jim Beam&Coke" with quantity 5 in my cart
-    And I should not have product variant "Jim Beam 1L" in bundled items
-    And I should have product variant "Jim Beam" in bundled items
+    And I should not have product variant "JIM_BEAM_1L" in bundled items
+    And I should have product variant "JIM_BEAM" in bundled items
     And I should have product "Coca-Cola" in bundled items

@@ -93,7 +93,6 @@ default:
         - sylius.behat.context.transform.locale
         - sylius.behat.context.transform.payment
         - sylius.behat.context.transform.product
-        - sylius.behat.context.transform.product_variant
         - sylius.behat.context.transform.promotion
         - sylius.behat.context.transform.shared_storage
         - sylius.behat.context.transform.shipping_method
@@ -102,7 +101,6 @@ default:
 
         - sylius.behat.context.api.shop.cart
         - sylius.behat.context.api.shop.checkout
-        - sylius.behat.context.api.shop.checkout.complete
 
         - bitbag_sylius_product_bundle_plugin.behat.context.api.product_bundle
         - bitbag_sylius_product_bundle_plugin.behat.context.setup.product_bundle

@@ -20,6 +20,7 @@ use Sylius\Behat\Client\ResponseCheckerInterface;
 use Sylius\Behat\Context\Api\Resources;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Webmozart\Assert\Assert;
 
@@ -30,6 +31,7 @@ final class ProductBundleContext implements Context
         private readonly ApiClientInterface $client,
         private readonly RequestFactoryInterface $requestFactory,
         private readonly ResponseCheckerInterface $responseChecker,
+        private readonly ProductVariantRepositoryInterface $productVariantRepository,
     ) {
     }
 
@@ -116,8 +118,11 @@ final class ProductBundleContext implements Context
     /**
      * @When I should have product variant :productVariant in bundled items
      */
-    public function iShouldHaveProductVariantInBundledItems(ProductVariantInterface $productVariant): void
+    public function iShouldHaveProductVariantInBundledItems(string $productVariant): void
     {
+        $productVariant = $this->productVariantRepository->findOneBy(['code' => $productVariant]);
+        Assert::isInstanceOf($productVariant, ProductVariantInterface::class);
+
         $response = $this->client->show(Resources::ORDERS, $this->sharedStorage->get('cart_token'));
 
         $productBundleOrderItems = $this->responseChecker->getValue($response, 'items')[0]['productBundleOrderItems'];
@@ -133,8 +138,11 @@ final class ProductBundleContext implements Context
     /**
      * @When I should not have product variant :productVariant in bundled items
      */
-    public function iShouldNotHaveProductVariantInBundledItems(ProductVariantInterface $productVariant): void
+    public function iShouldNotHaveProductVariantInBundledItems(string $productVariant): void
     {
+        $productVariant = $this->productVariantRepository->findOneBy(['code' => $productVariant]);
+        Assert::isInstanceOf($productVariant, ProductVariantInterface::class);
+
         $response = $this->client->show(Resources::ORDERS, $this->sharedStorage->get('cart_token'));
 
         $productBundleOrderItems = $this->responseChecker->getValue($response, 'items')[0]['productBundleOrderItems'];
