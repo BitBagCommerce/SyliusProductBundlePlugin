@@ -12,6 +12,7 @@
         <service id="bitbag_sylius_product_bundle.twig.extension.product_bundles"
                  class="BitBag\SyliusProductBundlePlugin\Twig\Extension\ProductBundlesExtension" public="false">
             <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle_item"/>
             <tag name="twig.extension"/>
         </service>
     </services>
