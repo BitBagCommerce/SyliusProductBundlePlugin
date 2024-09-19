@@ -12,10 +12,24 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 trait ProductBundleOrderItemsAwareTrait
 {
-    /** @var ArrayCollection|ProductBundleOrderItemInterface[] */
+    /**
+     * @var ArrayCollection|ProductBundleOrderItemInterface[]
+     *
+     * @ORM\OneToMany(
+     *      targetEntity=ProductBundleOrderItemInterface::class,
+     *      mappedBy="orderItem",
+     *      cascade={"all"}
+     * )
+     */
+    #[ORM\OneToMany(
+        targetEntity: ProductBundleOrderItemInterface::class,
+        mappedBy: 'orderItem',
+        cascade: ['all'],
+    )]
     protected $productBundleOrderItems;
 
     protected function init(): void

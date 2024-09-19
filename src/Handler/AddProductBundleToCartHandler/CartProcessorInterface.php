@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
 
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Order\Model\OrderInterface;
 
 interface CartProcessorInterface
@@ -20,5 +21,6 @@ interface CartProcessorInterface
         OrderInterface $cart,
         ProductBundleInterface $productBundle,
         int $quantity,
+        Collection $addBundleItemToCartCommands,
     ): void;
 }

@@ -18,16 +18,19 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <one-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface" inversed-by="productBundle">
+        <one-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface"
+                    inversed-by="productBundle">
             <cascade>
                 <cascade-persist/>
             </cascade>
             <join-column name="product_id" referenced-column-name="id" nullable="false"/>
         </one-to-one>
 
-        <one-to-many field="productBundleItems" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface" mapped-by="productBundle" orphan-removal="true">
+        <one-to-many field="productBundleItems"
+                     target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface"
+                     mapped-by="productBundle" orphan-removal="true">
             <cascade>
-                <cascade-all />
+                <cascade-all/>
             </cascade>
         </one-to-many>
     </mapped-superclass>

@@ -23,9 +23,9 @@ use Webmozart\Assert\Assert;
 final class AddProductBundleToCartHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private OrderRepositoryInterface $orderRepository,
-        private ProductRepositoryInterface $productRepository,
-        private CartProcessorInterface $cartProcessor,
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CartProcessorInterface $cartProcessor,
     ) {
     }
 
@@ -46,7 +46,10 @@ final class AddProductBundleToCartHandler implements MessageHandlerInterface
         $quantity = $addProductBundleToCartCommand->getQuantity();
         Assert::greaterThan($quantity, 0);
 
-        $this->cartProcessor->process($cart, $productBundle, $quantity);
+        $items = $addProductBundleToCartCommand->getProductBundleItems();
+        Assert::false($items->isEmpty());
+
+        $this->cartProcessor->process($cart, $productBundle, $quantity, $items);
         $this->orderRepository->add($cart);
     }
 }

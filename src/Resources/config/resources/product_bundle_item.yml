@@ -1,8 +1,0 @@
-sylius_resource:
-    resources:
-        bitbag_sylius_product_bundle.product_bundle_item:
-            driver: doctrine/orm
-            classes:
-                model: BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItem
-                interface: BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface
-                form: BitBag\SyliusProductBundlePlugin\Form\Type\ProductBundleItemType

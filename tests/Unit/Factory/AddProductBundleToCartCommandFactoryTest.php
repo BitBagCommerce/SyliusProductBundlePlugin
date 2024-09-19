@@ -11,8 +11,10 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Factory;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartCommandFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject\AddProductBundleToCartDtoMother;
 
@@ -26,13 +28,17 @@ final class AddProductBundleToCartCommandFactoryTest extends TestCase
 
     public function testCreateAddProductBundleToCartCommandObject(): void
     {
+        $addProductBundleItemToCartCommand = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
+        $commands = new ArrayCollection([$addProductBundleItemToCartCommand]);
+
         $factory = new AddProductBundleToCartCommandFactory();
-        $command = $factory->createNew(self::ORDER_ID, self::PRODUCT_CODE, self::QUANTITY);
+        $command = $factory->createNew(self::ORDER_ID, self::PRODUCT_CODE, self::QUANTITY, $commands);
 
         self::assertInstanceOf(AddProductBundleToCartCommand::class, $command);
         self::assertEquals(self::ORDER_ID, $command->getOrderId());
         self::assertEquals(self::PRODUCT_CODE, $command->getProductCode());
         self::assertEquals(self::QUANTITY, $command->getQuantity());
+        self::assertEquals($commands, $command->getProductBundleItems());
     }
 
     public function testCreateAddProductBundleToCartCommandObjectFromDto(): void

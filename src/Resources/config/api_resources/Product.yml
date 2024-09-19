@@ -1,0 +1,13 @@
+'%sylius.model.product.class%':
+  shortName: Product
+  properties:
+    productBundle:
+      writable: false
+      subresource:
+        resourceClass: '%bitbag_sylius_product_bundle.model.product_bundle.class%'
+        collection: false
+    bundle:
+      writable: false
+  subresourceOperations:
+    product_bundle_get_subresource:
+      path: /shop/products/{code}/bundle

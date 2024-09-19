@@ -11,10 +11,12 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\Handler;
 
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -28,20 +30,20 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class AddProductBundleToCartHandlerTest extends TestCase
 {
-    /** @var mixed|MockObject|OrderRepositoryInterface */
-    private $orderRepository;
+    private OrderRepositoryInterface|MockObject $orderRepository;
 
-    /** @var mixed|MockObject|ProductRepositoryInterface */
-    private $productRepository;
+    private ProductRepositoryInterface|MockObject $productRepository;
 
-    /** @var CartProcessorInterface|mixed|MockObject */
-    private $cartProcessor;
+    private CartProcessorInterface|MockObject $cartProcessor;
+
+    private AddProductBundleItemToCartCommandInterface|MockObject $addProductBundleItemToCartCommand;
 
     protected function setUp(): void
     {
         $this->orderRepository = $this->createMock(OrderRepositoryInterface::class);
         $this->productRepository = $this->createMock(ProductRepositoryInterface::class);
         $this->cartProcessor = $this->createMock(CartProcessorInterface::class);
+        $this->addProductBundleItemToCartCommand = $this->createMock(AddProductBundleItemToCartCommandInterface::class);
     }
 
     public function testThrowExceptionIfCartDoesntExist(): void
@@ -122,10 +124,12 @@ final class AddProductBundleToCartHandlerTest extends TestCase
 
         $this->cartProcessor->expects(self::once())
             ->method('process')
-            ->with($cart, $productBundle, 2)
+            ->with($cart, $productBundle, 2, new ArrayCollection([$this->addProductBundleItemToCartCommand]))
         ;
 
         $command = new AddProductBundleToCartCommand(1, '', 2);
+        $command->setProductBundleItems(new ArrayCollection([$this->addProductBundleItemToCartCommand]));
+
         $handler = $this->createHandler();
         $handler($command);
     }
@@ -149,6 +153,8 @@ final class AddProductBundleToCartHandlerTest extends TestCase
         ;
 
         $command = new AddProductBundleToCartCommand(1, '', 1);
+        $command->setProductBundleItems(new ArrayCollection([$this->addProductBundleItemToCartCommand]));
+
         $handler = $this->createHandler();
         $handler($command);
     }

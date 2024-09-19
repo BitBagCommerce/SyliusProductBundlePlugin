@@ -76,7 +76,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     composer require bitbag/product-bundle-plugin --no-scripts
     ```
 
-2. Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
+2. (optional) Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
 
     ```php
         return [
@@ -86,18 +86,18 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
         ];
     ```
 
-3. Import required config in your `config/packages/_sylius.yaml` file:
+3. (optional) Import required config in your `config/packages/_sylius.yaml` file:
 
     ```yaml
     # config/packages/_sylius.yaml
     
     imports:
-        ...
+      ...
         
-        - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
+      - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
     ```    
 
-4. Import routing in your `config/routes.yaml` file:
+4. (optional) Import routing in your `config/routes.yaml` file:
 
     ```yaml
     
@@ -105,15 +105,20 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     ...
     
     bitbag_sylius_product_bundle_plugin:
-        resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
+      resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
     ```
 
-5. Extend `Product`(including Doctrine mapping):
+5. (applied if using Rector) Extend entities by running
+    ```bash
+    vendor/bin/rector process src --config=vendor/bitbag/product-bundle-plugin/rector.php 
+    ```
+
+6. (applied if not using Rector) Extend `Product` (including Doctrine mapping):
 
     ```php
     <?php 
    
-   declare(strict_types=1);
+    declare(strict_types=1);
     
     namespace App\Entity\Product;
     
@@ -127,37 +132,9 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     }
     ```
 
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
-   
-   **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
+7. (applied if using XML for mapping) Add mapping for Product (Resources/config/doctrine/Product.Product.orm.xml):
 
-   ```php
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
-   use Doctrine\ORM\Mapping as ORM;
-   
-   trait ProductTrait
-   {
-       use ProductBundlesAwareTrait;
-   
-    /**
-     * @var ProductBundleInterface
-     */
-    #[ORM\OneToOne(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
-        mappedBy: "product",
-        cascade: ["all"]
-    )]
-    protected $productBundle;
-   
-   }
-   ```
-
-   Mapping (XML):
-
-   ```xml
-   # Resources/config/doctrine/Product.Product.orm.xml
-   
+   ```xml 
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -165,16 +142,17 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
                                          http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
    >
        <entity name="App\Entity\Product\Product" table="sylius_product">
-           <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" mapped-by="product">
-               <cascade>
-                   <cascade-all/>
-               </cascade>
+           <one-to-one field="productBundle" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface" 
+                       mapped-by="product" orphan-removal="true">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
            </one-to-one>
        </entity>
    </doctrine-mapping>
    ```
 
-7. Extend `OrderItem` (including Doctrine mapping):
+8. (applied if not using Rector) Extend `OrderItem` (including Doctrine mapping):
 
     ```php
    <?php
@@ -199,37 +177,10 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
    
    }
     ```
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
    
-   **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
-
-   ```php
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
-   use Doctrine\Common\Collections\ArrayCollection;
-   use Doctrine\ORM\Mapping as ORM;
+9. (applied if using XML for mapping) Add mapping for OrderItem (Resources/config/doctrine/Order.OrderItem.orm.xml):
    
-   trait OrderItemTrait
-   {
-   use ProductBundleOrderItemsAwareTrait;
-   
-    /**
-     * @var ArrayCollection|ProductBundleOrderItemInterface[]
-     */
-    #[ORM\OneToMany(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
-        mappedBy: "orderItem",
-        cascade: ["all"]
-    )]
-    protected $productBundleOrderItems;
-   
-   }
-   ```
-   Mapping (XML):
-
    ```xml
-   # Resources/config/doctrine/Order.OrderItem.orm.xml
-
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -246,111 +197,124 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
    </doctrine-mapping>
    ```
 
-9. Add configuration for extended product, order item and product variant repository:
+10. (optional) If you want to manage stock for bundled products instead of managing bundle stock, add this to your .env:
+
+    ```dotenv
+    ###> bitbag/product-bundle-plugin ###
+    BUNDLED_PRODUCTS_INVENTORY_MANAGEMENT_FEATURE=true
+    ###< bitbag/product-bundle-plugin ###
+    ```
+
+11. Add configuration for extended product and order item:
 
     ```yaml
     # config/packages/_sylius.yaml
    
     sylius_product:
-        resources:
-            product:
-                classes:
-                    model: App\Entity\Product\Product
-            product_variant:
-                classes:
-                    repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
-   sylius_order:
-       resources:
-           order_item:
-               classes:
-                   model: App\Entity\Order\OrderItem
+      resources:
+        product:
+          classes:
+            model: App\Entity\Product\Product
+
+    sylius_order:
+      resources:
+        order_item:
+          classes:
+            model: App\Entity\Order\OrderItem
     
     ```
 
-10. Add 'Create/Bundle' to product grid configuration:
+12. If you have full configuration in xml override doctrine config:
 
-    ```yaml
-    # config/packages/_sylius.yaml
-    
-    sylius_grid:
-       grids:
-           sylius_admin_product:
-               actions:
-                   main:
-                       create:
-                           type: links
-                           label: sylius.ui.create
-                           options:
-                               class: primary
-                               icon: plus
-                               header:
-                                   icon: cube
-                                   label: sylius.ui.type
-                               links:
-                                   simple:
-                                       label: sylius.ui.simple_product
-                                       icon: plus
-                                       route: sylius_admin_product_create_simple
-                                   configurable:
-                                       label: sylius.ui.configurable_product
-                                       icon: plus
-                                       route: sylius_admin_product_create
-                                   bundle:
-                                       label: bitbag_sylius_product_bundle.ui.bundle
-                                       icon: plus
-                                       route: bitbag_product_bundle_admin_product_create_bundle
-       
-    ```
-11. If you have full configuration in xml override doctrine config :
+```yaml
+# config/packages/doctrine.yaml   
+doctrine:
+  orm:
+    entity_managers:
+    default:
+      mappings:
+        App:
+          is_bundle: false
+          type: xml
+          dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+          prefix: 'App\Entity'
+          alias: App
 
-    ```yaml
-    # config/packages/doctrine.yaml   
-    
-    mappings:
-            App:
-                is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/src/Resources/config/doctrine'
-                prefix: 'App\Entity'
-                alias: App
-   
-    
-    ```
-    
-12. Copy plugin templates into your project `templates/bundles` directory:
+```
+
+13. Add plugin templates:
+- Inject blocks:
+
+```yaml
+sylius_ui:
+  events:
+    sylius.shop.product.show.right_sidebar:
+      blocks:
+        variant_selection:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/Product/_variantSelection.html.twig"
+          priority: 10
+
+    sylius.shop.layout.javascripts:
+      blocks:
+        plugin_scripts:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/_scripts.html.twig"
+          priority: 20
+
+    sylius.shop.layout.stylesheets:
+      blocks:
+        plugin_stylesheets:
+          template: "@BitBagSyliusProductBundlePlugin/Shop/_styles.html.twig"
+          priority: 20
+
+    sylius.admin.layout.javascripts:
+      blocks:
+        plugin_scripts:
+          template: "@BitBagSyliusProductBundlePlugin/Admin/_scripts.html.twig"
+          priority: 20
+
+    sylius.admin.layout.stylesheets:
+      blocks:
+        plugin_stylesheets:
+          template: "@BitBagSyliusProductBundlePlugin/Admin/_styles.html.twig"
+          priority: 20
+
+```
+- Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
-    $ cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Order templates/bundles/SyliusAdminBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Admin/Product templates/bundles/SyliusAdminBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Cart templates/bundles/SyliusShopBundle
+    cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common templates/bundles/SyliusShopBundle
     ```
     
-13. Please clear application cache by running command below:
+14. Please clear application cache by running command below:
 
     ```bash
-    $ bin/console cache:clear
+    bin/console cache:clear
     ```
 
-14. Finish the installation by updating the database schema and installing assets:
+15. Finish the installation by updating the database schema and installing assets:
 
     ```bash
-    $ bin/console doctrine:migrations:diff
-    $ bin/console doctrine:migrations:migrate
+    bin/console doctrine:migrations:migrate
     ```
-15. Add plugin assets to your project:
+16. Add plugin assets to your project:
 [Import webpack config](./README_webpack-config.md)*
 
 # Testing
 ----
 
 ```bash
-$ composer install
-$ cd tests/Application
-$ yarn install
-$ yarn build
-$ bin/console assets:install public -e test
-$ bin/console doctrine:schema:create -e test
-$ bin/console server:run 127.0.0.1:8080 -d public -e test
-$ open http://localhost:8080
-$ vendor/bin/behat
+composer install
+cd tests/Application
+yarn install
+yarn build
+bin/console assets:install public -e test
+bin/console doctrine:schema:create -e test
+bin/console server:run 127.0.0.1:8080 -d public -e test
+open http://localhost:8080
+vendor/bin/behat
 ```
 
 # Functionalities 

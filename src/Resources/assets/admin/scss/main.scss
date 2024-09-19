@@ -1,0 +1,18 @@
+.bundled-items {
+  margin-left: 3rem;
+  margin-top: 0.5rem;
+}
+
+.bundled-item {
+  margin-bottom: 1rem;
+}
+
+.disabled-variant-management-button {
+  background-color: rgb(248, 248, 248) !important;
+  cursor: not-allowed !important;
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.6) !important;
+    background-color: rgb(248, 248, 248) !important;
+  }
+}

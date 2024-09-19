@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Factory;
 
-use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDto;
 use BitBag\SyliusProductBundlePlugin\Dto\AddProductBundleToCartDtoInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
@@ -39,7 +39,7 @@ final class AddProductBundleToCartDtoFactory implements AddProductBundleToCartDt
     }
 
     /**
-     * @return AddProductBundleItemToCartCommand[]
+     * @return AddProductBundleItemToCartCommandInterface[]
      */
     private function getProcessedProductBundleItems(ProductBundleInterface $productBundle): array
     {

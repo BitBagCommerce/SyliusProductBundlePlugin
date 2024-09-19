@@ -60,13 +60,13 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
         $this->getElement('original_price', ['%channelCode%' => $channel->getCode()])->setValue($originalPrice);
     }
 
-    public function addProductsToBundle(array $productsNames): void
+    public function addProductsToBundle(array $productsNames, array $quantites = []): void
     {
         $this->clickTabIfItsNotActive('bundle');
 
         $productCounter = 0;
 
-        foreach ($productsNames as $productName) {
+        foreach ($productsNames as $i => $productName) {
             $addSelector = $this->getElement('add_product_to_bundle_button');
             $addSelector->click();
             $addSelector->waitFor(5, fn () => $this->hasElement('product_selector_dropdown'));
@@ -80,7 +80,8 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
             ]);
             $item->click();
 
-            $this->getElement('product_selector_quantity', ['%productCounter%' => $productCounter])->setValue('1');
+            $quantity = array_key_exists($i, $quantites) ? (string) $quantites[$i] : '1';
+            $this->getElement('product_selector_quantity', ['%productCounter%' => $productCounter])->setValue($quantity);
 
             ++$productCounter;
         }

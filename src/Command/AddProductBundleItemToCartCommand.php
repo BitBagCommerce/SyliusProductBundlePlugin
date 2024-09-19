@@ -14,7 +14,7 @@ namespace BitBag\SyliusProductBundlePlugin\Command;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class AddProductBundleItemToCartCommand
+final class AddProductBundleItemToCartCommand implements AddProductBundleItemToCartCommandInterface
 {
     public function __construct(
         private ProductBundleItemInterface $productBundleItem,

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Form\Type;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantChoiceType;
 use Sylius\Bundle\ProductBundle\Form\Type\ProductVariantMatchType;
@@ -35,7 +36,7 @@ final class AddProductBundleItemToCartType extends AbstractType
         }
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-            /** @var AddProductBundleItemToCartCommand $data */
+            /** @var AddProductBundleItemToCartCommandInterface $data */
             $data = $event->getData();
 
             $form = $event->getForm();

@@ -14,12 +14,18 @@ namespace BitBag\SyliusProductBundlePlugin\DataTransformer;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto;
+use BitBag\SyliusProductBundlePlugin\Provider\AddProductBundleItemToCartCommandProviderInterface;
 use Sylius\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 final class AddProductBundleToCartDtoDataTransformer implements DataTransformerInterface
 {
     public const OBJECT_TO_POPULATE = 'object_to_populate';
+
+    public function __construct(
+        private readonly AddProductBundleItemToCartCommandProviderInterface $addProductBundleItemToCartCommandProvider,
+    ) {
+    }
 
     /**
      * @param AddProductBundleToCartDto|object $object
@@ -37,8 +43,16 @@ final class AddProductBundleToCartDtoDataTransformer implements DataTransformerI
 
         $productCode = $object->getProductCode();
         $quantity = $object->getQuantity();
+        $overwrittenVariants = $object->getOverwrittenVariants();
+        $addItemToCartCommands = $this->addProductBundleItemToCartCommandProvider->provide(
+            $productCode,
+            $overwrittenVariants,
+        );
 
-        return new AddProductBundleToCartCommand($cart->getId(), $productCode, $quantity);
+        $command = new AddProductBundleToCartCommand($cart->getId(), $productCode, $quantity);
+        $command->setProductBundleItems($addItemToCartCommands);
+
+        return $command;
     }
 
     public function supportsTransformation(

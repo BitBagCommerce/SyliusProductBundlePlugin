@@ -1,0 +1,46 @@
+sylius_grid:
+  grids:
+    sylius_admin_product:
+      fields:
+        bundle:
+          type: twig
+          label: bitbag_sylius_product_bundle.ui.is_bundle
+          options:
+            template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+      filters:
+        bundle:
+          type: is_bundle
+          label: bitbag_sylius_product_bundle.ui.is_bundle
+      actions:
+        main:
+          create:
+            type: links
+            label: sylius.ui.create
+            options:
+              class: primary
+              icon: plus
+              header:
+                icon: cube
+                label: sylius.ui.type
+              links:
+                simple:
+                  label: sylius.ui.simple_product
+                  icon: plus
+                  route: sylius_admin_product_create_simple
+                configurable:
+                  label: sylius.ui.configurable_product
+                  icon: plus
+                  route: sylius_admin_product_create
+                bundle:
+                  label: bitbag_sylius_product_bundle.ui.bundle
+                  icon: plus
+                  route: bitbag_product_bundle_admin_product_create_bundle
+        subitem:
+          variants:
+            type: product_links
+
+  templates:
+    filter:
+      is_bundle: "@SyliusUi/Grid/Filter/boolean.html.twig"
+    action:
+      product_links: "@BitBagSyliusProductBundlePlugin/Admin/Grid/Action/product_links.html.twig"

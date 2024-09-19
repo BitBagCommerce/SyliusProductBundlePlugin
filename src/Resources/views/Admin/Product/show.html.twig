@@ -1,0 +1,54 @@
+{% extends '@SyliusAdmin/layout.html.twig' %}
+
+{% block title %}{{ 'sylius.ui.show_product'|trans }} | {{ product.name }}{% endblock %}
+
+{% block content %}
+    {% if product.variants|length == 1 %}
+        {% include "@SyliusAdmin/Product/Show/_simpleProduct.html.twig" %}
+    {% else %}
+        {% include "@SyliusAdmin/Product/Show/_configurableProduct.html.twig" %}
+    {% endif %}
+
+    {% set bundles = bitbag_get_bundles_containing_product(product) %}
+    {% if bundles|length > 0 %}
+        <div class="ui hidden divider"></div>
+        <div>
+            <h4 class="ui top attached large header">{{ 'bitbag_sylius_product_bundle.ui.bundles'|trans }}</h4>
+            {% for bundle in bundles %}
+                <div class="ui attached segment text-break">
+                    <a href="{{ path('sylius_admin_product_show', {id: bundle.product.id}) }}">
+                        {{ bundle.product.name }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if product.isBundle %}
+        {% set bundledProducts = bitbag_get_products_from_bundle(product) %}
+        <div class="ui hidden divider"></div>
+        <h4 class="ui top attached large header">{{ 'bitbag_sylius_product_bundle.ui.products_in_bundle'|trans }}</h4>
+        <div class="ui attached segment">
+        {% for bundledProduct in bundledProducts %}
+            {% set variant = bundledProduct.productVariant %}
+            {% set product = variant.product %}
+            <div class="ui header">
+                {% include '@SyliusAdmin/Product/_mainImage.html.twig' with {'product': product, 'filter': 'sylius_admin_product_thumbnail'} %}
+                <div class="content">
+                    <div class="sylius-product-name" title="{{ product.name }}">
+                        <a href="{{ path('sylius_admin_product_show', {id: product.id}) }}">
+                            {{ product.name }}
+                        </a>
+                    </div>
+                    <span class="sub header sylius-product-variant-code" title="{{ variant.code }}">
+                        {{ variant.code }}
+                    </span>
+                    <span class="sub header sylius-product-variant-code" title="{{ 'sylius.ui.qty'|trans }}">
+                        {{ 'sylius.ui.qty'|trans }}: {{ bundledProduct.quantity }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

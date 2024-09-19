@@ -14,16 +14,22 @@ namespace Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
+use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductFactory;
+use BitBag\SyliusProductBundlePlugin\Repository\ProductBundleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Formatter\StringInflector;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
+use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Product\Generator\SlugGeneratorInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -31,16 +37,22 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 final class ProductBundleContext implements Context
 {
     public function __construct(
-        private SharedStorageInterface $sharedStorage,
-        private FactoryInterface $taxonFactory,
-        private ProductRepositoryInterface $productRepository,
-        private FactoryInterface $productTaxonFactory,
-        private EntityManagerInterface $productTaxonManager,
-        private ProductFactory $productFactory,
-        private FactoryInterface $productBundleItemFactory,
-        private FactoryInterface $channelPricingFactory,
-        private ProductVariantResolverInterface $productVariantResolver,
-        private SlugGeneratorInterface $slugGenerator,
+        private readonly SharedStorageInterface $sharedStorage,
+        private readonly FactoryInterface $taxonFactory,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly FactoryInterface $productTaxonFactory,
+        private readonly EntityManagerInterface $productTaxonManager,
+        private readonly ProductFactory $productFactory,
+        private readonly FactoryInterface $productBundleItemFactory,
+        private readonly FactoryInterface $channelPricingFactory,
+        private readonly ProductVariantResolverInterface $productVariantResolver,
+        private readonly SlugGeneratorInterface $slugGenerator,
+        private readonly EntityManagerInterface $objectManager,
+        private readonly OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        private readonly ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
+        private readonly OrderModifierInterface $orderModifier,
+        private readonly OrderItemFactoryInterface $cartItemFactory,
+        private readonly ProductBundleRepositoryInterface $productBundleRepository,
     ) {
     }
 
@@ -148,5 +160,38 @@ final class ProductBundleContext implements Context
         $productVariant->setName($product->getName());
 
         return $product;
+    }
+
+    /**
+     * @When the customer bought a single bundle :product
+     */
+    public function theCustomerBoughtBundle(ProductInterface $product): void
+    {
+        /** @var OrderInterface|null $cart */
+        $cart = $this->sharedStorage->get('order');
+        /** @var ProductVariantInterface|null $variant */
+        $variant = $product->getVariants()->first();
+
+        $cartItem = $this->cartItemFactory->createWithVariant($variant);
+        $this->orderItemQuantityModifier->modify($cartItem, 1);
+
+        foreach ($product->getProductBundle()->getProductBundleItems() as $bundleItem) {
+            $productBundleOrderItem = $this->productBundleOrderItemFactory->createFromProductBundleItem($bundleItem);
+            $cartItem->addProductBundleOrderItem($productBundleOrderItem);
+        }
+
+        $this->orderModifier->addToOrder($cart, $cartItem);
+
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given product bundle :productBundleCode is packed
+     */
+    public function productBundleIsPacked(string $productBundleCode): void
+    {
+        $bundle = $this->productBundleRepository->findOneByProductCode($productBundleCode);
+        $bundle->setIsPackedProduct(true);
+        $this->objectManager->flush();
     }
 }

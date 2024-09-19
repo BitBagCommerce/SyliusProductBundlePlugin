@@ -12,11 +12,12 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Unit\MotherObject;
 
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommand;
+use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleItemToCartCommandInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 
 final class AddProductBundleItemToCartCommandMother
 {
-    public static function create(ProductBundleItemInterface $bundleItem): AddProductBundleItemToCartCommand
+    public static function create(ProductBundleItemInterface $bundleItem): AddProductBundleItemToCartCommandInterface
     {
         return new AddProductBundleItemToCartCommand($bundleItem);
     }

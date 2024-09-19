@@ -1,0 +1,18 @@
+'%sylius.model.order.class%':
+  shortName: Order
+  itemOperations:
+    shop_add_product_bundle:
+      method: PATCH
+      path: /shop/orders/{tokenValue}/product-bundle
+      status: 200
+      messenger: input
+      input: BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto
+      output: false
+      validation_groups: [ 'Default' ]
+      denormalization_context:
+        groups: [ 'shop:cart:add_product_bundle' ]
+      openapi_context:
+        summary: Adds Product Bundle to cart
+        responses:
+          '200':
+            description: Product bundle added to the cart

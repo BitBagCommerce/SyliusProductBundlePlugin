@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="env(BUNDLED_PRODUCTS_INVENTORY_MANAGEMENT_FEATURE)">"false"</parameter>
+    </parameters>
+
+    <services>
+        <service id="bitbag_sylius_product_bundle.checker.bundled_product_inventory_management_feature_flag_checker"
+                 class="BitBag\SyliusProductBundlePlugin\Inventory\Checker\BundledProductsInventoryManagementFeatureFlagChecker">
+            <argument>%env(bool:BUNDLED_PRODUCTS_INVENTORY_MANAGEMENT_FEATURE)%</argument>
+        </service>
+        <service id="bitbag_sylius_product_bundle.checker.order_item_availability_checker"
+                 class="BitBag\SyliusProductBundlePlugin\Inventory\Checker\OrderItemAvailabilityChecker"
+                 decorates="sylius.inventory.order_item_availability_checker">
+            <argument type="service" id="bitbag_sylius_product_bundle.checker.order_item_availability_checker.inner"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.checker.bundled_product_inventory_management_feature_flag_checker"/>
+            <argument type="service" id="bitbag_sylius_product_bundle.checker.product_bundle_order_item_availability_checker"/>
+        </service>
+        <service id="bitbag_sylius_product_bundle.checker.product_bundle_order_item_availability_checker"
+                 class="BitBag\SyliusProductBundlePlugin\Inventory\Checker\ProductBundleOrderItemAvailabilityChecker">
+        </service>
+    </services>
+</container>

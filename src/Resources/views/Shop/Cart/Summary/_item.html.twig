@@ -1,0 +1,42 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+{% set product_variant = item.variant %}
+{% set original_price_to_display = sylius_order_item_original_price_to_display(item) %}
+{% set is_bundle = item.product.bundle %}
+
+<tr {{ sylius_test_html_attribute('cart-product-row', item.productName) }}>
+    <td class="single line" {{ sylius_test_html_attribute('cart-item', loop_index|default(null) ) }} {% if is_bundle %} style="border-bottom: none !important;"{% endif %}>
+        {% include '@SyliusShop/Product/_info.html.twig' with {'variant': product_variant} %}
+    </td>
+    <td class="right aligned" {% if is_bundle %} style="border-bottom: none !important;"{% endif %}>
+        {% if original_price_to_display is not null %}
+            <span class="sylius-regular-unit-price" {{ sylius_test_html_attribute('cart-product-regular-unit-price') }}>
+                <span class="old-price">{{ money.convertAndFormat(original_price_to_display) }}</span>
+            </span>
+        {% endif %}
+        <span class="sylius-unit-price" {{ sylius_test_html_attribute('cart-product-unit-price', item.productName) }}>{{ money.convertAndFormat(item.discountedUnitPrice) }}</span>
+    </td>
+    <td class="center aligned" {% if is_bundle %} style="border-bottom: none !important;"{% endif %}>
+        <span class="sylius-quantity ui form">
+            {{ form_widget(form.quantity, sylius_test_form_attribute('cart-item-quantity-input', item.productName)|sylius_merge_recursive({'attr': {'form': main_form}})) }}
+            {{ form_errors(form.quantity) }}
+        </span>
+    </td>
+    <td class="center aligned" {% if is_bundle %} style="border-bottom: none !important;"{% endif %}>
+        <form action="{{ path('sylius_shop_cart_item_remove', {'id': item.id}) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token(item.id) }}" />
+            <button type="submit" class="ui circular icon button sylius-cart-remove-button" {{ sylius_test_html_attribute('cart-remove-button', item.productName) }} ><i class="remove icon"></i></button>
+        </form>
+    </td>
+    <td class="right aligned" {% if is_bundle %} style="border-bottom: none !important;"{% endif %}>
+        <span class="sylius-total" {{ sylius_test_html_attribute('cart-product-subtotal') }}>{{ money.convertAndFormat(item.subtotal) }}</span>
+    </td>
+</tr>
+{% if item.product.bundle %}
+    <tr>
+        <td colspan="5" style="padding-top: 0 !important;">
+            {{ bitbag_render_shop_product_bundle_order_items(item) }}
+        </td>
+    </tr>
+{% endif %}

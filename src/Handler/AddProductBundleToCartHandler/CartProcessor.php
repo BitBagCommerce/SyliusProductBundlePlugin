@@ -14,6 +14,7 @@ namespace BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\OrderItemFactoryInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\ProductBundleOrderItemFactoryInterface;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
@@ -23,10 +24,10 @@ use Webmozart\Assert\Assert;
 final class CartProcessor implements CartProcessorInterface
 {
     public function __construct(
-        private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        private ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
-        private OrderModifierInterface $orderModifier,
-        private OrderItemFactoryInterface $cartItemFactory,
+        private readonly OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        private readonly ProductBundleOrderItemFactoryInterface $productBundleOrderItemFactory,
+        private readonly OrderModifierInterface $orderModifier,
+        private readonly OrderItemFactoryInterface $cartItemFactory,
     ) {
     }
 
@@ -34,6 +35,7 @@ final class CartProcessor implements CartProcessorInterface
         OrderInterface $cart,
         ProductBundleInterface $productBundle,
         int $quantity,
+        Collection $addBundleItemToCartCommands,
     ): void {
         Assert::greaterThan($quantity, 0);
 
@@ -47,8 +49,8 @@ final class CartProcessor implements CartProcessorInterface
         $cartItem = $this->cartItemFactory->createWithVariant($productVariant);
         $this->orderItemQuantityModifier->modify($cartItem, $quantity);
 
-        foreach ($productBundle->getProductBundleItems() as $bundleItem) {
-            $productBundleOrderItem = $this->productBundleOrderItemFactory->createFromProductBundleItem($bundleItem);
+        foreach ($addBundleItemToCartCommands as $addBundleItemToCartCommand) {
+            $productBundleOrderItem = $this->productBundleOrderItemFactory->createFromAddProductBundleItemToCartCommand($addBundleItemToCartCommand);
             $cartItem->addProductBundleOrderItem($productBundleOrderItem);
         }
 

@@ -14,6 +14,12 @@ services:
       - '@sylius.factory.channel_pricing'
       - '@sylius.product_variant_resolver.default'
       - '@sylius.generator.slug'
+      - '@doctrine.orm.entity_manager'
+      - '@sylius.order_item_quantity_modifier'
+      - '@bitbag_sylius_product_bundle.custom_factory.product_bundle_order_item'
+      - '@sylius.order_modifier'
+      - '@bitbag_sylius_product_bundle.custom_factory.order_item'
+      - '@bitbag_sylius_product_bundle.repository.product_bundle'
 
   bitbag_sylius_product_bundle_plugin.behat.page.create_bundled_product_page:
     class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Admin\CreateBundledProductPage
@@ -22,7 +28,29 @@ services:
     arguments:
       - 'bitbag_product_bundle_admin_product_create_bundle'
 
+  bitbag_sylius_product_bundle_plugin.behat.page.summary_page:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Shop\SummaryPage
+    parent: sylius.behat.page.shop.cart_summary
+    public: false
+
+  bitbag_sylius_product_bundle_plugin.behat.page.account.order_show_page:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Page\Shop\OrderShowPage
+    parent: sylius.behat.page.shop.account.order.show
+    public: false
+
   bitbag_sylius_product_bundle_plugin.behat.context.ui.product_bundle:
     class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Ui\ProductBundleContext
     arguments:
       - '@bitbag_sylius_product_bundle_plugin.behat.page.create_bundled_product_page'
+      - '@sylius.repository.product'
+      - '@bitbag_sylius_product_bundle_plugin.behat.page.summary_page'
+      - '@bitbag_sylius_product_bundle_plugin.behat.page.account.order_show_page'
+
+  bitbag_sylius_product_bundle_plugin.behat.context.api.product_bundle:
+    class: Tests\BitBag\SyliusProductBundlePlugin\Behat\Context\Api\ProductBundleContext
+    arguments:
+      - '@sylius.behat.shared_storage'
+      - '@sylius.behat.api_platform_client.shop'
+      - '@sylius.behat.request_factory'
+      - '@Sylius\Behat\Client\ResponseCheckerInterface'
+      - '@sylius.repository.product_variant'
