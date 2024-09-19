@@ -86,7 +86,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     vendor/bin/rector process src --config=vendor/bitbag/product-bundle-plugin/rector.php 
     ```
 
-6. (applied if not using Rector) Extend `Product`(including Doctrine mapping):
+6. (applied if not using Rector) Extend `Product` (including Doctrine mapping):
 
     ```php
     <?php 
@@ -170,7 +170,15 @@ This **open-source plugin was developed to help the Sylius community**. If you h
    </doctrine-mapping>
    ```
 
-10. Add configuration for extended product and order item:
+10. (optional) If you want to manage stock for bundled products instead of managing bundle stock, add this to your .env:
+
+    ```dotenv
+    ###> bitbag/product-bundle-plugin ###
+    BUNDLED_PRODUCTS_INVENTORY_MANAGEMENT_FEATURE=true
+    ###< bitbag/product-bundle-plugin ###
+    ```
+
+11. Add configuration for extended product and order item:
 
     ```yaml
     # config/packages/_sylius.yaml
@@ -189,7 +197,7 @@ This **open-source plugin was developed to help the Sylius community**. If you h
     
     ```
 
-11. If you have full configuration in xml override doctrine config:
+12. If you have full configuration in xml override doctrine config:
 
 ```yaml
 # config/packages/doctrine.yaml   
@@ -207,7 +215,7 @@ doctrine:
 
 ```
 
-12. Add plugin templates:
+13. Add plugin templates:
 - Inject blocks:
 
 ```yaml
@@ -253,18 +261,18 @@ sylius_ui:
     cp -R vendor/bitbag/product-bundle-plugin/src/Resources/views/Shop/Common templates/bundles/SyliusShopBundle
     ```
     
-13. Please clear application cache by running command below:
+14. Please clear application cache by running command below:
 
     ```bash
     bin/console cache:clear
     ```
 
-14. Finish the installation by updating the database schema and installing assets:
+15. Finish the installation by updating the database schema and installing assets:
 
     ```bash
     bin/console doctrine:migrations:migrate
     ```
-15. Add plugin assets to your project:
+16. Add plugin assets to your project:
 [Import webpack config](./README_webpack-config.md)*
 
 ## Testing
