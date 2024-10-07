@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
   ~ This file was created by developers working at BitBag
@@ -6,126 +6,191 @@
   ~ We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
   -->
 
-<resources xmlns="https://api-platform.com/schema/metadata"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+<resources
+        xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
 >
     <resource class="%sylius.model.product.class%" shortName="Product">
-        <attribute name="validation_groups">sylius</attribute>
 
-        <attribute name="order">
-            <attribute name="code">ASC</attribute>
-        </attribute>
+        <validationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>sylius</value>
+                    </values>
+                </value>
+            </values>
+        </validationContext>
+        <order>
+            <values>
+                <value name="code">
+                    <values>
+                        <value>ASC</value>
+                    </values>
+                </value>
+            </values>
+        </order>
 
-        <collectionOperations>
-            <collectionOperation name="admin_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/admin/products</attribute>
-                <attribute name="filters">
-                    <attribute>sylius.api.product_name_filter</attribute>
-                    <attribute>sylius.api.product_order_filter</attribute>
-                    <attribute>sylius.api.product_taxon_code_filter</attribute>
-                    <attribute>sylius.api.translation_order_name_and_locale_filter</attribute>
-                </attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">admin:product:read</attribute>
-                </attribute>
-            </collectionOperation>
+        <operations>
+            <operation
+                    name="shop_post"
+                    class="ApiPlatform\Metadata\Post"
+                    uriTemplate="/shop/orders"
+                    messenger="input"
+                    input="Sylius\Bundle\ApiBundle\Command\Cart\PickupCart"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">shop:order:create</value>
+                    </values>
+                </denormalizationContext>
+                <openapiContext>
+                    <values>
+                        <value name="summary">Pickups a new cart. Provided locale code has to be one of available for a particular channel.</value>
+                    </values>
+                </openapiContext>
+            </operation>
 
-            <collectionOperation name="shop_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/products</attribute>
-                <attribute name="filters">
-                    <attribute>sylius.api.product_name_filter</attribute>
-                    <attribute>sylius.api.product_order_filter</attribute>
-                    <attribute>sylius.api.product_taxon_code_filter</attribute>
-                    <attribute>sylius.api.translation_order_name_and_locale_filter</attribute>
-                    <attribute>sylius.api.product_taxon_filter</attribute>
-                </attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:product:read</attribute>
-                </attribute>
-            </collectionOperation>
+            <operation
+                    name="admin_get"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/admin/products"
+            >
+                <filters>
+                    <filter>sylius.api.product_name_filter</filter>
+                    <filter>sylius.api.product_order_filter</filter>
+                    <filter>sylius.api.product_taxon_code_filter</filter>
+                    <filter>sylius.api.translation_order_name_and_locale_filter</filter>
+                </filters>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">admin:product:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
 
-            <collectionOperation name="admin_post">
-                <attribute name="method">POST</attribute>
-                <attribute name="path">/admin/products</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">admin:product:create</attribute>
-                </attribute>
-            </collectionOperation>
-        </collectionOperations>
+            <operation
+                    name="shop_get"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/shop/products"
+            >
+                <filters>
+                    <filter>sylius.api.product_name_filter</filter>
+                    <filter>sylius.api.product_order_filter</filter>
+                    <filter>sylius.api.product_taxon_code_filter</filter>
+                    <filter>sylius.api.translation_order_name_and_locale_filter</filter>
+                    <filter>sylius.api.product_taxon_filter</filter>
+                </filters>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">shop:product:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
 
-        <itemOperations>
-            <itemOperation name="admin_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/admin/products/{code}</attribute>
-                <attribute name="openapi_context">
-                    <attribute name="summary">Use code to retrieve a product resource.</attribute>
-                </attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">admin:product:read</attribute>
-                </attribute>
-            </itemOperation>
+            <operation
+                    name="admin_post"
+                    class="ApiPlatform\Metadata\Post"
+                    uriTemplate="/admin/products"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">admin:product:create</value>
+                    </values>
+                </denormalizationContext>
+            </operation>
+        </operations>
 
-            <itemOperation name="shop_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/products/{code}</attribute>
-                <attribute name="openapi_context">
-                    <attribute name="summary">Use code to retrieve a product resource.</attribute>
-                </attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:product:read</attribute>
-                </attribute>
-            </itemOperation>
+        <operations>
+            <operation
+                    name="admin_get"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/admin/products/{code}"
+            >
+                <openapiContext>
+                    <values>
+                        <value name="summary">Use code to retrieve a product resource.</value>
+                    </values>
+                </openapiContext>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">admin:product:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
 
-            <itemOperation name="admin_put">
-                <attribute name="method">PUT</attribute>
-                <attribute name="path">/admin/products/{code}</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">admin:product:update</attribute>
-                </attribute>
-            </itemOperation>
+            <operation
+                    name="shop_get"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/shop/products/{code}"
+            >
+                <openapiContext>
+                    <values>
+                        <value name="summary">Use code to retrieve a product resource.</value>
+                    </values>
+                </openapiContext>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">shop:product:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
 
-            <itemOperation name="admin_delete">
-                <attribute name="method">DELETE</attribute>
-                <attribute name="path">/admin/products/{code}</attribute>
-            </itemOperation>
-        </itemOperations>
+            <operation
+                    name="admin_put"
+                    class="ApiPlatform\Metadata\Put"
+                    uriTemplate="/admin/products/{code}"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">admin:product:update</value>
+                    </values>
+                </denormalizationContext>
+            </operation>
 
-        <subresourceOperations>
-            <subresourceOperation name="product_bundle_get_subresource">
-                <attribute name="path">/shop/products/{code}/bundle</attribute>
-            </subresourceOperation>
-        </subresourceOperations>
+            <operation
+                    name="admin_delete"
+                    class="ApiPlatform\Metadata\Delete"
+                    uriTemplate="/admin/products/{code}"
+            />
+        </operations>
 
-        <property name="id" identifier="false" writable="false" />
-        <property name="code" identifier="true" required="true" />
-        <property name="createdAt" writable="false" />
-        <property name="updatedAt" writable="false" />
-        <property name="translations" readable="true" writable="true">
-            <attribute name="openapi_context">
-                <attribute name="type">object</attribute>
-                <attribute name="example">
-                    <attribute name="en_US">
-                        <attribute name="name">string</attribute>
-                        <attribute name="slug">string</attribute>
-                        <attribute name="locale">string</attribute>
-                    </attribute>
-                </attribute>
-            </attribute>
-        </property>
-        <property name="productTaxons" readable="true" writable="true" />
-        <property name="reviews" required="false" />
-        <property name="options" required="false" />
-        <property name="channels" required="false" />
-        <property name="images" required="false" />
-        <property name="mainTaxon" required="false" />
-        <property name="variants" readable="true"/>
-        <property name="averageRating" readable="true" />
-        <property name="productBundle" writable="false">
-            <subresource resourceClass="%bitbag_sylius_product_bundle.model.product_bundle.class%" collection="false" />
-        </property>
-        <property name="bundle" writable="false" />
+        <operations>
+            <operation
+                    name="product_bundle_get_subresource"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/shop/products/{code}/bundle"
+            />
+        </operations>
+
+<!--        <property name="id" identifier="false" writable="false" />-->
+<!--        <property name="code" identifier="true" required="true" />-->
+<!--        <property name="createdAt" writable="false" />-->
+<!--        <property name="updatedAt" writable="false" />-->
+<!--        <property name="translations" readable="true" writable="true">-->
+<!--            <attribute name="openapi_context">-->
+<!--                <attribute name="type">object</attribute>-->
+<!--                <attribute name="example">-->
+<!--                    <attribute name="en_US">-->
+<!--                        <attribute name="name">string</attribute>-->
+<!--                        <attribute name="slug">string</attribute>-->
+<!--                        <attribute name="locale">string</attribute>-->
+<!--                    </attribute>-->
+<!--                </attribute>-->
+<!--            </attribute>-->
+<!--        </property>-->
+<!--        <property name="productTaxons" readable="true" writable="true" />-->
+<!--        <property name="reviews" required="false" />-->
+<!--        <property name="options" required="false" />-->
+<!--        <property name="channels" required="false" />-->
+<!--        <property name="images" required="false" />-->
+<!--        <property name="mainTaxon" required="false" />-->
+<!--        <property name="variants" readable="true"/>-->
+<!--        <property name="averageRating" readable="true" />-->
+<!--        <property name="productBundle" writable="false">-->
+<!--            <subresource resourceClass="%bitbag_sylius_product_bundle.model.product_bundle.class%" collection="false" />-->
+<!--        </property>-->
+<!--        <property name="bundle" writable="false" />-->
     </resource>
 </resources>

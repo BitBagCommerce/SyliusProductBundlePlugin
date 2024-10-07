@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
   ~ This file was created by developers working at BitBag
@@ -6,94 +6,118 @@
   ~ We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
   -->
 
-<resources xmlns="https://api-platform.com/schema/metadata"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+<resources
+        xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
 >
     <resource class="%bitbag_sylius_product_bundle.model.product_bundle.class%" shortName="ProductBundle">
-        <collectionOperations>
-            <collectionOperation name="admin_get_product-bundles">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/admin/product-bundles</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">
-                        <attribute>admin:product_bundle:read</attribute>
-                    </attribute>
-                </attribute>
-            </collectionOperation>
+        <operations>
+            <operation
+                    name="admin_get_product-bundles"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/admin/product-bundles"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">admin:product_bundle:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
 
-            <collectionOperation name="admin_post_product-bundle">
-                <attribute name="method">POST</attribute>
-                <attribute name="path">/admin/product-bundles</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">admin:product_bundle:create</attribute>
-                </attribute>
-            </collectionOperation>
-        </collectionOperations>
-        <itemOperations>
-            <itemOperation name="admin_get_product-bundle">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/admin/product-bundles/{id}</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">
-                        <attribute>admin:product_bundle:read</attribute>
-                    </attribute>
-                </attribute>
-            </itemOperation>
-            <itemOperation name="admin_put_product-bundle">
-                <attribute name="method">PUT</attribute>
-                <attribute name="path">/admin/product-bundles/{id}</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">
-                        <attribute>admin:product_bundle:update</attribute>
-                    </attribute>
-                </attribute>
-            </itemOperation>
-            <itemOperation name="admin_delete_product-bundle">
-                <attribute name="method">DELETE</attribute>
-                <attribute name="path">/admin/product-bundles/{id}</attribute>
-            </itemOperation>
-            <itemOperation name="shop_get_product-bundle">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/product-bundles/{id}</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">
-                        <attribute>shop:product_bundle:read</attribute>
-                    </attribute>
-                </attribute>
-            </itemOperation>
-            <itemOperation name="shop_add_to_cart">
-                <attribute name="method">PATCH</attribute>
-                <attribute name="path">/shop/product-bundles/{id}/add-to-cart</attribute>
-                <attribute name="status">200</attribute>
-                <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand</attribute>
-                <attribute name="output">false</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">
-                        <attribute>shop:product_bundle:add_to_cart</attribute>
-                    </attribute>
-                </attribute>
-                <attribute name="openapi_context">
-                    <attribute name="summary">
-                        Adds the product bundle to the cart retrieved by token.
-                    </attribute>
-                    <attribute name="responses">
-                        <attribute name="200">
-                            <attribute name="description">Product bundle added to the cart</attribute>
-                        </attribute>
-                    </attribute>
-                </attribute>
-            </itemOperation>
-        </itemOperations>
-        <subresourceOperations>
-            <subresourceOperation name="api_products_product_bundle_get_subresource">
-                <attribute name="normalization_context">
-                    <attribute name="groups">
-                        <attribute>shop:product_bundle:read</attribute>
-                    </attribute>
-                </attribute>
-            </subresourceOperation>
-        </subresourceOperations>
+            <operation
+                    name="admin_post_product-bundle"
+                    class="ApiPlatform\Metadata\Post"
+                    uriTemplate="/admin/product-bundles"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">admin:product_bundle:create</value>
+                    </values>
+                </denormalizationContext>
+            </operation>
+        </operations>
+        <operations>
+            <operation
+                    name="admin_get_product-bundle"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/admin/product-bundles/{id}"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">admin:product_bundle:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+            <operation
+                    name="admin_put_product-bundle"
+                    class="ApiPlatform\Metadata\Put"
+                    uriTemplate="/admin/product-bundles/{id}"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">admin:product_bundle:update</value>
+                    </values>
+                </denormalizationContext>
+            </operation>
+            <operation
+                    name="admin_delete_product-bundle"
+                    class="ApiPlatform\Metadata\Delete"
+                    uriTemplate="/admin/product-bundles/{id}"
+            >
+            </operation>
+            <operation
+                    name="shop_get_product-bundle"
+                    class="ApiPlatform\Metadata\Get"
+                    uriTemplate="/shop/product-bundles/{id}"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">shop:product_bundle:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+            <operation
+                    name="shop_add_to_cart"
+                    class="ApiPlatform\Metadata\Patch"
+                    uriTemplate="/shop/product-bundles/{id}/add-to-cart"
+                    status="200"
+                    messenger="input"
+                    input="BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand"
+                    output="false"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">shop:product_bundle:add_to_cart</value>
+                    </values>
+                </denormalizationContext>
+                <openapiContext>
+                    <values>
+                        <value name="summary">Adds the product bundle to the cart retrieved by token.</value>
+                        <value name="responses">
+                            <values>
+                                <value name="200">
+                                    <values>
+                                        <value name="description">Product bundle added to the cart</value>
+                                    </values>
+                                </value>
+                            </values>
+                        </value>
+                    </values>
+                </openapiContext>
+            </operation>
+        </operations>
+        <operations>
+            <operation
+                    name="api_products_product_bundle_get_subresource"
+                    class="ApiPlatform\Metadata\Get"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">shop:product_bundle:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+        </operations>
     </resource>
 </resources>
