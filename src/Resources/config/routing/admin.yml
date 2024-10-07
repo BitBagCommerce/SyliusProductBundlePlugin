@@ -8,7 +8,7 @@ bitbag_product_bundle_admin_product_create_bundle:
             permission: true
             factory:
                 method: createWithVariantAndBundle
-            template: "@SyliusAdmin/Crud/create.html.twig"
+            template: "@SyliusAdmin/shared/crud/create.html.twig"
             redirect: sylius_admin_product_update
             form:
                 options:
@@ -18,7 +18,7 @@ bitbag_product_bundle_admin_product_create_bundle:
             vars:
                 subheader: sylius.ui.manage_your_product_catalog
                 templates:
-                    form: "@SyliusAdmin/Product/_form.html.twig"
+                    form: "@SyliusAdmin/Product/form.html.twig"
                 route:
                     name: bitbag_product_bundle_admin_product_create_bundle
 
