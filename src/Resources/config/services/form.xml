@@ -22,10 +22,11 @@
             <argument>%bitbag_sylius_product_bundle.model.product_bundle_item.class%</argument>
             <argument>%bitbag_sylius_product_bundle.form.type.product_bundle_item.validation_groups%</argument>
             <tag name="form.type" />
+            <tag name="ux.entity_autocomplete_field" />
         </service>
 
         <service id="bitbag_sylius_product_bundle.form.extension.type.product" class="BitBag\SyliusProductBundlePlugin\Form\Extension\ProductTypeExtension">
-            <tag name="form.type_extension" extended-type="Sylius\Bundle\ProductBundle\Form\Type\ProductType" />
+            <tag name="form.type_extension" extended-type="Sylius\Bundle\AdminBundle\Form\Type\ProductType" />
         </service>
     </services>
 </container>

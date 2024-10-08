@@ -12,3 +12,7 @@ sylius_shop_default_locale:
     methods: [GET]
     defaults:
         _controller: sylius.controller.shop.locale_switch::switchAction
+
+live_component:
+    resource: "@LiveComponentBundle/config/routes.php"
+    prefix: /_components

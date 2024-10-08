@@ -11,6 +11,7 @@ bitbag_product_bundle_admin_product_create_bundle:
             template: "@SyliusAdmin/shared/crud/create.html.twig"
             redirect: sylius_admin_product_update
             form:
+                type: Sylius\Bundle\AdminBundle\Form\Type\ProductType
                 options:
                     validation_groups:
                         - sylius
@@ -18,7 +19,7 @@ bitbag_product_bundle_admin_product_create_bundle:
             vars:
                 subheader: sylius.ui.manage_your_product_catalog
                 templates:
-                    form: "@SyliusAdmin/Product/form.html.twig"
+                    form: "@SyliusAdmin/product/form.html.twig"
                 route:
                     name: bitbag_product_bundle_admin_product_create_bundle
 
