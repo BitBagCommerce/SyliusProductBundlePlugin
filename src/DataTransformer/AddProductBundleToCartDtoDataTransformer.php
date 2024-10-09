@@ -11,13 +11,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\DataTransformer;
 
-use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand;
 use BitBag\SyliusProductBundlePlugin\Dto\Api\AddProductBundleToCartDto;
 use Sylius\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
-final class AddProductBundleToCartDtoDataTransformer implements DataTransformerInterface
+final class AddProductBundleToCartDtoDataTransformer
 {
     public const OBJECT_TO_POPULATE = 'object_to_populate';
 
