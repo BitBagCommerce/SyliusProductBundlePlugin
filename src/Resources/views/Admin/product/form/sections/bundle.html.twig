@@ -1,8 +1,7 @@
-{#{% form_theme form '@BitBagSyliusProductBundlePlugin/Admin/Form/productBundleItem.html.twig' %}#}
 {% set form = hookable_metadata.context.form %}
 {% set product = hookable_metadata.context.resource %}
 
-<div class="tab pane " id="product-bundle" role="tabpanel" tabindex="0">
+<div class="tab pane {% if hookable_metadata.configuration.active|default(false) %}show active{% endif %}" id="product-bundle" role="tabpanel" tabindex="0">
     <div class="card mb-3">
         <div class="card-header">
             <h2 id="productBundle" class="card-title">
@@ -10,12 +9,7 @@
             </h2>
         </div>
         <div class="card-body">
-            {{ dump(form) }}
-                {{ form_row(form.productBundle.isPackedProduct) }}
-                {{ form_row(form.productBundle.productBundleItems) }}
-{#            {{ sonata_block_render_event('sylius.admin.product.' ~ action ~ '.tab_bundle', {'form': form }) }}#}
             {% hook 'bundle' with { product } %}
         </div>
     </div>
-
 </div>

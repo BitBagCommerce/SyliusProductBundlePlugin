@@ -1,0 +1,39 @@
+{% from '@SyliusResource/Macros/notification.html.twig' import error %}
+
+{% set form = hookable_metadata.context.form %}
+{% set product_bundle_items = hookable_metadata.context.form.productBundle.productBundleItems %}
+
+<div class="row">
+
+    {{ error(form.vars.errors) }}
+
+    <div class="col-12 mb-4">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="col-6">{{ 'bitbag_sylius_product_bundle.ui.product_variant'|trans }}</th>
+                <th class="col-4">{{ 'bitbag_sylius_product_bundle.ui.quantity'|trans }}</th>
+                <th class="col-2">{{ 'bitbag_sylius_product_bundle.ui.delete'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product_bundle_form in product_bundle_items %}
+                <tr>
+                    <td>
+                        {{ form_row(product_bundle_form.children.productVariant) }}
+                    </td>
+                    <td>
+                        {{ form_row(product_bundle_form.children.quantity) }}
+                    </td>
+                    <td>
+                        {{ form_widget(product_bundle_form.vars.button_delete, { label: 'sylius.ui.delete'|trans, attr: { class: 'btn btn-outline-danger w-100','data-test-image-delete': '' }}) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-grid gap-2">
+            {{ form_widget(product_bundle_items.vars.button_add) }}
+        </div>
+    </div>
+</div>

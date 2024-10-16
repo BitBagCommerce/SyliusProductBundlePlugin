@@ -53,5 +53,5 @@ twig_hooks:
         template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/sections/bundle.html.twig'
 
     'sylius_admin.product.create.content.form.sections.bundle':
-      item:
-        template: '@BitBagSyliusProductBundlePlugin/Admin/Form/productBundleItem.html.twig'
+      product_bundle:
+        template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/sections/bundle/productBundleItem.html.twig'

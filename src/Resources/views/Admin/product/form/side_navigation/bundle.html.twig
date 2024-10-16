@@ -1,10 +1,14 @@
-<button
-        type="button"
-        class="list-group-item list-group-item-action {% if hookable_metadata.configuration.active|default(false) %}active{% endif %}"
-        data-bs-toggle="tab"
-        data-bs-target="#product-bundle"
-        role="tab"
-        {{ sylius_test_html_attribute('side-navigation-tab', 'bundle') }}
->
-    {{ 'bitbag_sylius_product_bundle.ui.bundle'|trans }}
-</button>
+{% set product = hookable_metadata.context.resource %}
+
+{% if product.productBundle is not null %}
+    <button
+            type="button"
+            class="list-group-item list-group-item-action {% if hookable_metadata.configuration.active|default(false) %}active{% endif %}"
+            data-bs-toggle="tab"
+            data-bs-target="#product-bundle"
+            role="tab"
+            {{ sylius_test_html_attribute('side-navigation-tab', 'bundle') }}
+    >
+        {{ 'bitbag_sylius_product_bundle.ui.bundle'|trans }}
+    </button>
+{% endif %}
