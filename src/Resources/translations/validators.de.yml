@@ -1,0 +1,18 @@
+bitbag_sylius_product_bundle:
+    add_to_cart:
+        no_order_id_or_token: 'Weder die Bestell-ID noch das Token der Bestellung wurden bereitgestellt.'
+        cart_doesnt_exist: 'Warenkorb existiert nicht.'
+        product_bundle_doesnt_exist: 'Produktbundle mit der ID {{ id }} existiert nicht.'
+        product_disabled: 'Produkt mit dem Code {{ code }} ist nicht aktiviert.'
+        product_variant_disabled: 'Produktvariante mit dem Code {{ code }} ist nicht aktiviert.'
+        product_variant_insufficient_stock: 'Produktvariante mit dem Code {{ code }} hat nicht genügend Lagerbestand.'
+        product_doesnt_exist: 'Produkt existiert nicht.'
+        product_variant_doesnt_exist: 'Produkt {{ code }} hat keine Variante.'
+        product_doesnt_exist_in_channel: 'Der Kanal {{ channel }} hat kein Produkt mit dem Code {{ code }}.'
+    product:
+        not_a_bundle: 'Produkt muss ein Bundle sein.'
+    product_bundle_item:
+        product_variant:
+            not_blank: 'Produktvariante darf nicht leer sein.'
+        quantity:
+            not_blank: 'Menge darf nicht leer sein.'
