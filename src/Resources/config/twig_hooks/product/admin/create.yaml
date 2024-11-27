@@ -1,54 +1,11 @@
-twig_hooks:
+sylius_twig_hooks:
   hooks:
     'sylius_admin.product.create.content.form.side_navigation':
-      general:
-        template: '@SyliusAdmin/product/form/side_navigation/general.html.twig'
-        configuration:
-          active: true
       channel_pricing:
-        template: '@SyliusAdmin/product/form/side_navigation/channel_pricing.html.twig'
-      taxes:
-        template: '@SyliusAdmin/product/form/side_navigation/taxes.html.twig'
-      shipping:
-        template: '@SyliusAdmin/product/form/side_navigation/shipping.html.twig'
-      inventory:
-        template: '@SyliusAdmin/product/form/side_navigation/inventory.html.twig'
-      translations:
-        template: '@SyliusAdmin/product/form/side_navigation/translations.html.twig'
-      taxonomy:
-        template: '@SyliusAdmin/product/form/side_navigation/taxonomy.html.twig'
-      attributes:
-        template: '@SyliusAdmin/product/form/side_navigation/attributes.html.twig'
-      associations:
-        template: '@SyliusAdmin/product/form/side_navigation/associations.html.twig'
-      media:
-        template: '@SyliusAdmin/product/form/side_navigation/media.html.twig'
       bundle:
         template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/side_navigation/bundle.html.twig'
 
     'sylius_admin.product.create.content.form.sections':
-      general:
-        template: '@SyliusAdmin/product/form/sections/general.html.twig'
-        configuration:
-          active: true
-      channel_pricing:
-        template: '@SyliusAdmin/product/form/sections/channel_pricing.html.twig'
-      taxes:
-        template: '@SyliusAdmin/product/form/sections/taxes.html.twig'
-      shipping:
-        template: '@SyliusAdmin/product/form/sections/shipping.html.twig'
-      inventory:
-        template: '@SyliusAdmin/product/form/sections/inventory.html.twig'
-      translations:
-        template: '@SyliusAdmin/product/form/sections/translations.html.twig'
-      taxonomy:
-        template: '@SyliusAdmin/product/form/sections/taxonomy.html.twig'
-      attributes:
-        template: '@SyliusAdmin/product/form/sections/attributes.html.twig'
-      associations:
-        template: '@SyliusAdmin/product/form/sections/associations.html.twig'
-      media:
-        template: '@SyliusAdmin/product/form/sections/media.html.twig'
       bundle:
         template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/sections/bundle.html.twig'
 

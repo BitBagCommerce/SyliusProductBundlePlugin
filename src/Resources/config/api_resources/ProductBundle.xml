@@ -91,7 +91,7 @@
                         <value name="groups">shop:product_bundle:add_to_cart</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Adds the product bundle to the cart retrieved by token.</value>
                         <value name="responses">
@@ -104,7 +104,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
         </operations>
         <operations>

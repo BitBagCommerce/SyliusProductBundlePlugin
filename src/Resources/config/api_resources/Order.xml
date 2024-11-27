@@ -48,11 +48,11 @@
                         <value name="groups">shop:order:create</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Pickups a new cart. Provided locale code has to be one of available for a particular channel.</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -93,11 +93,11 @@
                     uriTemplate="/shop/orders/{tokenValue}"
 
             >
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Deletes cart</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
                 <normalizationContext>
                     <values>
                         <value name="groups">shop:order:read</value>
@@ -117,11 +117,11 @@
                         <value name="groups">admin:order:update</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Cancels Order</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -141,11 +141,11 @@
                         <value name="groups">shop:cart:add_item</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Adds Item to cart</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -171,7 +171,7 @@
                         <value name="groups">shop:cart:add_product_bundle</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Adds Product Bundle to cart</value>
                         <value name="responses">
@@ -184,7 +184,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -204,11 +204,11 @@
                         <value name="groups">shop:cart:read</value>
                     </values>
                 </normalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Addresses cart to given location, logged in Customer does not have to provide an email</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -237,7 +237,7 @@
                         <value name="groups">shop:cart:read</value>
                     </values>
                 </normalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Selects shipping methods for particular shipment</value>
                         <value name="parameters">
@@ -269,7 +269,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -289,7 +289,7 @@
                         <value name="groups">shop:cart:read</value>
                     </values>
                 </normalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Selects payment methods for particular payment</value>
                         <value name="parameters">
@@ -321,7 +321,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -341,7 +341,7 @@
                         <value name="groups">shop:order:account:read</value>
                     </values>
                 </normalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Change the payment method as logged shop user</value>
                         <value name="parameters">
@@ -373,7 +373,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -382,7 +382,7 @@
                     controller="sylius.api.get_configuration_action"
                     uriTemplate="/shop/orders/{tokenValue}/payments/{paymentId}/configuration"
             >
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Retrieve payment method configuration</value>
                         <value name="parameters">
@@ -414,7 +414,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -444,11 +444,11 @@
                         <value name="groups">shop:cart:read</value>
                     </values>
                 </normalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Completes checkout</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -464,7 +464,7 @@
                         <value name="groups">shop:cart:remove_item</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="parameters">
                             <values>
@@ -495,7 +495,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -510,7 +510,7 @@
                         <value name="groups">shop:cart:change_quantity</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Changes quantity of order item</value>
                         <value name="parameters">
@@ -542,7 +542,7 @@
                             </values>
                         </value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -557,11 +557,11 @@
                         <value name="groups">shop:cart:apply_coupon</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Applies coupon to cart</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -615,34 +615,5 @@
                        uriTemplate="/shop/orders/{tokenValue}/items/{items}/adjustments"
             />
         </operations>
-
-<!--        <property name="id" identifier="false" writable="false" />-->
-<!--        <property name="number" identifier="false" writable="false" />-->
-<!--        <property name="tokenValue" identifier="true" writable="false" />-->
-<!--        <property name="channel" writable="false" />-->
-<!--        <property name="customer" writable="false" />-->
-<!--        <property name="shipments" writable="false">-->
-<!--            <subresource resourceClass="%sylius.model.shipment.class%" />-->
-<!--        </property>-->
-<!--        <property name="payments" writable="false">-->
-<!--            <subresource resourceClass="%sylius.model.payment.class%" />-->
-<!--        </property>-->
-<!--        <property name="state" writable="false" />-->
-<!--        <property name="paymentState" writable="false" />-->
-<!--        <property name="shippingState" writable="false" />-->
-<!--        <property name="total" writable="false" />-->
-<!--        <property name="orderPromotionTotal" writable="false" />-->
-<!--        <property name="items" readable="true" writable="true">-->
-<!--            <subresource resourceClass="%sylius.model.order_item.class%" />-->
-<!--        </property>-->
-<!--        <property name="notes" writable="true" />-->
-<!--        <property name="itemsTotal" readable="true" />-->
-<!--        <property name="taxTotal" readable="true"/>-->
-<!--        <property name="adjustments" writable="false">-->
-<!--            <subresource resourceClass="%sylius.model.adjustment.class%" />-->
-<!--        </property>-->
-<!--        <property name="billingAddress" writable="false" />-->
-<!--        <property name="shippingAddress" writable="false" />-->
-<!--        <property name="localeCode" writable="true" />-->
     </resource>
 </resources>

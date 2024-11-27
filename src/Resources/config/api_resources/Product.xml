@@ -45,11 +45,11 @@
                         <value name="groups">shop:order:create</value>
                     </values>
                 </denormalizationContext>
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Pickups a new cart. Provided locale code has to be one of available for a particular channel.</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
             </operation>
 
             <operation
@@ -108,11 +108,11 @@
                     class="ApiPlatform\Metadata\Get"
                     uriTemplate="/admin/products/{code}"
             >
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Use code to retrieve a product resource.</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
                 <normalizationContext>
                     <values>
                         <value name="groups">admin:product:read</value>
@@ -125,11 +125,11 @@
                     class="ApiPlatform\Metadata\Get"
                     uriTemplate="/shop/products/{code}"
             >
-                <openapiContext>
+                <extraProperties>
                     <values>
                         <value name="summary">Use code to retrieve a product resource.</value>
                     </values>
-                </openapiContext>
+                </extraProperties>
                 <normalizationContext>
                     <values>
                         <value name="groups">shop:product:read</value>
