@@ -1,57 +1,26 @@
 {
+  "license": "MIT",
+  "scripts": {
+    "build": "encore dev",
+    "build:prod": "encore production",
+    "watch": "encore dev --watch"
+  },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "@popperjs/core": "^2.11.8",
-    "@tabler/core": "^1.0.0-beta21",
-    "apexcharts": "^3.53.0",
-    "bootstrap": "^5.3.3",
-    "flag-icons": "^7.2.3",
-    "infinite-tree": "^1.18.0",
-    "jquery": "^3.5.0",
-    "jquery.dirtyforms": "^2.0.0",
-    "lightbox2": "^2.9.0",
-    "semantic-ui-css": "^2.2.0",
-    "slick-carousel": "^1.8.1",
-    "chart.js": "^3.7.1"
+    "@sylius-ui/admin": "file:../../vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle",
+    "@sylius-ui/shop": "file:../../vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle",
+    "@symfony/ux-autocomplete": "file:../../vendor/symfony/ux-autocomplete/assets",
+    "@symfony/ux-live-component": "file:../../vendor/symfony/ux-live-component/assets"
   },
   "devDependencies": {
-    "@hotwired/stimulus": "^3.2.2",
-    "@symfony/stimulus-bridge": "^3.2.2",
-    "@symfony/ux-autocomplete": "file:../../vendor/symfony/ux-autocomplete/assets",
-    "@symfony/ux-live-component": "file:../../vendor/symfony/ux-live-component/assets",
-    "@symfony/webpack-encore": "^1.6.1",
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/webpack-encore": "^5.0.1",
+    "tom-select": "^2.2.2",
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "dedent": "^0.7.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "fast-async": "^6.3.7",
-    "merge-stream": "^1.0.0",
-    "sass": "^1.50.0",
-    "sass-loader": "^12.1.0",
-    "slugify": "^1.6.6",
-    "stimulus-use": "^0.52.2",
-    "tom-select": "^2.3.1",
-    "upath": "^1.1.0",
-    "webpack": "^5.76.1",
-    "yargs": "^6.4.0"
-  },
-  "scripts": {
-    "build": "encore production",
-    "dev": "yarn encore dev",
-    "lint": "yarn lint:js",
-    "lint:js": "eslint gulpfile.babel.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sylius/Sylius.git"
-  },
-  "author": "Paweł Jędrzejewski",
-  "license": "MIT"
+    "babel-register": "^6.26.0"
+  }
 }
