@@ -1,6 +1,6 @@
 {% set product = hookable_metadata.context.resource %}
 
-{% if product.productBundle is not null %}
+{% if product.isBundle %}
     <button
             type="button"
             class="list-group-item list-group-item-action {% if hookable_metadata.configuration.active|default(false) %}active{% endif %}"
