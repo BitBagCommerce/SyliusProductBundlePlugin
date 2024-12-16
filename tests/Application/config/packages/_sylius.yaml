@@ -47,13 +47,10 @@ sylius_grid:
                             links:
                                 simple:
                                     label: sylius.ui.simple_product
-                                    icon: "tabler:plus"
                                     route: sylius_admin_product_create_simple
                                 configurable:
                                     label: sylius.ui.configurable_product
-                                    icon: "tabler:plus"
                                     route: sylius_admin_product_create
                                 bundle:
                                     label: bitbag_sylius_product_bundle.ui.bundle
-                                    icon: "tabler:plus"
                                     route: bitbag_product_bundle_admin_product_create_bundle
