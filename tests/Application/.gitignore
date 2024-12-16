@@ -9,6 +9,9 @@
 
 /node_modules
 
+/config/encryption
+/config/jwt
+
 ###> symfony/framework-bundle ###
 /.env.*.local
 /.env.local
