@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+  hooks:
+    'sylius_shop.product.show.content.info.summary.add_to_cart':
+     bundle:
+        template: "@BitBagSyliusProductBundlePlugin/Shop/product/show/page/info/summary/add_to_cart/addProductBundleToCart.html.twig"
+        priority: 20

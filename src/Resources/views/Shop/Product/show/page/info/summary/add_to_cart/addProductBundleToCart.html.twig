@@ -1,0 +1,29 @@
+{#{% if hookable_metadata.context.resource is defined %}#}
+{{ dump() }}
+    {% set product = hookable_metadata.context.resource %}
+    {% if product.isBundle %}
+        {% set form = hookable_metadata.context.form %}
+        {% set configuration = hookable_metadata.context.configuration %}
+        {% set product_bundle_items = form.productBundleItems %}
+
+        {% form_theme form '@SyliusShop/Form/theme.html.twig' %}
+
+        <div id="sylius-product-selecting-variant">
+            <h4 class="mt-4">{{ 'bitbag_sylius_product_bundle.ui.products_in_bundle'|trans }}</h4>
+            {% for item in product_bundle_items %}
+                {% set data = item.vars.data %}
+                <div class="card">
+                    <div class="card-body">
+                        <strong>
+                            {{ data.quantity }} x {{ data.productVariant.product.name }}
+                        </strong>
+                    {% if item.productVariant is defined %}
+                        {{ form_row(item.productVariant) }}
+                    {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3"></div>
+    {% endif %}
+{#{% endif %}#}
