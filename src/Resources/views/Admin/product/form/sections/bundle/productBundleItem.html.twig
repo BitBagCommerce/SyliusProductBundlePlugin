@@ -4,10 +4,9 @@
 {% set product_bundle_items = hookable_metadata.context.form.productBundle.productBundleItems %}
 
 <div class="row">
-
     {{ error(form.vars.errors) }}
-
     <div class="mb-3">
+        {{ form_row(form.productBundle.isPackedProduct) }}
         <table class="table table-bordered">
             <thead>
             <tr>
