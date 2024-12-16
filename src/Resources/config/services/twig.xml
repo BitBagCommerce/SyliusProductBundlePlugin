@@ -7,7 +7,6 @@
 >
     <services>
         <service id="bitbag_sylius_product_bundle.twig.extension.smash_promotion" class="BitBag\SyliusProductBundlePlugin\Twig\Extension\ProductBundleOrderItemExtension" public="false">
-            <argument type="service" id="bitbag_sylius_product_bundle.repository.product_bundle_order_item" />
             <argument type="service" id="twig" />
             <tag name="twig.extension" />
         </service>

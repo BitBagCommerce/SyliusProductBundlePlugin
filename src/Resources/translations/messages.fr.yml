@@ -6,3 +6,4 @@ bitbag_sylius_product_bundle:
     delete: Supprimer
     products_in_bundle: Produits en lot
     is_packed_product: Est un produit emballé
+    details: Détails

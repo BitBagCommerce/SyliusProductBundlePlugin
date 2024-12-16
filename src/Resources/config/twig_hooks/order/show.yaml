@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+  hooks:
+    'sylius_admin.order.show.content.sections.items.body':
+      item:
+        template: '@SyliusAdmin/Order/Show/Summary/_item.html.twig'
+        priority: 800
