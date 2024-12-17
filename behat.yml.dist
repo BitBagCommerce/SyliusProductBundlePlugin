@@ -23,6 +23,7 @@ default:
                     chrome:
                         api_url: http://127.0.0.1:9222
                         validate_certificate: false
+                        socket_timeout: 120
                 chrome:
                     selenium2:
                         browser: chrome
@@ -38,6 +39,8 @@ default:
                                     - "no-sandbox"
                             extra_capabilities:
                                 unexpectedAlertBehaviour: accept
+                                goog:chromeOptions:
+                                    w3c: false
                 firefox:
                     selenium2:
                         browser: firefox
@@ -48,6 +51,8 @@ default:
             bootstrap: tests/Application/config/bootstrap.php
             kernel:
                 class: Tests\BitBag\SyliusProductBundlePlugin\Application\Kernel
+                path: tests/Application/Kernel.php
+                environment: test
 
         FriendsOfBehat\VariadicExtension: ~
 

@@ -12,7 +12,7 @@ services:
       - '@bitbag_sylius_product_bundle.custom_factory.product'
       - '@bitbag_sylius_product_bundle.factory.product_bundle_item'
       - '@sylius.factory.channel_pricing'
-      - '@sylius.product_variant_resolver.default'
+      - '@sylius.resolver.product_variant.default'
       - '@sylius.generator.slug'
 
   bitbag_sylius_product_bundle_plugin.behat.page.create_bundled_product_page:

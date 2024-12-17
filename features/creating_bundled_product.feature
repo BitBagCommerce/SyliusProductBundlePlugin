@@ -9,7 +9,7 @@ Feature: Creating a product in store which is a bundle of other products
       And the store has a product "Johny Walker Black" priced at "$10.00"
       And the store has a product "Jim Beam Double Oak" priced at "$10.00"
 
-    @ui @javascript
+    @ui
     Scenario: Creating a bundled product
       When I want to create a new bundled product
       And I specify its code as "WHISKEY_PACK"
@@ -21,7 +21,7 @@ Feature: Creating a product in store which is a bundle of other products
       And I add it
       Then I should be notified that it has been successfully created
 
-    @ui @javascript
+    @ui
     Scenario: Creating a bundled product with more products
       When I want to create a new bundled product
       And I specify its code as "WHISKEY_BIG_PACK"
