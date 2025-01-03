@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 final class CartItemAddListener
 {
     public function __construct(
-        private readonly OrderModifierInterface  $orderModifier
+        private readonly OrderModifierInterface $orderModifier,
     ) {
     }
 

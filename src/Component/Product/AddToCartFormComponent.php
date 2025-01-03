@@ -61,7 +61,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
      * @param ProductVariantRepositoryInterface<ProductVariantInterface> $productVariantRepository
      */
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
+        protected readonly FormFactoryInterface $formFactory,
         private readonly ObjectManager $manager,
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
@@ -73,12 +73,12 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
         private readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
-
     ) {
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
 
-        parent::__construct($this->formFactory,
+        parent::__construct(
+            $this->formFactory,
             $this->manager,
             $this->router,
             $this->requestStack,

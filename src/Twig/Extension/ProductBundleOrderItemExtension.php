@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Twig\Extension;
 
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use http\Exception\RuntimeException;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -30,7 +29,7 @@ final class ProductBundleOrderItemExtension extends AbstractExtension
             new TwigFunction(
                 'bitbag_render_product_bundle_order_items',
                 [$this, 'renderProductBundleOrderItems'],
-                ['is_safe' => ['html']]
+                ['is_safe' => ['html']],
             ),
         ];
     }

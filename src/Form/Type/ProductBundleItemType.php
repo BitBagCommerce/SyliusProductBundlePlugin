@@ -20,7 +20,6 @@ final class ProductBundleItemType extends AbstractResourceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
-
         $builder
             ->add('quantity', IntegerType::class, [
                 'label' => false,

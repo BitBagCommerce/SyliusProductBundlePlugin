@@ -27,7 +27,7 @@ final class AddProductBundleToCartHandler
     public function __construct(
         private OrderRepositoryInterface $orderRepository,
         private ProductRepositoryInterface $productRepository,
-        private CartProcessorInterface $cartProcessor
+        private CartProcessorInterface $cartProcessor,
     ) {
     }
 
@@ -36,11 +36,11 @@ final class AddProductBundleToCartHandler
         /** @var OrderInterface|null $cart */
         $cart = $this->orderRepository->findCartByTokenValue($addProductBundleToCartCommand->getOrderTokenValue());
 
-        if ($cart === null) {
+        if (null === $cart) {
             throw new \InvalidArgumentException('Cart with given token has not been found.');
         }
 
-        /** @var null|ProductInterface $product */
+        /** @var ProductInterface|null $product */
         $product = $this->productRepository->findOneByCode($addProductBundleToCartCommand->getProductCode());
         Assert::notNull($product);
         Assert::true($product->isBundle());
