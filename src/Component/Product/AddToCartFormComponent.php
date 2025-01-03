@@ -116,7 +116,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
     {
         /** @var OrderItemInterface $orderItem */
         $orderItem = $this->cartItemFactory->createForProduct($this->product);
-        /** @var null|ProductInterface $orderProduct */
+        /** @var ProductInterface $orderProduct */
         $orderProduct = $orderItem->getProduct();
 
         $addToCartCommand = $this->addProductBundleToCartDtoFactory->createNew(

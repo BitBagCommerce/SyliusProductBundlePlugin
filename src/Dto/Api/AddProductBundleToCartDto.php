@@ -19,17 +19,17 @@ final class AddProductBundleToCartDto implements IriToIdentifierConversionAwareI
 {
     public function __construct(
         private readonly string $productCode,
-        private ?string $orderTokenValue,
+        private string $orderTokenValue,
         private readonly int $quantity = 1,
     ) {
     }
 
-    public function getOrderTokenValue(): ?string
+    public function getOrderTokenValue(): string
     {
         return $this->orderTokenValue;
     }
 
-    public function setOrderTokenValue(?string $orderTokenValue): void
+    public function setOrderTokenValue(string $orderTokenValue): void
     {
         $this->orderTokenValue = $orderTokenValue;
     }

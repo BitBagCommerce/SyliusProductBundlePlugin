@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Twig\Extension;
 
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+use http\Exception\RuntimeException;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -41,6 +42,11 @@ final class ProductBundleOrderItemExtension extends AbstractExtension
         }
 
         $productBundle = $product->getProductBundle();
+
+        if (null === $productBundle) {
+            throw new \RuntimeException('Product does not contain a valid product bundle.');
+        }
+
         $items = $productBundle->getProductBundleItems();
 
         return $this->twig->render('@BitBagSyliusProductBundlePlugin/Admin/Order/Show/_productBundleOrderItems.html.twig', [

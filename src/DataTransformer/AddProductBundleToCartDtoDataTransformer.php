@@ -41,7 +41,7 @@ final class AddProductBundleToCartDtoDataTransformer
     }
 
     public function supportsTransformation(
-        $data,
+        mixed $data,
         string $to,
         array $context = [],
     ): bool {

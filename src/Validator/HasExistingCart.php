@@ -22,7 +22,7 @@ final class HasExistingCart extends Constraint
         return 'bitbag_sylius_product_bundle_validator_has_existing_cart';
     }
 
-    public function getTargets(): string
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
