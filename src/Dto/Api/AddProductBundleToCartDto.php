@@ -11,14 +11,16 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusProductBundlePlugin\Dto\Api;
 
-use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
+use Sylius\Bundle\ApiBundle\Attribute\OrderTokenValueAware;
+use Sylius\Bundle\ApiBundle\Command\IriToIdentifierConversionAwareInterface;
 
-final class AddProductBundleToCartDto implements OrderTokenValueAwareInterface
+#[OrderTokenValueAware]
+final class AddProductBundleToCartDto implements IriToIdentifierConversionAwareInterface
 {
     public function __construct(
-        private string $productCode,
-        private int $quantity = 1,
-        private ?string $orderTokenValue = null,
+        private readonly string $productCode,
+        private ?string $orderTokenValue,
+        private readonly int $quantity = 1,
     ) {
     }
 

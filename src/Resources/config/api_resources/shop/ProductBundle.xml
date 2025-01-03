@@ -14,81 +14,45 @@
     <resource class="%bitbag_sylius_product_bundle.model.product_bundle.class%" shortName="ProductBundle">
         <operations>
             <operation
-                    name="admin_get_product-bundles"
-                    class="ApiPlatform\Metadata\Get"
-                    uriTemplate="/admin/product-bundles"
-            >
-                <normalizationContext>
-                    <values>
-                        <value name="groups">admin:product_bundle:read</value>
-                    </values>
-                </normalizationContext>
-            </operation>
-
-            <operation
-                    name="admin_post_product-bundle"
-                    class="ApiPlatform\Metadata\Post"
-                    uriTemplate="/admin/product-bundles"
-            >
-                <denormalizationContext>
-                    <values>
-                        <value name="groups">admin:product_bundle:create</value>
-                    </values>
-                </denormalizationContext>
-            </operation>
-        </operations>
-        <operations>
-            <operation
-                    name="admin_get_product-bundle"
-                    class="ApiPlatform\Metadata\Get"
-                    uriTemplate="/admin/product-bundles/{id}"
-            >
-                <normalizationContext>
-                    <values>
-                        <value name="groups">admin:product_bundle:read</value>
-                    </values>
-                </normalizationContext>
-            </operation>
-            <operation
-                    name="admin_put_product-bundle"
-                    class="ApiPlatform\Metadata\Put"
-                    uriTemplate="/admin/product-bundles/{id}"
-            >
-                <denormalizationContext>
-                    <values>
-                        <value name="groups">admin:product_bundle:update</value>
-                    </values>
-                </denormalizationContext>
-            </operation>
-            <operation
-                    name="admin_delete_product-bundle"
-                    class="ApiPlatform\Metadata\Delete"
-                    uriTemplate="/admin/product-bundles/{id}"
-            >
-            </operation>
-            <operation
                     name="shop_get_product-bundle"
                     class="ApiPlatform\Metadata\Get"
                     uriTemplate="/shop/product-bundles/{id}"
             >
                 <normalizationContext>
                     <values>
-                        <value name="groups">shop:product_bundle:read</value>
+                        <value name="groups">
+                            <values>
+                                <value>shop:product_bundle:read</value>
+                            </values>
+                        </value>
                     </values>
                 </normalizationContext>
             </operation>
+
             <operation
                     name="shop_add_to_cart"
                     class="ApiPlatform\Metadata\Patch"
                     uriTemplate="/shop/product-bundles/{id}/add-to-cart"
-                    status="200"
                     messenger="input"
                     input="BitBag\SyliusProductBundlePlugin\Command\AddProductBundleToCartCommand"
                     output="false"
             >
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
                 <denormalizationContext>
                     <values>
-                        <value name="groups">shop:product_bundle:add_to_cart</value>
+                        <value name="groups">
+                            <values>
+                                <value>shop:product_bundle:add_to_cart</value>
+                            </values>
+                        </value>
                     </values>
                 </denormalizationContext>
                 <extraProperties>
@@ -106,15 +70,18 @@
                     </values>
                 </extraProperties>
             </operation>
-        </operations>
-        <operations>
+
             <operation
                     name="api_products_product_bundle_get_subresource"
                     class="ApiPlatform\Metadata\Get"
             >
                 <normalizationContext>
                     <values>
-                        <value name="groups">shop:product_bundle:read</value>
+                        <value name="groups">
+                            <values>
+                                <value>shop:product_bundle:read</value>
+                            </values>
+                        </value>
                     </values>
                 </normalizationContext>
             </operation>

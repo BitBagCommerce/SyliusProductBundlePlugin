@@ -20,7 +20,11 @@
             >
                 <normalizationContext>
                     <values>
-                        <value name="groups">shop:product_bundle_items:read</value>
+                        <value name="groups">
+                            <values>
+                                <value>shop:product_bundle_items:read</value>
+                            </values>
+                        </value>
                     </values>
                 </normalizationContext>
             </operation>
