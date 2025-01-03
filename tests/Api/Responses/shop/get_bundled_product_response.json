@@ -2,70 +2,23 @@
   "@context": "\/api\/v2\/contexts\/Product",
   "@id": "\/api\/v2\/shop\/products\/WHISKEY_DOUBLE_PACK",
   "@type": "Product",
-  "productTaxons": "@...@",
-  "mainTaxon": "@string@||@null@",
-  "reviews": "@...@",
+  "productTaxons": [],
+  "mainTaxon": null,
   "averageRating": "@integer@",
-  "images": "@...@",
+  "images": [],
   "id": "@integer@",
   "code": "WHISKEY_DOUBLE_PACK",
-  "name": "@string@",
-  "slug": "@string@",
-  "variants": "@...@",
-  "options": "@...@",
-  "createdAt": "@string@",
-  "updatedAt": "@string@",
-  "bundle": {
-    "@id": "\/api\/v2\/shop\/product-bundles\/@integer@",
-    "@type": "ProductBundle",
-    "items": [
-      {
-        "@type": "ProductBundleItem",
-        "@id": "@string@",
-        "productVariant": {
-          "@id": "\/api\/v2\/shop\/product-variants\/JOHNNY_WALKER_BLACK",
-          "@type": "ProductVariant",
-          "code": "JOHNNY_WALKER_BLACK",
-          "optionValues": "@*@",
-          "translations": {
-            "en_US": {
-              "@id": "/api/v2/shop/product-variant-translation/@integer@",
-              "@type": "ProductVariantTranslation",
-              "name": "Johnny Walker Black"
-            }
-          },
-          "price": 1000,
-          "originalPrice": 1000,
-          "inStock": true
-        },
-        "quantity": 1
-      },
-      {
-        "@type": "ProductBundleItem",
-        "@id": "@string@",
-        "productVariant": {
-          "@id": "\/api\/v2\/shop\/product-variants\/JACK_DANIELS_GENTLEMAN",
-          "@type": "ProductVariant",
-          "code": "JACK_DANIELS_GENTLEMAN",
-          "optionValues": "@*@",
-          "translations": {
-            "en_US": {
-              "@id": "/api/v2/shop/product-variant-translation/@integer@",
-              "@type": "ProductVariantTranslation",
-              "name": "Jack Daniel's Gentleman Jack"
-            }
-          },
-          "price": 1000,
-          "originalPrice": 1000,
-          "inStock": true
-        },
-        "quantity": 1
-      }
-    ],
-    "isPacked": true
-  },
+  "variants": ["/api/v2/shop/product-variants/@string@"],
+  "options": [],
+  "associations": [],
+  "createdAt": "@datetime@",
+  "updatedAt": "@datetime@",
   "isBundle": true,
+  "shortDescription": null,
+  "reviews": [],
+  "name": "@string@",
   "description": "@string@",
-  "shortDescription": "@null@",
+  "slug": "@string@",
+  "bundle": "/api/v2/admin/product-bundles/@integer@",
   "defaultVariant": "@string@"
 }

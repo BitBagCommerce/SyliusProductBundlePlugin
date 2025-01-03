@@ -34,7 +34,8 @@ final class OrderTest extends AdminJsonApiTestCase
             'shop/product_bundles.yml',
             'shop/orders.yml',
         ]);
-        $authToken = $this->getAuthToken('api@example.com', 'sylius');
+
+        $authToken = $this->getAuthToken('api@example.com', 'sylius-api');
         $this->authHeaders = $this->getHeaders($authToken);
     }
 

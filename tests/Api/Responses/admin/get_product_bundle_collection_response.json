@@ -2,9 +2,10 @@
   "@context": "\/api\/v2\/contexts\/ProductBundle",
   "@id": "\/api\/v2\/admin\/product-bundles",
   "@type": "hydra:Collection",
+  "hydra:totalItems": 1,
   "hydra:member": [
     {
-      "@id": "\/api\/v2\/admin\/product-bundles\/@integer@",
+      "@id": "\/api\/v2/admin\/product-bundles\/@integer@",
       "@type": "ProductBundle",
       "id": "@integer@",
       "product": "\/api\/v2\/admin\/products\/WHISKEY_DOUBLE_PACK",
@@ -16,6 +17,5 @@
       "updatedAt": "@datetime@",
       "isPacked": true
     }
-  ],
-  "hydra:totalItems": 1
+  ]
 }

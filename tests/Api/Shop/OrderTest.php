@@ -54,6 +54,7 @@ final class OrderTest extends JsonApiTestCase
             [],
             self::DEFAULT_HEADER,
         );
+
         $response = $this->client->getResponse();
 
         $this->assertResponse($response, 'shop/get_order_with_bundle_response', Response::HTTP_OK);
