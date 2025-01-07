@@ -16,7 +16,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\CoreBundle\Provider\FlashBagProvider;
-use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactory;
+use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\AddToCartFormComponent as BaseAddToCartFormComponent;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\Trait\ProductLivePropTrait;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\Trait\ProductVariantLivePropTrait;
@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -62,18 +63,19 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
      */
     public function __construct(
         protected readonly FormFactoryInterface $formFactory,
-        private readonly ObjectManager $manager,
-        private readonly RouterInterface $router,
-        private readonly RequestStack $requestStack,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly CartContextInterface $cartContext,
-        private readonly AddToCartCommandFactory $addToCartCommandFactory,
-        private readonly CartItemFactoryInterface $cartItemFactory,
-        private readonly string $formClass,
+        protected readonly ObjectManager $manager,
+        protected readonly RouterInterface $router,
+        protected readonly RequestStack $requestStack,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly CartContextInterface $cartContext,
+        protected readonly AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        protected readonly CartItemFactoryInterface $cartItemFactory,
+        protected readonly string $formClass,
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
         private readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
-    ) {
+    )
+    {
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
 
@@ -93,8 +95,16 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
     }
 
     #[LiveAction]
-    public function addToCart(): RedirectResponse
-    {
+    public function addToCart(
+        #[LiveArg]
+        ?string $routeName = null,
+        #[LiveArg]
+        array $routeParameters = [],
+        #[LiveArg]
+        ?string $idRouteParameter = null,
+        #[LiveArg]
+        bool $addFlashMessage = true,
+    ): RedirectResponse {
         $this->submitForm();
         $addToCartCommand = $this->getForm()->getData();
 
@@ -106,10 +116,12 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
             ::getFlashBag($this->requestStack)
             ->add('success', 'sylius.cart.add_item');
 
-        return new RedirectResponse($this->router->generate(
-            $this->routeName,
-            $this->routeParameters,
-        ));
+        return new RedirectResponse(
+            $this->router->generate(
+                $this->routeName,
+                $this->routeParameters,
+            )
+        );
     }
 
     protected function instantiateForm(): FormInterface
