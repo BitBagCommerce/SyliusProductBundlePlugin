@@ -46,7 +46,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent]
 final class AddToCartFormComponent extends BaseAddToCartFormComponent
 {
-    //TODO there should be decoration instead of extension ? To be tested
+    //TODO there should be decoration instead of extension ? To discuss
     use ComponentToolsTrait;
     use ComponentWithFormTrait;
     use DefaultActionTrait;
@@ -74,8 +74,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
         private readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
-    )
-    {
+    ) {
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
 
@@ -89,8 +88,8 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
             $this->addToCartCommandFactory,
             $this->cartItemFactory,
             $this->formClass,
-            $this->productRepository,
-            $this->productVariantRepository,
+            $productRepository,
+            $productVariantRepository,
         );
     }
 
@@ -120,7 +119,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
             $this->router->generate(
                 $this->routeName,
                 $this->routeParameters,
-            )
+            ),
         );
     }
 
