@@ -3,7 +3,7 @@
   "@id": "\/api\/v2\/shop\/products\/JOHNNY_WALKER_BLACK",
   "@type": "Product",
   "productTaxons": "@...@",
-  "mainTaxon": "@null@",
+  "mainTaxon": null,
   "reviews": "@...@",
   "averageRating": "@integer@",
   "images": "@...@",
@@ -15,9 +15,9 @@
   "options": "@...@",
   "createdAt": "@string@",
   "updatedAt": "@string@",
-  "bundle": "@null@",
+  "bundle": null,
   "isBundle": false,
   "description": "@string@",
-  "shortDescription": "@null@",
+  "shortDescription": null,
   "defaultVariant": "@string@"
 }

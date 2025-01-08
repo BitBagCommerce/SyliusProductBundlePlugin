@@ -70,21 +70,6 @@
                     </values>
                 </extraProperties>
             </operation>
-
-            <operation
-                    name="api_products_product_bundle_get_subresource"
-                    class="ApiPlatform\Metadata\Get"
-            >
-                <normalizationContext>
-                    <values>
-                        <value name="groups">
-                            <values>
-                                <value>shop:product_bundle:read</value>
-                            </values>
-                        </value>
-                    </values>
-                </normalizationContext>
-            </operation>
         </operations>
     </resource>
 </resources>

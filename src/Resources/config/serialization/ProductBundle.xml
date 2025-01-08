@@ -26,6 +26,8 @@
             <group>admin:product_bundle:read</group>
             <group>admin:product_bundle:create</group>
             <group>admin:product_bundle:update</group>
+            <group>product_bundle:read</group>
+            <group>product_bundle:write</group>
         </attribute>
         <attribute name="isPackedProduct" serialized-name="isPacked">
             <group>admin:product_bundle:create</group>
