@@ -62,32 +62,32 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
      * @param ProductVariantRepositoryInterface<ProductVariantInterface> $productVariantRepository
      */
     public function __construct(
-        protected readonly FormFactoryInterface $formFactory,
-        protected readonly ObjectManager $manager,
-        protected readonly RouterInterface $router,
-        protected readonly RequestStack $requestStack,
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly CartContextInterface $cartContext,
-        protected readonly AddToCartCommandFactoryInterface $addToCartCommandFactory,
-        protected readonly CartItemFactoryInterface $cartItemFactory,
-        protected readonly string $formClass,
+        FormFactoryInterface $formFactory,
+        ObjectManager $manager,
+        RouterInterface $router,
+        RequestStack $requestStack,
+        EventDispatcherInterface $eventDispatcher,
+        CartContextInterface $cartContext,
+        AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        CartItemFactoryInterface $cartItemFactory,
+        string $formClass,
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
-        private readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
+        protected readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
     ) {
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
 
         parent::__construct(
-            $this->formFactory,
-            $this->manager,
-            $this->router,
-            $this->requestStack,
-            $this->eventDispatcher,
-            $this->cartContext,
-            $this->addToCartCommandFactory,
-            $this->cartItemFactory,
-            $this->formClass,
+            $formFactory,
+            $manager,
+            $router,
+            $requestStack,
+            $eventDispatcher,
+            $cartContext,
+            $addToCartCommandFactory,
+            $cartItemFactory,
+            $formClass,
             $productRepository,
             $productVariantRepository,
         );
