@@ -1,0 +1,9 @@
+imports:
+  - { resource: resources.yml }
+  - { resource: services.xml }
+  - { resource: "@BitBagSyliusProductBundlePlugin/config/twig_hooks/twig_hooks.yaml" }
+
+framework:
+  messenger:
+    buses:
+      bitbag_sylius_product_bundle.command_bus: ~

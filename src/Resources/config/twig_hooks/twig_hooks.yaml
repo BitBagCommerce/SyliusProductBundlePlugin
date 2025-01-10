@@ -1,3 +1,0 @@
-imports:
-  - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/twig_hooks/product/**/*.yaml" }
-  - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/twig_hooks/order/*.yaml" }
