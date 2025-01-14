@@ -13,7 +13,7 @@ namespace BitBag\SyliusProductBundlePlugin\Component\Product;
 
 use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
-use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory;
+use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\CoreBundle\Provider\FlashBagProvider;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactory;
@@ -72,7 +72,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
         string $formClass,
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
-        protected readonly AddProductBundleToCartDtoFactory $addProductBundleToCartDtoFactory,
+        protected readonly AddProductBundleToCartDtoFactoryInterface $addProductBundleToCartDtoFactory,
     ) {
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
