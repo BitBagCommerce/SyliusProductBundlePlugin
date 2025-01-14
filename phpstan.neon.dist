@@ -15,11 +15,7 @@ parameters:
         - 'tests/Application/src/**.php'
 
     ignoreErrors:
-        - '/Parameter #1 \$configuration of method Symfony\\Component\\DependencyInjection\\Extension\\Extension::processConfiguration\(\) expects Symfony\\Component\\Config\\Definition\\ConfigurationInterface, Symfony\\Component\\Config\\Definition\\ConfigurationInterface\|null given\./'
         - '/Parameter #1 \$productRepository of method BitBag\\SyliusProductBundlePlugin\\Component\\Product\\AddToCartFormComponent::initializeProduct\(\) expects Sylius\\Component\\Core\\Repository\\ProductRepositoryInterface<Sylius\\Component\\Core\\Model\\ProductInterface>, Sylius\\Component\\Core\\Repository\\ProductRepositoryInterface<BitBag\\SyliusProductBundlePlugin\\Entity\\ProductInterface> given\./'
-        - '/Parameter #1 \$product of method Sylius\\Component\\Core\\Factory\\CartItemFactoryInterface<Sylius\\Component\\Core\\Model\\OrderItem>::createForProduct\(\) expects Sylius\\Component\\Core\\Model\\ProductInterface, Sylius\\Component\\Core\\Model\\ProductInterface\|null given\./'
-        - '/Parameter #7 \$addToCartCommandFactory of method Sylius\\Bundle\\ShopBundle\\Twig\\Component\\Product\\AddToCartFormComponent::__construct\(\) expects Sylius\\Bundle\\OrderBundle\\Factory\\AddToCartCommandFactory, Sylius\\Bundle\\OrderBundle\\Factory\\AddToCartCommandFactoryInterface given\./'
         - '/Parameter #10 \$productRepository of method Sylius\\Bundle\\ShopBundle\\Twig\\Component\\Product\\AddToCartFormComponent::__construct\(\) expects Sylius\\Component\\Core\\Repository\\ProductRepositoryInterface\<Sylius\\Component\\Core\\Model\\ProductInterface\>, Sylius\\Component\\Core\\Repository\\ProductRepositoryInterface\<BitBag\\SyliusProductBundlePlugin\\Entity\\ProductInterface\> given\./'
-        - '/Readonly property BitBag\\SyliusProductBundlePlugin\\Component\\Product\\AddToCartFormComponent::\$[a-zA-Z]+ is already assigned\./'
         - identifier: missingType.iterableValue
         - identifier: missingType.generics

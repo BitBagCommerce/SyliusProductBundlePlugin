@@ -16,7 +16,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Factory\AddProductBundleToCartDtoFactory;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\CoreBundle\Provider\FlashBagProvider;
-use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
+use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactory;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\AddToCartFormComponent as BaseAddToCartFormComponent;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\Trait\ProductLivePropTrait;
 use Sylius\Bundle\ShopBundle\Twig\Component\Product\Trait\ProductVariantLivePropTrait;
@@ -46,7 +46,6 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent]
 final class AddToCartFormComponent extends BaseAddToCartFormComponent
 {
-    //TODO there should be decoration instead of extension ? To discuss
     use ComponentToolsTrait;
     use ComponentWithFormTrait;
     use DefaultActionTrait;
@@ -68,7 +67,7 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
         RequestStack $requestStack,
         EventDispatcherInterface $eventDispatcher,
         CartContextInterface $cartContext,
-        AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        AddToCartCommandFactory $addToCartCommandFactory,
         CartItemFactoryInterface $cartItemFactory,
         string $formClass,
         ProductRepositoryInterface $productRepository,
@@ -125,8 +124,11 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
 
     protected function instantiateForm(): FormInterface
     {
+        /** @var ProductInterface $product */
+        $product = $this->product;
+
         /** @var OrderItemInterface $orderItem */
-        $orderItem = $this->cartItemFactory->createForProduct($this->product);
+        $orderItem = $this->cartItemFactory->createForProduct($product);
         /** @var ProductInterface $orderProduct */
         $orderProduct = $orderItem->getProduct();
 
@@ -136,6 +138,6 @@ final class AddToCartFormComponent extends BaseAddToCartFormComponent
             $orderProduct,
         );
 
-        return $this->formFactory->create($this->formClass, $addToCartCommand, ['product' => $this->product]);
+        return $this->formFactory->create($this->formClass, $addToCartCommand, ['product' => $product]);
     }
 }

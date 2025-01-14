@@ -5,7 +5,7 @@
   "hydra:totalItems": 1,
   "hydra:member": [
     {
-      "@id": "\/api\/v2/admin\/product-bundles\/@integer@",
+      "@id": "\/api\/v2\/admin\/product-bundles\/@integer@",
       "@type": "ProductBundle",
       "id": "@integer@",
       "product": "\/api\/v2\/admin\/products\/WHISKEY_DOUBLE_PACK",
