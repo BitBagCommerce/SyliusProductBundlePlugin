@@ -73,7 +73,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
 1. Require plugin with composer:
 
     ```bash
-    composer require bitbag/product-bundle-plugin --no-scripts
+    composer require bitbag/product-bundle-plugin --no-scripts --with-all-dependencies
     ```
 
 2. Add plugin dependencies to your `config/bundles.php` file after `Sylius\Bundle\ApiBundle\SyliusApiBundle`.
@@ -94,7 +94,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     imports:
         ...
         
-        - { resource: "@BitBagSyliusProductBundlePlugin/Resources/config/config.yml" }
+        - { resource: "@BitBagSyliusProductBundlePlugin/config/config.yml" }
     ```    
 
 4. Import routing in your `config/routes.yaml` file:
@@ -105,7 +105,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     ...
     
     bitbag_sylius_product_bundle_plugin:
-        resource: "@BitBagSyliusProductBundlePlugin/Resources/config/routing.yml"
+        resource: "@BitBagSyliusProductBundlePlugin/config/routes.yml"
     ```
 
 5. Extend `Product`(including Doctrine mapping):
@@ -113,50 +113,44 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
     ```php
     <?php 
    
-   declare(strict_types=1);
+    declare(strict_types=1);
     
     namespace App\Entity\Product;
     
+    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
     use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
+    use Doctrine\ORM\Mapping as ORM;
     use Sylius\Component\Core\Model\Product as BaseProduct;
+    use Sylius\Component\Product\Model\ProductTranslationInterface;
 
+    #[ORM\Entity]
+    #[ORM\Table(name: 'sylius_product')]
     class Product extends BaseProduct implements ProductInterface
     {
-        use ProductBundlesAwareTrait;  
+    use ProductBundlesAwareTrait;
+    
+        /**
+         * @var ProductBundleInterface
+         */
+        #[ORM\OneToOne(
+            targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
+            mappedBy: "product",
+            cascade: ["all"]
+        )]
+        protected $productBundle;
+    
+        protected function createTranslation(): ProductTranslationInterface
+        {
+            return new ProductTranslation();
+        }
     }
     ```
-
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Product/Product .
-
-   **Note.** If you're using Attributes Mapping, please use your `ProductTrait` in your `Product` entity instead of plugins `ProductBundlesAwareTrait`.
-
-   ```php
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundlesAwareTrait;
-   use Doctrine\ORM\Mapping as ORM;
-   
-   trait ProductTrait
-   {
-       use ProductBundlesAwareTrait;
-   
-    /**
-     * @var ProductBundleInterface
-     */
-    #[ORM\OneToOne(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface",
-        mappedBy: "product",
-        cascade: ["all"]
-    )]
-    protected $productBundle;
-   
-   }
-   ```
 
    Mapping (XML):
 
    ```xml
-   # Resources/config/doctrine/Product.Product.orm.xml
+   # config/doctrine/Product.Product.orm.xml
    
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -177,58 +171,47 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
 7. Extend `OrderItem` (including Doctrine mapping):
 
     ```php
-   <?php
+    <?php
    
-   declare(strict_types=1);
+    declare(strict_types=1);
    
-   namespace App\Entity\Order;
+    namespace App\Entity\Order;
    
-   use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
-   use Sylius\Component\Core\Model\OrderItem as BaseOrderItem;
-   
-   class OrderItem extends BaseOrderItem implements OrderItemInterface
-   {
-       use ProductBundleOrderItemsAwareTrait;
-   
-       public function __construct()
-       {
-           parent::__construct();
-           $this->init();
-       }
-   
-   }
+    use BitBag\SyliusProductBundlePlugin\Entity\OrderItemInterface;
+    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
+    use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
+    use Doctrine\Common\Collections\ArrayCollection;
+    use Doctrine\ORM\Mapping as ORM;
+    use Sylius\Component\Core\Model\OrderItem as BaseOrderItem;
+    
+    #[ORM\Entity]
+    #[ORM\Table(name: 'sylius_order_item')]
+    class OrderItem extends BaseOrderItem implements OrderItemInterface
+    {
+    use ProductBundleOrderItemsAwareTrait;
+    
+        public function __construct()
+        {
+            parent::__construct();
+            $this->init();
+        }
+    
+        /**
+         * @var ArrayCollection|ProductBundleOrderItemInterface[]
+         */
+        #[ORM\OneToMany(
+            targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
+            mappedBy: "orderItem",
+            cascade: ["all"]
+        )]
+        protected $productBundleOrderItems;
+    }
     ```
-   Mapping (Attributes) - Override bundle trait, by create new one and use it in Entity/Order/OrderItem .
-
-   **Note.** If you're using Attributes Mapping, please use your `OrderItemTrait` in your `OrderItem` entity instead of plugins`ProductBundleOrderItemsAwareTrait`.
-
-   ```php
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-   use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemsAwareTrait;
-   use Doctrine\Common\Collections\ArrayCollection;
-   use Doctrine\ORM\Mapping as ORM;
    
-   trait OrderItemTrait
-   {
-   use ProductBundleOrderItemsAwareTrait;
-   
-    /**
-     * @var ArrayCollection|ProductBundleOrderItemInterface[]
-     */
-    #[ORM\OneToMany(
-        targetEntity: "BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface",
-        mappedBy: "orderItem",
-        cascade: ["all"]
-    )]
-    protected $productBundleOrderItems;
-   
-   }
-   ```
    Mapping (XML):
 
    ```xml
-   # Resources/config/doctrine/Order.OrderItem.orm.xml
+   # config/doctrine/Order.OrderItem.orm.xml
 
    <?xml version="1.0" encoding="UTF-8"?>
    <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
@@ -258,6 +241,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
                     model: App\Entity\Product\Product
             product_variant:
                 classes:
+                    model: App\Entity\Product\ProductVariant
                     repository: BitBag\SyliusProductBundlePlugin\Repository\ProductVariantRepository
    sylius_order:
        resources:
@@ -307,7 +291,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
             App:
                 is_bundle: false
                 type: xml
-                dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+                dir: '%kernel.project_dir%/config/doctrine'
                 prefix: 'App\Entity'
                 alias: App
    
@@ -317,6 +301,7 @@ The **SyliusProductBundle** plugin allows you to create bundles from existing pr
 12. Copy plugin templates into your project `templates/bundles` directory:
 
     ```bash
+    mkdir templates/bundles
     cp -R vendor/bitbag/product-bundle-plugin/tests/Application/templates/bundles/* templates/bundles/
     ```
 
