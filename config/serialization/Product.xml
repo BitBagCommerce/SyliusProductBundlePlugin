@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<!--
+  ~ This file was created by developers working at BitBag
+  ~ Do you need more information about us and what we do? Visit our https://bitbag.io website!
+  ~ We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+  -->
+
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="Sylius\Component\Core\Model\Product">
+        <attribute name="productBundle" serialized-name="bundle">
+            <group>sylius:admin:product:index</group>
+            <group>sylius:admin:product:show</group>
+            <group>sylius:admin:product:create</group>
+            <group>sylius:admin:product:update</group>
+            <group>sylius:shop:product:index</group>
+            <group>sylius:shop:product:show</group>
+        </attribute>
+        <attribute name="bundle" serialized-name="isBundle">
+            <group>sylius:admin:product:index</group>
+            <group>sylius:admin:product:show</group>
+            <group>sylius:admin:product:create</group>
+            <group>sylius:admin:product:update</group>
+            <group>sylius:shop:product:index</group>
+            <group>sylius:shop:product:show</group>
+        </attribute>
+    </class>
+</serializer>

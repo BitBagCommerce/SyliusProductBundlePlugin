@@ -46,11 +46,5 @@ final class HasProductBundleValidator extends ConstraintValidator
 
             return;
         }
-
-        if (!$product->isBundle()) {
-            $this->context->addViolation(HasProductBundle::NOT_A_BUNDLE_MESSAGE);
-
-            return;
-        }
     }
 }

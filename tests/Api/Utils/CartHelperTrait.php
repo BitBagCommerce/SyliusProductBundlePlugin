@@ -23,8 +23,7 @@ trait CartHelperTrait
         /** @var MessageBusInterface $commandBus */
         $commandBus = self::getContainer()->get('sylius.command_bus');
 
-        $command = new PickupCart($tokenValue, 'en_US');
-        $command->setChannelCode('WEB');
+        $command = new PickupCart('WEB', 'en_US', null, $tokenValue, );
 
         $commandBus->dispatch($command);
     }

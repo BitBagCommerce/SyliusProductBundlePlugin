@@ -33,7 +33,7 @@ final class ProductBundleTest extends AdminJsonApiTestCase
     protected function setUp(): void
     {
         $this->fixtures = $this->loadFixturesFromFiles(['general/channels.yml', 'general/authentication.yml', 'shop/product_bundles.yml']);
-        $authToken = $this->getAuthToken('api@example.com', 'sylius');
+        $authToken = $this->getAuthToken('api@example.com', 'sylius-api');
         $this->authHeaders = $this->getHeaders($authToken);
     }
 

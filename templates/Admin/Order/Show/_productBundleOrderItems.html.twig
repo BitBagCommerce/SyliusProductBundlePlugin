@@ -1,0 +1,49 @@
+{% from '@SyliusAdmin/shared/helper/product_image.html.twig' import image %}
+
+<h2 class="mt-2">{{ 'bitbag_sylius_product_bundle.ui.products_in_bundle'|trans }}</h2>
+
+{% for item in items %}
+    {% set variant = item.productVariant %}
+    {% set product = variant.product %}
+    <div class="card">
+        <div class="card-header">
+            <div class="thumbnail-box">
+                <a class="sylius-product-name" title="{{ product.name }}" href="{{ path('sylius_admin_product_show', { id: product.id }) }}">
+                    {{ product.name }}
+                </a>
+                <a>x {{ item.quantity }}</a>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}">
+                {{ 'bitbag_sylius_product_bundle.ui.details'|trans }}
+            </button>
+        </div>
+        <div id="collapse-{{ loop.index }}" class="collapse">
+            <div class="card-body">
+                <div class="thumbnail-box">
+                    <div class="thumbnail-box-image">
+                        {{ image(product) }}
+                    </div>
+                    <div class="thumbnail-box-content">
+                        <div class="text-muted small sylius-product-variant-code" title="{{ variant.code }}">
+                            {{ variant.code }}
+                        </div>
+                        {% if product.hasOptions() %}
+                            {% for optionValue in variant.optionValues %}
+                                <div class="text-muted small sylius-product-variant-option-value" title="{{ optionValue.name }}">
+                                    {{ optionValue.value }}
+                                </div>
+                            {% endfor %}
+                        {% elseif variant.name is not null %}
+                            <div class="text-muted small sylius-product-variant-variant-name" title="{{ variant.name }}">
+                                {{ variant.name }}
+                            </div>
+                        {% endif %}
+                        <div class="text-muted small sylius-product-quantity">
+                            {{ 'bitbag_sylius_product_bundle.ui.quantity'|trans }}: {{ item.quantity }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

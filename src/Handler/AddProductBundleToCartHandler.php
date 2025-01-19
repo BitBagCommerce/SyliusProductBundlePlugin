@@ -17,10 +17,11 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use BitBag\SyliusProductBundlePlugin\Handler\AddProductBundleToCartHandler\CartProcessorInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 
-final class AddProductBundleToCartHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AddProductBundleToCartHandler
 {
     public function __construct(
         private OrderRepositoryInterface $orderRepository,

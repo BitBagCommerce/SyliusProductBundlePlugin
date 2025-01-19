@@ -41,12 +41,14 @@ final class AddProductBundleToCartDtoFactory implements AddProductBundleToCartDt
     /**
      * @return AddProductBundleItemToCartCommand[]
      */
-    private function getProcessedProductBundleItems(ProductBundleInterface $productBundle): array
+    private function getProcessedProductBundleItems(?ProductBundleInterface $productBundle): array
     {
         $addProductBundleItemToCartCommands = [];
 
-        foreach ($productBundle->getProductBundleItems() as $bundleItem) {
-            $addProductBundleItemToCartCommands[] = $this->addProductBundleItemToCartCommandFactory->createNew($bundleItem);
+        if (null !== $productBundle) {
+            foreach ($productBundle->getProductBundleItems() as $bundleItem) {
+                $addProductBundleItemToCartCommands[] = $this->addProductBundleItemToCartCommandFactory->createNew($bundleItem);
+            }
         }
 
         return $addProductBundleItemToCartCommands;

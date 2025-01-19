@@ -1,8 +1,0 @@
-imports:
-    - { resource: resources.yml }
-    - { resource: services.xml }
-
-framework:
-    messenger:
-        buses:
-            bitbag_sylius_product_bundle.command_bus: ~

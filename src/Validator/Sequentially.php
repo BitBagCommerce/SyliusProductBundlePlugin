@@ -35,10 +35,7 @@ final class Sequentially extends Composite
         return 'constraints';
     }
 
-    /**
-     * @return array<string>|string
-     */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }

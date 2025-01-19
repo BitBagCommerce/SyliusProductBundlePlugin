@@ -5,9 +5,10 @@ const pluginName = 'productBundle';
 const getConfig = (pluginName, type) => {
     Encore.reset();
 
-    Encore.setOutputPath(`public/build/bitbag/${pluginName}/${type}/`)
+    Encore
+        .setOutputPath(`public/build/bitbag/${pluginName}/${type}/`)
         .setPublicPath(`/build/bitbag/${pluginName}/${type}/`)
-        .addEntry(`bitbag-${pluginName}-${type}`, path.resolve(__dirname, `./src/Resources/assets/${type}/entry.js`))
+        .addEntry(`bitbag-${pluginName}-${type}`, path.resolve(__dirname, `./assets/${type}/entry.js`))
         .disableSingleRuntimeChunk()
         .cleanupOutputBeforeBuild()
         .enableSourceMaps(!Encore.isProduction())
@@ -17,12 +18,13 @@ const getConfig = (pluginName, type) => {
     config.name = `bitbag-${pluginName}-${type}`;
 
     return config;
-};
+}
 
-Encore.setOutputPath(`src/Resources/public/build/`)
-    .setPublicPath(`/public/build/`)
-    .addEntry(`bitbag-${pluginName}-shop`, path.resolve(__dirname, `./src/Resources/assets/shop/entry.js`))
-    .addEntry(`bitbag-${pluginName}-admin`, path.resolve(__dirname, `./src/Resources/assets/admin/entry.js`))
+Encore
+    .setOutputPath(`src/Resources/public/`)
+    .setPublicPath(`/public/`)
+    .addEntry(`bitbag-${pluginName}-shop`, path.resolve(__dirname, `./assets/shop/entry.js`))
+    .addEntry(`bitbag-${pluginName}-admin`, path.resolve(__dirname, `./assets/admin/entry.js`))
     .cleanupOutputBeforeBuild()
     .disableSingleRuntimeChunk()
     .enableSassLoader();
@@ -32,7 +34,7 @@ distConfig.name = `bitbag-plugin-dist`;
 
 Encore.reset();
 
-const shopConfig = getConfig(pluginName, 'shop');
-const adminConfig = getConfig(pluginName, 'admin');
+const shopConfig = getConfig(pluginName, 'shop')
+const adminConfig = getConfig(pluginName, 'admin')
 
 module.exports = [shopConfig, adminConfig, distConfig];

@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusProductBundlePlugin\Api;
 
 use ApiTestCase\JsonApiTestCase as BaseJsonApiTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 abstract class JsonApiTestCase extends BaseJsonApiTestCase
 {
@@ -20,7 +20,7 @@ abstract class JsonApiTestCase extends BaseJsonApiTestCase
 
     public const PATCH_HEADER = ['CONTENT_TYPE' => 'application/merge-patch+json', 'HTTP_ACCEPT' => 'application/ld+json'];
 
-    protected static function getContainer(): ContainerInterface
+    protected static function getContainer(): Container
     {
         if (is_callable('parent::getContainer')) {
             /* @phpstan-ignore-next-line */

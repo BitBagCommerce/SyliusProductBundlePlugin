@@ -1,0 +1,10 @@
+bitbag_sylius_product_bundle_admin:
+  resource: routes/admin.yml
+  prefix: '/%sylius_admin.path_name%'
+
+bitbag_sylius_product_bundle_shop:
+  resource: routes/shop.yml
+  prefix: /{_locale}
+  requirements:
+    _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <imports>
+        <import resource="services/form.xml"/>
+        <import resource="services/menu.xml"/>
+        <import resource="services/factory.xml"/>
+        <import resource="services/controller.xml"/>
+        <import resource="services/handler.xml"/>
+        <import resource="services/processor.xml"/>
+        <import resource="services/transformer.xml"/>
+        <import resource="services/twig.xml"/>
+        <import resource="services/validator.xml"/>
+        <import resource="services/event_listener.xml"/>
+        <import resource="services/product.xml"/>
+    </imports>
+</container>

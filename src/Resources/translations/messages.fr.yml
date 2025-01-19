@@ -1,8 +1,0 @@
-bitbag_sylius_product_bundle:
-  ui:
-    bundle: Lot
-    product_variant: Variante produit
-    quantity: Quantité
-    delete: Supprimer
-    products_in_bundle: Produits en lot
-    is_packed_product: Est un produit emballé

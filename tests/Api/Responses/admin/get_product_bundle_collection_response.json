@@ -2,6 +2,7 @@
   "@context": "\/api\/v2\/contexts\/ProductBundle",
   "@id": "\/api\/v2\/admin\/product-bundles",
   "@type": "hydra:Collection",
+  "hydra:totalItems": 1,
   "hydra:member": [
     {
       "@id": "\/api\/v2\/admin\/product-bundles\/@integer@",
@@ -16,6 +17,5 @@
       "updatedAt": "@datetime@",
       "isPacked": true
     }
-  ],
-  "hydra:totalItems": 1
+  ]
 }

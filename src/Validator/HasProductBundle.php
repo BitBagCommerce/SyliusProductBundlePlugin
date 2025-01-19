@@ -24,7 +24,7 @@ final class HasProductBundle extends Constraint
         return 'bitbag_sylius_product_bundle_validator_has_product_bundle';
     }
 
-    public function getTargets(): string
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

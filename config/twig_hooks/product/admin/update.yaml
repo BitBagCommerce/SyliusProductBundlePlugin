@@ -1,0 +1,16 @@
+sylius_twig_hooks:
+  hooks:
+    'sylius_admin.product.update.content.form.side_navigation':
+      bundle:
+        template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/side_navigation/bundle.html.twig'
+        priority: -10
+
+    'sylius_admin.product.update.content.form.sections':
+      bundle:
+        template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/sections/bundle.html.twig'
+        priority: -10
+
+    'sylius_admin.product.update.content.form.sections.bundle':
+      product_bundle:
+        template: '@BitBagSyliusProductBundlePlugin/Admin/product/form/sections/bundle/productBundleItem.html.twig'
+        priority: 0
