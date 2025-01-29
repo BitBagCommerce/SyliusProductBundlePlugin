@@ -8,7 +8,7 @@
 [ ![](https://img.shields.io/packagist/v/bitbag/product-bundle-plugin.svg) ](https://packagist.org/packages/bitbag/product-bundle-plugin "Version")
 [ ![](https://img.shields.io/github/actions/workflow/status/BitBagCommerce/SyliusProductBundlePlugin/build.yml?branch=master) ](https://github.com/BitBagCommerce/SyliusProductBundlePlugin/actions "Build status")
 [ ![](https://poser.pugx.org/bitbag/product-bundle-plugin/downloads)](https://packagist.org/packages/bitbag/product-bundle-plugin "Total Downloads")
-[ ![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)]([http://sylius.com/slack](http://sylius.com/slack))
+[ ![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius.com/slack)
 [ ![Support](https://img.shields.io/badge/support-contact%20author-blue])](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_productbundle)
 
 We want to impact many unique eCommerce projects and build our brand recognition worldwide, so we are heavily involved in creating open-source solutions, especially for Sylius. We have already created over **35 extensions, which have been downloaded almost 2 million times.**
