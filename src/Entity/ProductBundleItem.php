@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusProductBundlePlugin\Entity;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Resource\Model\TimestampableTrait;
+use Sylius\Resource\Model\TimestampableTrait;
 
 class ProductBundleItem implements ProductBundleItemInterface
 {

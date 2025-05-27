@@ -15,7 +15,7 @@ use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductInterface;
 use Sylius\Component\Product\Factory\ProductFactoryInterface as DecoratedProductFactoryInterface;
 use Sylius\Component\Product\Model\ProductInterface as BaseProductInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Resource\Factory\FactoryInterface;
 
 final class ProductFactory implements ProductFactoryInterface
 {

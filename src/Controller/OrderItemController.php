@@ -22,9 +22,9 @@ use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseOrderItemCon
 use Sylius\Bundle\ResourceBundle\Controller;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\CartActions;
-use Sylius\Component\Resource\Factory\FactoryInterface;
-use Sylius\Component\Resource\Metadata\MetadataInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
+use Sylius\Resource\Factory\FactoryInterface;
+use Sylius\Resource\Metadata\MetadataInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -13,7 +13,7 @@ namespace BitBag\SyliusProductBundlePlugin\Factory;
 
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface;
 use BitBag\SyliusProductBundlePlugin\Entity\ProductBundleOrderItemInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Resource\Factory\FactoryInterface;
 
 final class ProductBundleOrderItemFactory implements ProductBundleOrderItemFactoryInterface
 {
