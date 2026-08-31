@@ -29,7 +29,7 @@
         </many-to-one>
 
         <many-to-one field="productBundleItem" target-entity="BitBag\SyliusProductBundlePlugin\Entity\ProductBundleItemInterface">
-            <join-column name="product_bundle_item_id" referenced-column-name="id" nullable="false"/>
+            <join-column name="product_bundle_item_id" referenced-column-name="id" nullable="true" on-delete="SET NULL"/>
         </many-to-one>
     </mapped-superclass>
 
