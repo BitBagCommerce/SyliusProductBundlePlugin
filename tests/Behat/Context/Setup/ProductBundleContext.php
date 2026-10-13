@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Tests\Sylius\ProductBundlePlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Formatter\StringInflector;
@@ -46,9 +47,7 @@ final class ProductBundleContext implements Context
     ) {
     }
 
-    /**
-     * @Given /^the store has bundled product "([^"]*)" priced at ("[^"]+") which contains "([^"]*)" and "([^"]*)"$/
-     */
+    #[Given('/^the store has bundled product "([^"]*)" priced at ("[^"]+") which contains "([^"]*)" and "([^"]*)"$/')]
     public function theStoreHasBundledProductPricedAtWhichContainsAnd(
         string $productBundleName,
         int $productBundlePrice,
@@ -59,9 +58,7 @@ final class ProductBundleContext implements Context
         $this->saveProduct($product);
     }
 
-    /**
-     * @Given /^all store products appear under a main taxonomy$/
-     */
+    #[Given('/^all store products appear under a main taxonomy$/')]
     public function allStoreProductsAppearUnderAMainTaxonomy(): void
     {
         /** @var TaxonInterface $taxon */

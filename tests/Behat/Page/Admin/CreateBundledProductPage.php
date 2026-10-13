@@ -127,6 +127,8 @@ class CreateBundledProductPage extends CreatePage implements CreateBundledProduc
         $attributesTab = $this->getElement('side_navigation_tab', ['%name%' => $tabName]);
         if (!$attributesTab->hasClass('active')) {
             $attributesTab->click();
+            // Long wait for tab animation and content to render
+            $this->getSession()->wait(5000);
         }
     }
 }

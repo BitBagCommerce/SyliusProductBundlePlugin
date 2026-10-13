@@ -15,6 +15,8 @@ namespace Sylius\ProductBundlePlugin\Entity;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductBundleItem implements ProductBundleItemInterface
 {
@@ -22,8 +24,13 @@ class ProductBundleItem implements ProductBundleItemInterface
 
     protected mixed $id = null;
 
+    #[Assert\NotBlank(message: 'sylius_product_bundle.product_bundle_item.product_variant.not_blank', groups: ['sylius_product_bundle'])]
+    #[Groups(['admin:product_bundle:create', 'admin:product_bundle:update', 'shop:product:read', 'shop:product_bundle:read'])]
     protected ?ProductVariantInterface $productVariant = null;
 
+    #[Assert\NotBlank(message: 'sylius_product_bundle.product_bundle_item.quantity.not_blank', groups: ['sylius_product_bundle'])]
+    #[Assert\Positive(groups: ['sylius_product_bundle'])]
+    #[Groups(['admin:product_bundle:create', 'admin:product_bundle:update', 'shop:product:read', 'shop:product_bundle:read'])]
     protected ?int $quantity = null;
 
     protected ?ProductBundleInterface $productBundle = null;

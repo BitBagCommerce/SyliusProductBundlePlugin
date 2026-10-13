@@ -15,13 +15,16 @@ namespace Sylius\ProductBundlePlugin\Dto\Api;
 
 use Sylius\Bundle\ApiBundle\Attribute\OrderTokenValueAware;
 use Sylius\Bundle\ApiBundle\Command\IriToIdentifierConversionAwareInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[OrderTokenValueAware]
 final class AddProductBundleToCartDto implements IriToIdentifierConversionAwareInterface
 {
     public function __construct(
+        #[Groups(['shop:cart:add_product_bundle'])]
         private readonly string $productCode,
         private string $orderTokenValue,
+        #[Groups(['shop:cart:add_product_bundle'])]
         private readonly int $quantity = 1,
     ) {
     }

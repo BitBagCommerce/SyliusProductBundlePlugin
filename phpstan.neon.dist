@@ -5,8 +5,19 @@ parameters:
         - src
 
     excludePaths:
-        - 'src/DependencyInjection/Configuration.php'
+        - 'src/DependencyInjection/Configuration.php (?)'
 
     ignoreErrors:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
+        - identifier: trait.unused
+          paths:
+              - src/Entity/ProductBundlesAwareTrait.php
+              - src/Entity/ProductBundleOrderItemsAwareTrait.php
+        - identifier: attribute.notAttribute
+          paths:
+              - src/Command/AddProductBundleToCartCommand.php
+              - src/Dto/AddProductBundleToCartDto.php
+        - identifier: return.unusedType
+          paths:
+              - src/Validator/Sequentially.php

@@ -20,6 +20,7 @@ return static function (ECSConfig $config): void {
         'tests/Unit/',
     ]);
     $config->skip([
+        '**/vendor/**',
         InlineDocCommentDeclarationSniff::class . '.MissingVariable',
         InlineDocCommentDeclarationSniff::class . '.NoAssignment',
         '**/var/*',

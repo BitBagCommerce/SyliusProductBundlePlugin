@@ -15,6 +15,7 @@ namespace Sylius\ProductBundlePlugin\Entity;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class ProductBundleOrderItem implements ProductBundleOrderItemInterface
 {
@@ -26,8 +27,10 @@ class ProductBundleOrderItem implements ProductBundleOrderItemInterface
 
     protected ?ProductBundleItemInterface $productBundleItem;
 
+    #[Groups(['admin:order:read', 'admin:order_item:read', 'shop:order_item:read', 'shop:cart:read'])]
     protected ?ProductVariantInterface $productVariant;
 
+    #[Groups(['admin:order:read', 'admin:order_item:read', 'shop:order_item:read', 'shop:cart:read'])]
     protected ?int $quantity;
 
     public function getId(): ?int

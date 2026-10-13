@@ -18,9 +18,11 @@
 
     <class name="Sylius\ProductBundlePlugin\Command\AddProductBundleToCartCommand">
         <constraint name="Sylius\ProductBundlePlugin\Validator\Sequentially">
-            <constraint name="Sylius\ProductBundlePlugin\Validator\HasExistingCart"/>
-            <constraint name="Sylius\ProductBundlePlugin\Validator\HasProductBundle"/>
-            <constraint name="Sylius\ProductBundlePlugin\Validator\HasAvailableProductBundle"/>
+            <option name="constraints">
+                <constraint name="Sylius\ProductBundlePlugin\Validator\HasExistingCart"/>
+                <constraint name="Sylius\ProductBundlePlugin\Validator\HasProductBundle"/>
+                <constraint name="Sylius\ProductBundlePlugin\Validator\HasAvailableProductBundle"/>
+            </option>
         </constraint>
 
         <property name="quantity">

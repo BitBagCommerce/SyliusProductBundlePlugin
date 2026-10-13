@@ -17,6 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductBundle implements ProductBundleInterface
 {
@@ -26,9 +29,14 @@ class ProductBundle implements ProductBundleInterface
 
     protected ?ProductInterface $product = null;
 
-    /** @var ProductBundleItemInterface[]|Collection */
+    #[Assert\Valid]
+    #[Assert\Count(min: 2, minMessage: 'sylius_product_bundle.product_bundle_item.min_count', groups: ['sylius_product_bundle'])]
+    #[Groups(['shop:product:read', 'shop:product_bundle:read', 'admin:product_bundle:read', 'admin:product_bundle:create', 'admin:product_bundle:update', 'product_bundle:read', 'product_bundle:write'])]
+    #[SerializedName('items')]
     protected Collection $productBundleItems;
 
+    #[Groups(['admin:product_bundle:create', 'admin:product_bundle:update'])]
+    #[SerializedName('isPacked')]
     protected bool $isPackedProduct = false;
 
     public function __construct()

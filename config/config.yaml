@@ -1,6 +1,6 @@
 imports:
     - { resource: "@SyliusProductBundlePlugin/config/resources/*.yaml" }
-    - { resource: "@SyliusProductBundlePlugin/config/services.xml" }
+    - { resource: "@SyliusProductBundlePlugin/config/services.php" }
     - { resource: "@SyliusProductBundlePlugin/config/twig_hooks/**/*.yaml" }
 
 framework:

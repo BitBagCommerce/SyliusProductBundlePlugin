@@ -2,7 +2,7 @@ default:
   suites:
     bundled_product:
       contexts:
-        - sylius.behat.context.hook.doctrine_orm
+        - sylius_product_bundle_plugin.behat.context.hook.doctrine
 
         - sylius.behat.context.transform.lexical
         - sylius.behat.context.transform.product

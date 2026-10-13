@@ -24,7 +24,7 @@ final class HasExistingCart extends Constraint
         return 'sylius_product_bundle_validator_has_existing_cart';
     }
 
-    public function getTargets(): array|string
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Tests\Sylius\ProductBundlePlugin\Api;
 
 use ApiTestCase\JsonApiTestCase as BaseJsonApiTestCase;
+use Composer\InstalledVersions;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class JsonApiTestCase extends BaseJsonApiTestCase
 {
@@ -31,5 +33,25 @@ abstract class JsonApiTestCase extends BaseJsonApiTestCase
         }
 
         return self::$container;
+    }
+
+    protected function assertResponseWithVersionSupport(
+        Response $response,
+        string $responsePath,
+        int $statusCode = Response::HTTP_OK,
+    ): void {
+        $syliusVersion = InstalledVersions::getVersion('sylius/sylius');
+        $majorMinor = implode('.', array_slice(explode('.', $syliusVersion), 0, 2));
+
+        $versionSpecificPath = $responsePath . '_' . $majorMinor;
+        $file = __DIR__ . '/Responses/' . $versionSpecificPath . '.json';
+
+        if (!file_exists($file)) {
+            $this->assertResponse($response, $responsePath, $statusCode);
+
+            return;
+        }
+
+        $this->assertResponse($response, $versionSpecificPath, $statusCode);
     }
 }

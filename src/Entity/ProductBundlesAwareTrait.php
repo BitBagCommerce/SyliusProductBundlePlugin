@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace Sylius\ProductBundlePlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 trait ProductBundlesAwareTrait
 {
     #[ORM\OneToOne(mappedBy: 'product', targetEntity: ProductBundleInterface::class, cascade: ['all'])]
+    #[Groups(['sylius:admin:product:index', 'sylius:admin:product:show', 'sylius:admin:product:create', 'sylius:admin:product:update', 'sylius:shop:product:index', 'sylius:shop:product:show'])]
+    #[SerializedName('bundle')]
     protected ?ProductBundleInterface $productBundle = null;
 
     public function getProductBundle(): ?ProductBundleInterface

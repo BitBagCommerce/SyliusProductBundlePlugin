@@ -26,7 +26,7 @@ final class HasProductBundle extends Constraint
         return 'sylius_product_bundle_validator_has_product_bundle';
     }
 
-    public function getTargets(): array|string
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

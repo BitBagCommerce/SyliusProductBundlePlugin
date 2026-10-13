@@ -13,23 +13,28 @@ declare(strict_types=1);
 
 namespace Sylius\ProductBundlePlugin\Validator;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraints\Composite;
 
 final class Sequentially extends Composite
 {
-    public function __construct(public ?array $constraints = null)
-    {
-        parent::__construct($constraints ?? []);
+    #[HasNamedArguments]
+    public function __construct(
+        public ?array $constraints = null,
+        ?array $groups = null,
+        mixed $payload = null,
+    ) {
+        parent::__construct(null, $groups, $payload);
     }
 
-    public function getDefaultOption(): string
+    public function getDefaultOption(): ?string
     {
-        return 'constraints';
+        return null;
     }
 
     public function getRequiredOptions(): array
     {
-        return ['constraints'];
+        return [];
     }
 
     protected function getCompositeOption(): string
